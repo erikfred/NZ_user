@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 import cmocean
-from datetime import datetime
+from datetime import datetime, date
 
 # read layers.nc file (will eventually become loop over all dates)
 url1 = ('https://liveocean.apl.uw.edu/output/f2021.12.15/layers.nc#mode=bytes')
@@ -57,10 +57,18 @@ for var in ds2.variables.values():
     print(var)
 """
 surface_time=ds2['ocean_time'][:]
+# ist=np.argwhere(surface_time==datetime.date(2021, 12, 15))
 ssh=ds2['zeta'][:, ila1:ila2, ilo1:ilo2]
-# print(np.amin(ssh))
-# print(np.amax(ssh))
 bath=ds2['h'][ila1:ila2, ilo1:ilo2]
+
+tmin=datetime.timestamp(datetime(2021,12,15))
+tmax=datetime.timestamp(datetime(2021,12,16))
+
+it1=np.argwhere(surface_time>=tmin)
+it2=np.argwhere(surface_time<tmax)
+
+st=surface_time[it1:it2]
+print(st)
 
 # PLOTTING
 # plotting parameters
@@ -71,6 +79,17 @@ cmap = cmocean.cm.thermal
 
 XX = box_lon
 YY = box_lat
+
+# print(surface_time.shape)
+# print(len(surface_time))
+
+"""
+plt.close('all')
+fig = plt.figure(figsize=(10,10))
+ax = fig.add_subplot(111)
+ax.plot(test, ssh[:, 10, 10], 'r')
+ax.xaxis.set_major_formatter(dates.DateFormatter('%m-%d'))
+plt.show()
 
 for x in range(0, 72):
     plt.close('all')
@@ -96,3 +115,4 @@ for x in range(0, 72):
 
     plt.savefig('../LO_output/SSH_maps/temp' + str(x))
     # plt.show()
+"""
