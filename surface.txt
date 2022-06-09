@@ -1,0 +1,169 @@
+{'file': '/gscratch/macc/parker/LO_roms/cas6_v0_u0mb/f2021.12.15/ocean_his_0001.nc', 'format': 'netCDF-4/HDF5 file', 'Conventions': 'CF-1.4, SGRID-0.3', 'type': 'ROMS/TOMS history file', 'title': 'First LiveOcean input file', 'var_info': '/gscratch/macc/parker/LiveOcean_roms/LO_ROMS/ROMS/External/varinfo.dat', 'rst_file': '/gscratch/macc/parker/LO_roms/cas6_v0_u0mb/f2021.12.15/ocean_rst.nc', 'his_base': '/gscratch/macc/parker/LO_roms/cas6_v0_u0mb/f2021.12.15/ocean_his', 'grd_file': '/gscratch/macc/parker/LO_data/grids/cas6/grid.nc', 'ini_file': '/gscratch/macc/parker/LO_roms/cas6_v0_u0mb/f2021.12.14/ocean_his_0025.nc', 'frc_file_01': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/tide0/tides.nc', 'frc_file_02': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/lwrad_down.nc', 'frc_file_03': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/Pair.nc', 'frc_file_04': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/Qair.nc', 'frc_file_05': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/rain.nc', 'frc_file_06': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/swrad.nc', 'frc_file_07': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/Tair.nc', 'frc_file_08': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/Uwind.nc', 'frc_file_09': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/atm0/Vwind.nc', 'bry_file': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/ocn0/ocean_bry.nc', 'clm_file': '/gscratch/macc/parker/LO_output/forcing/cas6_v0/f2021.12.15/ocn0/ocean_clm.nc', 'nud_file': '/gscratch/macc/parker/LO_data/grids/cas6/nudgcoef.nc', 'script_file': '', 'bpar_file': '/gscratch/macc/parker/LO_roms/cas6_v0_u0mb/f2021.12.15/npzd2o_Banas.in', 'NLM_LBC': '\nEDGE:           WEST   SOUTH  EAST   NORTH  \nzeta:           Cha    Cha    Clo    Cha    \nubar:           Fla    Fla    Clo    Fla    \nvbar:           Fla    Fla    Clo    Fla    \nu:              RadNud RadNud Clo    RadNud \nv:              RadNud RadNud Clo    RadNud \ntemp:           RadNud RadNud Clo    RadNud \nsalt:           RadNud RadNud Clo    RadNud \nNO3:            RadNud RadNud Clo    RadNud \nphytoplankton:  RadNud RadNud Clo    RadNud \nzooplankton:    RadNud RadNud Clo    RadNud \ndetritus:       RadNud RadNud Clo    RadNud \nLdetritus:      RadNud RadNud Clo    RadNud \noxygen:         RadNud RadNud Clo    RadNud \nTIC:            RadNud RadNud Clo    RadNud \nalkalinity:     RadNud RadNud Clo    RadNud \nCaCO3:          Gra    Gra    Clo    Clo    \ntke:            RadNud RadNud Clo    RadNud', 'svn_url': 'https://www.myroms.org/svn/src/trunk', 'svn_rev': '', 'code_dir': '/gscratch/macc/parker/LiveOcean_roms/LO_ROMS', 'header_dir': '/gscratch/macc/parker/LiveOcean_roms/makefiles/u0mb', 'header_file': 'u0mb.h', 'os': 'Linux', 'cpu': 'x86_64', 'compiler_system': 'ifort', 'compiler_command': 'mpif90', 'compiler_flags': '-heap-arrays -fp-model precise -I/sw/netcdf-fortran+c-4.4.1.1_icc-17/include -ip -O2 -free -free', 'tiling': '014x014', 'history': 'Wed Dec 15 16:36:05 2021: ncrcat -p /dat1/parker/LO_output/extract/cas6_v0_u0mb/box/temp_surface0 -O /dat1/parker/LO_output/extract/cas6_v0_u0mb/box/surface0_surf_2021.12.15_2021.12.17.nc\nWed Dec 15 16:35:51 2021: ncks -v h,f,pm,pn,mask_rho,salt,temp -d xi_rho,0,662 -d eta_rho,0,1301 -d xi_u,0,661 -d eta_u,0,1301 -d xi_v,0,662 -d eta_v,0,1300 -d s_rho,29 -O /dat1/parker/LO_roms/cas6_v0_u0mb/f2021.12.15/ocean_his_0001.nc /dat1/parker/LO_output/extract/cas6_v0_u0mb/box/temp_surface0/box_000000.nc\nROMS/TOMS, Version 3.7, Wednesday - December 15, 2021 -  3:01:10 AM', 'ana_file': 'ROMS/Functionals/ana_btflux.h, ROMS/Functionals/ana_stflux.h', 'CPP_options': 'U0MB, ADD_FSOBC, ADD_M2OBC, ANA_BPFLUX, ANA_BSFLUX, ANA_BTFLUX, ANA_SPFLUX, ANA_SSFLUX, ASSUMED_SHAPE, BULK_FLUXES, CANUTO_A DEFLATE, DJ_GRADPS, DOUBLE_PRECISION, GLS_MIXING, HDF5, LONGWAVE_OUT, MASKING, MIX_GEO_TS, MPI, NONLINEAR, NONLIN_EOS, N2S2_HORAVG, POWER_LAW, PROFILE, K_GSCHEME, RADIATION_2D, RI_SPLINES, !RST_SINGLE, SALINITY, SOLAR_SOURCE, SOLVE3D, SPHERICAL, SSH_TIDES, TS_MPDATA, TS_DIF2, UV_ADV, UV_COR, UV_U3HADVECTION, UV_C4VADVECTION, UV_QDRAG, UV_TIDES, VAR_RHO_2D', 'bio_file': 'ROMS/Nonlinear/Biology/npzd2o_banas.h', 'NCO': 'netCDF Operators version 4.9.9 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)', 'nco_input_file_number': 73, 'nco_input_file_list': 'box_000000.nc box_000001.nc box_000002.nc box_000003.nc box_000004.nc box_000005.nc box_000006.nc box_000007.nc box_000008.nc box_000009.nc box_000010.nc box_000011.nc box_000012.nc box_000013.nc box_000014.nc box_000015.nc box_000016.nc box_000017.nc box_000018.nc box_000019.nc box_000020.nc box_000021.nc box_000022.nc box_000023.nc box_000024.nc box_000025.nc box_000026.nc box_000027.nc box_000028.nc box_000029.nc box_000030.nc box_000031.nc box_000032.nc box_000033.nc box_000034.nc box_000035.nc box_000036.nc box_000037.nc box_000038.nc box_000039.nc box_000040.nc box_000041.nc box_000042.nc box_000043.nc box_000044.nc box_000045.nc box_000046.nc box_000047.nc box_000048.nc box_000049.nc box_000050.nc box_000051.nc box_000052.nc box_000053.nc box_000054.nc box_000055.nc box_000056.nc box_000057.nc box_000058.nc box_000059.nc box_000060.nc box_000061.nc box_000062.nc box_000063.nc box_000064.nc box_000065.nc box_000066.nc box_000067.nc box_000068.nc box_000069.nc box_000070.nc box_000071.nc box_000072.nc'}
+<class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'ocean_time', size = 73
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_rho', size = 1302
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_rho', size = 663
+<class 'netCDF4._netCDF4.Variable'>
+float64 Cs_r()
+    _FillValue: nan
+    long_name: S-coordinate stretching curves at RHO-points
+    valid_min: -1.0
+    valid_max: 0.0
+    field: Cs_r, scalar
+    coordinates: s_rho
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 f(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: Coriolis parameter at RHO-points
+    units: second-1
+    grid: grid
+    location: face
+    field: coriolis, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 h(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: bathymetry at RHO-points
+    units: meter
+    grid: grid
+    location: face
+    field: bath, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 hc()
+    _FillValue: nan
+    long_name: S-coordinate parameter, critical depth
+    units: meter
+    coordinates: s_rho
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: latitude of RHO-points
+    units: degree_north
+    standard_name: latitude
+    field: lat_rho, scalar
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: longitude of RHO-points
+    units: degree_east
+    standard_name: longitude
+    field: lon_rho, scalar
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: mask on RHO-points
+    flag_values: [0. 1.]
+    flag_meanings: land water
+    grid: grid
+    location: face
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ocean_time(ocean_time)
+    _FillValue: nan
+    long_name: time since initialization
+    field: time, scalar, series
+    cell_methods: ocean_time: mean
+    units: seconds since 1970-01-01
+    calendar: gregorian
+unlimited dimensions: ocean_time
+current shape = (73,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 pm(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: curvilinear coordinate metric in XI
+    units: meter-1
+    grid: grid
+    location: face
+    field: pm, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 pn(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: curvilinear coordinate metric in ETA
+    units: meter-1
+    grid: grid
+    location: face
+    field: pn, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 s_rho()
+    _FillValue: nan
+    long_name: S-coordinate at RHO-points
+    valid_min: -1.0
+    valid_max: 0.0
+    positive: up
+    standard_name: ocean_s_coordinate_g2
+    formula_terms: s: s_rho C: Cs_r eta: zeta depth: h depth_c: hc
+    field: s_rho, scalar
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 salt(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity
+    time: ocean_time
+    grid: grid
+    location: face
+    field: salinity, scalar, series
+    cell_methods: ocean_time: mean
+    coordinates: lon_rho lat_rho s_rho 
+unlimited dimensions: ocean_time
+current shape = (73, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 temp(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature
+    units: Celsius
+    time: ocean_time
+    grid: grid
+    location: face
+    field: temperature, scalar, series
+    cell_methods: ocean_time: mean
+    coordinates: lon_rho lat_rho s_rho 
+unlimited dimensions: ocean_time
+current shape = (73, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 zeta(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: free-surface
+    units: meter
+    time: ocean_time
+    grid: grid
+    location: face
+    field: free-surface, scalar, series
+    cell_methods: ocean_time: mean
+    coordinates: lon_rho lat_rho 
+unlimited dimensions: ocean_time
+current shape = (73, 1302, 663)
+filling on

@@ -13,30 +13,88 @@ and other fields, for some time range.
 ## CONFIG ##
 
 from datetime import datetime, timedelta
-start_time = datetime.now()
+import numpy as np
 import netCDF4 as nc
+import cmocean
+import matplotlib.pyplot as plt
+import pickle
 
 import os
 import sys
 sys.path.append(os.path.abspath('util'))
 import Lfun
-import numpy as np
 import zrfun
 import zfun
 
 # establish file structure
 workdir = os.path.dirname(os.path.realpath(__file__))
-datadir = workdir + '_data/'
-outdir = workdir + '_output/'
-workdir = workdir + '/'
+workdir = workdir + '/'; print(workdir)
+datadir = workdir.removesuffix('_user/') + '_data/'; print(datadir)
+outdir = workdir.removesuffix('_user/') + '_output/'; print(outdir)
+webdir = 'https://liveocean.apl.uw.edu/output/'
 
-model_type = 'Kurapov' # useful for functionality with other ROMS down the road
+model_type = 'LiveOcean'
+#model_type = 'Kurapov'
 
+do_press = True # ?
 testbatch = False # True will only process first 10 input files, False will run all
+cutout = True # True will subsample from user-defined lat/lon limits
 
 ## END CONFIG ##
 
-if model_type == 'Kurapov':
+start_time = datetime.now()
+
+if model_type == 'LiveOcean':
+    # information about data files
+    in_dir = webdir #location of .nc files
+    ncstr = 'f' #naming convention for server
+    ti = datetime.strptime('2021.12.15', '%Y.%m.%d')
+    tf = datetime.strptime('2022.05.30', '%Y.%m.%d')
+    tag = 'LiveOcean'
+    n_layer = 0 # bottom layer
+
+    # get grid info from surface.nc
+    url_surf = (webdir + 'f' + datetime.strftime(ti, '%Y.%m.%d') + '/surface.nc#mode=bytes')
+    ds_surf = nc.Dataset(url_surf) # opens netCDF file
+    if False: # set to True if you want to print netCDF info
+        print('\nGRID INFO')
+        zfun.ncd(ds_surf)
+    lon = ds_surf['lon_rho'][:,:]
+    lat = ds_surf['lat_rho'][:,:]
+    if cutout: # take cutout from full model domain, if desired
+        # full range is: -129.9798<lon<-122.018, 42.0067<lat<52.0099
+        minlon = -126; maxlon = -123.5; minlat = 43; maxlat = 49
+        ilo1 = np.argmin(np.abs(lon[0,:] - minlon)); ilo2 = np.argmin(np.abs(lon[0,:] - maxlon))
+        ila1 = np.argmin(np.abs(lat[:,0] - minlat)); ila2 = np.argmin(np.abs(lat[:,0] - maxlat))
+        lon = lon[ila1:ila2,ilo1:ilo2]
+        lat = lat[ila1:ila2,ilo1:ilo2]
+    ds_surf.close()
+
+    # make file lists
+    url_list_surf = []
+    url_list_layers = []
+    if testbatch: # only runs on 10 day subset
+        delta = (ti + timedelta(days=10)) - ti
+    else: # runs on entire date range defined in CONFIG
+        delta = (tf + timedelta(days=1)) - ti
+    drange = range(0, delta.days)
+    for ii in drange:  # building file names
+        url_string = ('f' + datetime.strftime(ti + timedelta(days=ii), '%Y.%m.%d'))
+        url_list_surf.append(webdir + url_string + '/surface.nc#mode=bytes')
+        url_list_layers.append(webdir + url_string + '/layers.nc#mode=bytes')
+
+    """
+    # model-specific info about vertical layers
+    url = url_list_layers[0]
+    ds_layers = nc.Dataset(url)
+    G, S, T = zrfun.get_basic_info(url) # unsure if this fn would work on WCOFS
+    h = ds_layers['h'][:] # bathymetry
+    z = zrfun.get_z(h, 0*h, S, only_rho=True) # layers
+    z0 = z[n_layer,:,:].squeeze() # bottom layer
+    ds_layers.close()
+    """
+
+elif model_type == 'Kurapov':
     # information about data files
     in_dir = datadir + model_type +'/' #location of .nc files
     ncstr = 'zts_Monterey_Exp41_'
@@ -82,8 +140,92 @@ if testbatch:
 else:
     etag = ''
 
-NT = len(fn_list)
+NT_surf = len(url_list_surf)
+NT_layers = len(url_list_layers)
 
+# prepare a directory for results
+outdir0 = outdir + model_type + '/'; print(outdir0)
+Lfun.make_dir(outdir0, clean=False)
+ncoutdir = outdir0 + 'SSH_extractions/'; print(ncoutdir)
+Lfun.make_dir(ncoutdir, clean=False)
+# output file
+out_name = 'ssh_' + tag + etag + '.nc'
+out_fn = ncoutdir + out_name
+# get rid of the old version, if it exists
+try:
+    os.remove(out_fn)
+except OSError:
+    pass # assume error was because the file did not exist
+
+# make SSH
+ssh_arr = np.zeros((NT_surf, np.shape(lon)[0], np.shape(lon)[1]))
+for tt in range(NT_surf): #for each .nc file
+    url1 = url_list_surf[tt]; print(url1)
+    try:
+        ds1 = nc.Dataset(url1)
+    except OSError:
+        ssh_arr[tt,:,:] = ssh_arr[tt-1,:,:]
+        continue # skip day if file doesn't exist
+    if np.mod(tt,10)==0: # print update to console every 10th file
+        print('tt = ' + str(tt) + '/' + str(NT_surf) + ' ' + str(datetime.now()))
+        sys.stdout.flush()
+    surface_time = ds1['ocean_time'][:]
+    tmin = datetime.timestamp(ti + timedelta(days=tt))
+    tmax = datetime.timestamp(ti + timedelta(days=tt+1))
+    it=np.argwhere((surface_time>=tmin) & (surface_time<=tmax))
+    if cutout:
+        ssh_all = ds1['zeta'][:, ila1:ila2, ilo1:ilo2]
+        bath=ds1['h'][ila1:ila2, ilo1:ilo2]
+    else:
+        ssh_all = ds1['zeta'][:,:,:]
+        bath=ds1['h'][:,:]
+    ssh_some = ssh_all[it,:,:]
+    ssh_day = np.mean(ssh_some, axis=0)
+    ssh_arr[tt,:,:] = ssh_day
+    ds1.close()
+ssh_mean = np.mean(ssh_arr, axis=0) # mean pressure of given location for entire time range
+ssh_anom = ssh_arr - ssh_mean
+
+pickle.dump(ssh_arr, open((outdir + 'ssh_arr.p'), 'wb'))
+pickle.dump(ssh_anom, open((outdir + 'ssh_anom.p'), 'wb'))
+
+# PLOTTING
+plt.close('all')
+# plotting parameters
+fs = 14 # primary fontsize
+lw = 3 # primary linewidth
+mk = 10 # primary markersize
+cmap = cmocean.cm.thermal
+for tt in range(NT_surf): #for each day of data
+    fig = plt.figure(figsize=(6,10))
+    ax = fig.add_subplot(111)
+    cs = ax.pcolormesh(lon, lat, ssh_anom[tt,:,:].squeeze(), cmap=cmap, vmin=-0.1, vmax=0.1)
+    bth = ax.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax.axis('square')
+    ax.set_xlim((minlon,maxlon))
+    ax.set_ylim((minlat, maxlat))
+    ax.grid(True)
+
+    cb = fig.colorbar(cs)
+    cb.set_label('SSH (m)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    ttl = datetime.strftime(ti + timedelta(days=tt), '%Y.%m.%d')
+    plt.title(ttl, fontsize=fs+2)
+
+    figdir = '../LO_output/SSH_maps/'
+    if not os.path.exists(figdir):
+        os.mkdir(figdir)
+
+    # figstr = figdir + 'SSH_' + datetime.strftime(ti + timedelta(days=tt), '%Y%m%d')
+    figstr = 'SSH10_' + str(tt).zfill(3)
+    svstr = figdir + figstr
+    plt.savefig(svstr)
+    # plt.show()
+    plt.close()
+
+"""
 # prepare a directory for results
 outdir0 = outdir + model_type + '/'
 Lfun.make_dir(outdir0, clean=False)
@@ -134,23 +276,27 @@ for tt in range(NT): #for each .nc file
     ds1.close()
 bp_mean = np.mean(bp_arr, axis=0) # mean pressure of given location for entire time range
 bp_anom = bp_arr - bp_mean
-
+"""
+"""
 # initialize output Dataset
-ds2 = nc.Dataset(out_fn, 'w')
-
+nc_file = (outdir + 'SSH_anom_nc/' + 'SSH_anom_20220601')
+ds_out = nc.Dataset(nc_file, 'w')
+"""
+"""
 # lists of variables to process
 if model_type == 'Kurapov':
     dlist = ['xi_rho', 'eta_rho', 'ocean_time']
     vn_list2 = [ 'lon_rho', 'lat_rho', 'mask_rho', 'h']
 vn_list2t = ['zeta', 'ocean_time']
 vn_list3t = ['salt', 'temp']
-
-ds1 = nc.Dataset(fn_list[0])
+"""
+"""
+dlist = ['lon', 'lat', 'bath']
 
 # Copy dimensions
-for dname, the_dim in ds1.dimensions.items():
+for dname, the_dim in ds_surf.dimensions.items():
     if dname in dlist:
-        ds2.createDimension(dname, len(the_dim) if not the_dim.isunlimited() else None)
+        ds_out.createDimension(dname, len(the_dim) if not the_dim.isunlimited() else None)
 
 # Copy variables
 if model_type == 'Kurapov':
@@ -314,3 +460,4 @@ if testbatch: #make plots if working on subset?
 
     plt.show()
     ds.close()
+"""

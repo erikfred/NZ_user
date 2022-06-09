@@ -1,0 +1,403 @@
+{'history': 'Wed Dec 15 16:44:32 2021: ncrcat -p /dat1/parker/LO_output/post/cas6_v0_u0mb/f2021.12.15/layers1/tempfiles -O /dat1/parker/LO_output/post/cas6_v0_u0mb/f2021.12.15/layers1/layers.nc', 'NCO': 'netCDF Operators version 4.9.9 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)', 'nco_input_file_number': 19, 'nco_input_file_list': 'layers_000000.nc layers_000001.nc layers_000002.nc layers_000003.nc layers_000004.nc layers_000005.nc layers_000006.nc layers_000007.nc layers_000008.nc layers_000009.nc layers_000010.nc layers_000011.nc layers_000012.nc layers_000013.nc layers_000014.nc layers_000015.nc layers_000016.nc layers_000017.nc layers_000018.nc'}
+<class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'ocean_time', size = 19
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_rho', size = 1302
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_rho', size = 663
+<class 'netCDF4._netCDF4.Variable'>
+float64 ocean_time(ocean_time)
+    _FillValue: nan
+    units: seconds since 1970-01-01 00:00:00
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: longitude of RHO-points
+    units: degree_east
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: latitude of RHO-points
+    units: degree_north
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: mask on RHO-points
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 h(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: bathymetry at RHO-points
+    units: meter
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 temp_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at surface
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 salt_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at surface
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 phytoplankton_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at surface
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 NO3_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at surface
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 oxygen_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at surface
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at surface
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_surface(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at surface
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 temp_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at 10 m depth
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 salt_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at 10 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phytoplankton_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at 10 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 NO3_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at 10 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 oxygen_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at 10 m depth
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at 10 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_10(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at 10 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 temp_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at 20 m depth
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 salt_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at 20 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phytoplankton_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at 20 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 NO3_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at 20 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 oxygen_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at 20 m depth
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at 20 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_20(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at 20 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 temp_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at 30 m depth
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 salt_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at 30 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phytoplankton_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at 30 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 NO3_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at 30 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 oxygen_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at 30 m depth
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at 30 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_30(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at 30 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 temp_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at 50 m depth
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 salt_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at 50 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phytoplankton_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at 50 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 NO3_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at 50 m depth
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 oxygen_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at 50 m depth
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at 50 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_50(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at 50 m depth
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 temp_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: potential temperature at bottom
+    units: Celsius
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 salt_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: salinity at bottom
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 phytoplankton_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: phytoplankton concentration at bottom
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 NO3_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: nitrate concentration at bottom
+    units: millimole_nitrogen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 oxygen_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: dissolved oxygen concentration at bottom
+    units: millimole_oxygen meter-3
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 PH_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: pH at bottom
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ARAG_bottom(ocean_time, eta_rho, xi_rho)
+    _FillValue: 1e+20
+    long_name: Aragonite Saturation State at bottom
+    cell_methods: ocean_time: mean
+unlimited dimensions: ocean_time
+current shape = (19, 1302, 663)
+filling on
