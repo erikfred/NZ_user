@@ -4,7 +4,19 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import pickle
 import os
+from pathlib import Path
 
+HOME = Path.home()
+print(str(HOME))
+HOSTNAME = os.uname()[1]
+print(str(HOSTNAME))
+"""
+if (str(HOME) == '/Users/erikfred') & ('VanBuren' in HOSTNAME):
+    lo_env = 'ef1_mac'
+    which_matlab = '/Applications/MATLAB_R2020a.app/bin/matlab'
+    print(lo_env)
+"""
+"""
 # establish file structure
 workdir = os.path.dirname(os.path.realpath(__file__)); print(workdir)
 workdir = workdir + '/'
@@ -12,7 +24,7 @@ datadir = workdir.removesuffix('_user/') + '_data/'; print(datadir)
 outdir = workdir.removesuffix('_user/') + '_output/'; print(outdir)
 print(workdir)
 webdir = 'https://liveocean.apl.uw.edu/output/'
-
+"""
 """
 webdir = 'https://liveocean.apl.uw.edu/output/'
 

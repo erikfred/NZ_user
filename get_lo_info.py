@@ -41,6 +41,7 @@ local_user = 'BLANK'
 which_matlab = '/usr/local/bin/matlab'
 
 HOME = Path.home()
+UNAME = os.uname()[1]
 try:
     HOSTNAME = os.environ['HOSTNAME']
 except KeyError:
@@ -51,9 +52,13 @@ except KeyError:
 # print('HOME = ' + str(HOME))
 # print('HOSTNAME = ' + HOSTNAME)
 
-if str(HOME) == '/Users/erikfred':
+if (str(HOME) == '/Users/erikfred') & ('VanBuren' in str(UNAME)):
     lo_env = 'ef1_mac'
-    which_matlab = '/Applications/MATLAB_R2019b.app/bin/matlab'
+    which_matlab = '/Applications/MATLAB_R2020a.app/bin/matlab'
+
+elif (str(HOME) == '/Users/erikfred') & ('MONROE' in str(UNAME)):
+    lo_env = 'ef2_mac'
+    which_matlab = '/Applications/MATLAB_R2019a.app/bin/matlab'
 
 elif (str(HOME) == '/home/parker') & ('perigee' in HOSTNAME):
     lo_env = 'pm_perigee'
