@@ -60,10 +60,10 @@ elif (str(HOME) == '/Users/erikfred') & ('MONROE' in str(UNAME)):
     lo_env = 'ef2_mac'
     which_matlab = '/Applications/MATLAB_R2019a.app/bin/matlab'
 
-elif (str(HOME) == '/home/parker') & ('perigee' in HOSTNAME):
-    lo_env = 'pm_perigee'
-    roms_out1 = Path('/agdat1/parker/LO_roms')
-    roms_out2 = Path('/agdat2/parker/LO_roms')
+elif (str(HOME) == '/home/erikfred') & ('perigee' in HOSTNAME):
+    lo_env = 'ef_perigee'
+    # roms_out1 = Path('/agdat1/parker/LO_roms')
+    # roms_out2 = Path('/agdat2/parker/LO_roms')
 
 elif (str(HOME) == '/home/parker') & ('apogee' in HOSTNAME):
     lo_env = 'pm_apogee'
