@@ -62,8 +62,8 @@ elif (str(HOME) == '/Users/erikfred') & ('MONROE' in str(UNAME)):
 
 elif (str(HOME) == '/home/erikfred') & ('perigee' in HOSTNAME):
     lo_env = 'ef_perigee'
-    # roms_out1 = Path('/agdat1/parker/LO_roms')
-    # roms_out2 = Path('/agdat2/parker/LO_roms')
+    roms_out1 = Path('/data1/parker/LO_roms') # intentionally in Parker's directory!
+    roms_out2 = Path('/data2/parker/LO_roms')
 
 elif (str(HOME) == '/home/parker') & ('apogee' in HOSTNAME):
     lo_env = 'pm_apogee'
