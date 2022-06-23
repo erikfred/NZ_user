@@ -26,7 +26,8 @@ nrow = len(sn_list)
 ii = 1
 for sn in sn_list:
 
-    fn = Ldir['LOo'] / 'extract' / 'cas6_v3_lo8b' / 'moor' / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
+    fn = Ldir['LOo'] / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
+    # fn = Ldir['LOo'] / 'extract' / 'cas6_v3_lo8b' / 'moor' / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
     ds = xr.open_dataset(fn)
 
     # get time axis
