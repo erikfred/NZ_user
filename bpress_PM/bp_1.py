@@ -13,7 +13,7 @@ from lo_tools import plotting_functions as pfun
 # set mooring extraction to analyze (just needs salt, temp, and zeta)
 Ldir = Lfun.Lstart()
 
-out_dir = Ldir['parent'] / 'LPM_output' / 'bpress'
+out_dir = Ldir['parent'] / 'LO_output' / 'bpress_PM'
 Lfun.make_dir(out_dir)
 
 plt.close('all')
