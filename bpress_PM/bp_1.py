@@ -118,21 +118,26 @@ for sn in sn_list:
     Pm = P.copy()
     Pp[Pp<0] = 0
     Pm[Pm>=0] = 0
-    alpha = .7
+    alpha = .5
     ax.fill_between(tlp, Pp, y2=0*Pp, color='m', alpha=alpha)
     ax.fill_between(tlp, Pm, y2=0*Pm, color='g', alpha=alpha)
     ax.plot(tlp, P, '-r', lw=3, label='Full')
-    ax.set_ylim(-2000,3000)
     ax.set_xlim(dt[0],dt[-1])
     ax.axhline(c='k',lw=1.5)
     ax.grid(True)
     Depth = int(-ZW[0])
     ax.text(.03, .87, '%s (Bottom Depth = %d m)' % (sn, Depth), transform=ax.transAxes, weight='bold')
     if ii == 1:
+        ax.set_ylim(-2000,3000)
         ax.set_title('LiveOcean Mooring Extractions from Oregon OOI Sites')
         ax.legend()
         ax.text(.03, .07, 'Parts of the Bottom Pressure Anomaly [Pa]', transform=ax.transAxes, weight='bold')
+    if ii == 2:
+        ax.set_ylim(-1500,2500)
+    if ii ==3:
+        ax.set_ylim(-1000,1000)
     if ii == 4:
+        ax.set_ylim(-1000,1000)
         ax.text(.95, .87, '1000 [Pa] is equivalent to 10 [cm] water height', transform=ax.transAxes, ha='right')
         ax.set_xlabel('Date')
     else:
