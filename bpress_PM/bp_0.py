@@ -31,8 +31,9 @@ def icb(ax, cs):
 
 plt.close('all')
 for sn in sn_list:
-
-    fn = Ldir['LOo'] / 'extract' / 'cas6_v3_lo8b' / 'moor' / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
+    # model "mooring" extraction from OOI location
+    fn = Ldir['LOo'] / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
+    # fn = Ldir['LOo'] / 'extract' / 'cas6_v3_lo8b' / 'moor' / 'ooi' / (sn + '_2018.01.01_2018.12.31.nc')
     # ‘/data1/parker/LO_roms/cas6_v0_live’
     ds = xr.open_dataset(fn)
 
@@ -94,7 +95,7 @@ for sn in sn_list:
     plp = np.flip(np.cumsum(np.flip(g * rholp * DZ.reshape((1,N)), axis=1), axis=1), axis=1)
 
     # calculate the pressure due to SSH
-    plp0 = g * rho0 *etalp
+    plp0 = g * rho0 * etalp
 
     # calculate the buoyancy frequency (bv to Brunt-Vaisala)
     # first get potential density
