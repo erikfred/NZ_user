@@ -1,0 +1,1391 @@
+{'file': '/gscratch/macc/parker/LiveOcean_roms/output/cas6_v3_lo8b/f2016.12.15/ocean_his_0001.nc', 'format': 'netCDF-3 64bit offset file', 'Conventions': 'CF-1.4, SGRID-0.3', 'type': 'ROMS/TOMS history file', 'title': 'First LiveOcean input file', 'var_info': '/gscratch/macc/parker/LiveOcean_roms/LO_ROMS/ROMS/External/varinfo.dat', 'rst_file': '/gscratch/macc/parker/LiveOcean_roms/output/cas6_v3_lo8b/f2016.12.15/ocean_rst.nc', 'his_base': '/gscratch/macc/parker/LiveOcean_roms/output/cas6_v3_lo8b/f2016.12.15/ocean_his', 'grd_file': '/gscratch/macc/parker/LiveOcean_data/grids/cas6/grid.nc', 'ini_file': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/ocn4/ocean_ini.nc', 'frc_file_01': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/tide2/tides.nc', 'frc_file_02': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/lwrad_down.nc', 'frc_file_03': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/Pair.nc', 'frc_file_04': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/Qair.nc', 'frc_file_05': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/rain.nc', 'frc_file_06': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/swrad.nc', 'frc_file_07': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/Tair.nc', 'frc_file_08': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/Uwind.nc', 'frc_file_09': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/atm1/Vwind.nc', 'bry_file': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/ocn4/ocean_bry.nc', 'clm_file': '/gscratch/macc/parker/LiveOcean_output/cas6_v3/f2016.12.15/ocn4/ocean_clm.nc', 'nud_file': '/gscratch/macc/parker/LiveOcean_data/grids/cas6/nudgcoef.nc', 'script_file': '', 'bpar_file': '/gscratch/macc/parker/LiveOcean_roms/output/cas6_v3_lo8b/f2016.12.15/npzd2o_Banas.in', 'NLM_LBC': '\nEDGE:           WEST   SOUTH  EAST   NORTH  \nzeta:           Cha    Cha    Clo    Cha    \nubar:           Fla    Fla    Clo    Fla    \nvbar:           Fla    Fla    Clo    Fla    \nu:              RadNud RadNud Clo    RadNud \nv:              RadNud RadNud Clo    RadNud \ntemp:           RadNud RadNud Clo    RadNud \nsalt:           RadNud RadNud Clo    RadNud \nNO3:            RadNud RadNud Clo    RadNud \nphytoplankton:  RadNud RadNud Clo    RadNud \nzooplankton:    RadNud RadNud Clo    RadNud \ndetritus:       RadNud RadNud Clo    RadNud \nLdetritus:      RadNud RadNud Clo    RadNud \noxygen:         RadNud RadNud Clo    RadNud \nTIC:            RadNud RadNud Clo    RadNud \nalkalinity:     RadNud RadNud Clo    RadNud \nCaCO3:          Gra    Gra    Clo    Clo    \ntke:            RadNud RadNud Clo    RadNud', 'svn_url': 'https://www.myroms.org/svn/src/trunk', 'svn_rev': '', 'code_dir': '/gscratch/macc/parker/LiveOcean_roms/LO_ROMS', 'header_dir': '/gscratch/macc/parker/LiveOcean_roms/makefiles/lo8b', 'header_file': 'lo8b.h', 'os': 'Linux', 'cpu': 'x86_64', 'compiler_system': 'ifort', 'compiler_command': 'mpif90', 'compiler_flags': '-heap-arrays -fp-model precise -ip -O2 -free -free', 'tiling': '014x014', 'history': 'ROMS/TOMS, Version 3.7, Wednesday - May 22, 2019 -  1:07:39 PM', 'ana_file': 'ROMS/Functionals/ana_btflux.h, ROMS/Functionals/ana_stflux.h', 'bio_file': 'ROMS/Nonlinear/Biology/npzd2o_banas.h', 'CPP_options': 'LO8B, ADD_FSOBC, ADD_M2OBC, ANA_BPFLUX, ANA_BSFLUX, ANA_BTFLUX, ANA_SPFLUX, ANA_SSFLUX, ASSUMED_SHAPE, BULK_FLUXES, CANUTO_A DJ_GRADPS, DOUBLE_PRECISION, GLS_MIXING, LONGWAVE_OUT, MASKING, MIX_GEO_TS, MPI, NONLINEAR, NONLIN_EOS, N2S2_HORAVG, POWER_LAW, PROFILE, K_GSCHEME, RADIATION_2D, RI_SPLINES, !RST_SINGLE, SALINITY, SOLAR_SOURCE, SOLVE3D, SPHERICAL, SSH_TIDES, TS_MPDATA, TS_DIF2, UV_ADV, UV_COR, UV_U3HADVECTION, UV_C4VADVECTION, UV_QDRAG, UV_TIDES, VAR_RHO_2D'}
+<class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'ocean_time', size = 1
+<class 'netCDF4._netCDF4.Dimension'>: name = 'tracer', size = 11
+<class 'netCDF4._netCDF4.Dimension'>: name = 'boundary', size = 4
+<class 'netCDF4._netCDF4.Dimension'>: name = 's_rho', size = 30
+<class 'netCDF4._netCDF4.Dimension'>: name = 's_w', size = 31
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_rho', size = 1302
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_rho', size = 663
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_u', size = 1302
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_u', size = 662
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_v', size = 1301
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_v', size = 663
+<class 'netCDF4._netCDF4.Dimension'>: name = 'eta_psi', size = 1301
+<class 'netCDF4._netCDF4.Dimension'>: name = 'xi_psi', size = 662
+<class 'netCDF4._netCDF4.Variable'>
+int32 ntimes()
+    long_name: number of long time-steps
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 ndtfast()
+    long_name: number of short time-steps
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 dt()
+    _FillValue: nan
+    long_name: size of long time-steps
+    units: second
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 dtfast()
+    _FillValue: nan
+    long_name: size of short time-steps
+    units: second
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 dstart()
+    _FillValue: nan
+    long_name: time stamp assigned to model initilization
+    units: days since 1970-01-01
+    calendar: proleptic_gregorian
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 nHIS()
+    long_name: number of time-steps between history records
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 ndefHIS()
+    long_name: number of time-steps between the creation of history files
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 nRST()
+    long_name: number of time-steps between restart records
+    cycle: only latest two records are maintained
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 Falpha()
+    _FillValue: nan
+    long_name: Power-law shape barotropic filter parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Fbeta()
+    _FillValue: nan
+    long_name: Power-law shape barotropic filter parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Fgamma()
+    _FillValue: nan
+    long_name: Power-law shape barotropic filter parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 nl_tnu2(tracer)
+    _FillValue: nan
+    long_name: nonlinear model Laplacian mixing coefficient for tracers
+    units: meter2 second-1
+unlimited dimensions: 
+current shape = (11,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 LtracerSponge(tracer)
+    long_name: horizontal diffusivity sponge activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = (11,)
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 Akt_bak(tracer)
+    _FillValue: nan
+    long_name: background vertical mixing coefficient for tracers
+    units: meter2 second-1
+unlimited dimensions: 
+current shape = (11,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Akv_bak()
+    _FillValue: nan
+    long_name: background vertical mixing coefficient for momentum
+    units: meter2 second-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Akk_bak()
+    _FillValue: nan
+    long_name: background vertical mixing coefficient for turbulent energy
+    units: meter2 second-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Akp_bak()
+    _FillValue: nan
+    long_name: background vertical mixing coefficient for length scale
+    units: meter2 second-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 rdrg()
+    _FillValue: nan
+    long_name: linear drag coefficient
+    units: meter second-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 rdrg2()
+    _FillValue: nan
+    long_name: quadratic drag coefficient
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Zob()
+    _FillValue: nan
+    long_name: bottom roughness
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Zos()
+    _FillValue: nan
+    long_name: surface roughness
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_p()
+    _FillValue: nan
+    long_name: stability exponent
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_m()
+    _FillValue: nan
+    long_name: turbulent kinetic energy exponent
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_n()
+    _FillValue: nan
+    long_name: turbulent length scale exponent
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_cmu0()
+    _FillValue: nan
+    long_name: stability coefficient
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_c1()
+    _FillValue: nan
+    long_name: shear production coefficient
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_c2()
+    _FillValue: nan
+    long_name: dissipation coefficient
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_c3m()
+    _FillValue: nan
+    long_name: buoyancy production coefficient (minus)
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_c3p()
+    _FillValue: nan
+    long_name: buoyancy production coefficient (plus)
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_sigk()
+    _FillValue: nan
+    long_name: constant Schmidt number for TKE
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_sigp()
+    _FillValue: nan
+    long_name: constant Schmidt number for PSI
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_Kmin()
+    _FillValue: nan
+    long_name: minimum value of specific turbulent kinetic energy
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gls_Pmin()
+    _FillValue: nan
+    long_name: minimum Value of dissipation
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Charnok_alpha()
+    _FillValue: nan
+    long_name: Charnok factor for surface roughness
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Zos_hsig_alpha()
+    _FillValue: nan
+    long_name: wave amplitude factor for surface roughness
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 sz_alpha()
+    _FillValue: nan
+    long_name: surface flux from wave dissipation
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 CrgBan_cw()
+    _FillValue: nan
+    long_name: surface flux due to Craig and Banner wave breaking
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Znudg()
+    _FillValue: nan
+    long_name: free-surface nudging/relaxation inverse time scale
+    units: day-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M2nudg()
+    _FillValue: nan
+    long_name: 2D momentum nudging/relaxation inverse time scale
+    units: day-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M3nudg()
+    _FillValue: nan
+    long_name: 3D momentum nudging/relaxation inverse time scale
+    units: day-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Tnudg(tracer)
+    _FillValue: nan
+    long_name: Tracers nudging/relaxation inverse time scale
+    units: day-1
+unlimited dimensions: 
+current shape = (11,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 FSobc_in(boundary)
+    _FillValue: nan
+    long_name: free-surface inflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 FSobc_out(boundary)
+    _FillValue: nan
+    long_name: free-surface outflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M2obc_in(boundary)
+    _FillValue: nan
+    long_name: 2D momentum inflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M2obc_out(boundary)
+    _FillValue: nan
+    long_name: 2D momentum outflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Tobc_in(boundary, tracer)
+    _FillValue: nan
+    long_name: tracers inflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4, 11)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Tobc_out(boundary, tracer)
+    _FillValue: nan
+    long_name: tracers outflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4, 11)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M3obc_in(boundary)
+    _FillValue: nan
+    long_name: 3D momentum inflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 M3obc_out(boundary)
+    _FillValue: nan
+    long_name: 3D momentum outflow, nudging inverse time scale
+    units: second-1
+unlimited dimensions: 
+current shape = (4,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 rho0()
+    _FillValue: nan
+    long_name: mean density used in Boussinesq approximation
+    units: kilogram meter-3
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 gamma2()
+    _FillValue: nan
+    long_name: slipperiness parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 LuvSrc()
+    long_name: momentum point sources and sink activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LwSrc()
+    long_name: mass point sources and sink activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LtracerSrc(tracer)
+    long_name: tracer point sources and sink activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = (11,)
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LsshCLM()
+    long_name: sea surface height climatology processing switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 Lm2CLM()
+    long_name: 2D momentum climatology processing switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 Lm3CLM()
+    long_name: 3D momentum climatology processing switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LtracerCLM(tracer)
+    long_name: tracer climatology processing switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = (11,)
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LnudgeM2CLM()
+    long_name: 2D momentum climatology nudging activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LnudgeM3CLM()
+    long_name: 3D momentum climatology nudging activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 LnudgeTCLM(tracer)
+    long_name: tracer climatology nudging activation switch
+    flag_values: [0 1]
+    flag_meanings: .FALSE. .TRUE.
+unlimited dimensions: 
+current shape = (11,)
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 BioIter()
+    long_name: number of iterations to achieve convergence
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 PARfrac()
+    _FillValue: nan
+    long_name: photosynthetically available radiation fraction
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 AttSW()
+    _FillValue: nan
+    long_name: light attenuation by seawater
+    units: 1/m
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 AttP()
+    _FillValue: nan
+    long_name: light attenuation by phytoplankton
+    units: 1/uM/m
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 AttS()
+    _FillValue: nan
+    long_name: light attenuation by salinity
+    units: 1/psu/m
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phyAlpha()
+    _FillValue: nan
+    long_name: phytoplankton initial slope of P-I curve
+    units: (uM/d) / (W/m2)
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phyMu0()
+    _FillValue: nan
+    long_name: phytoplankton max growth rate
+    units: 1/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phyKs()
+    _FillValue: nan
+    long_name: half-saturation for phytoplankton NO3 uptake
+    units: uM
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phyMin()
+    _FillValue: nan
+    long_name: phytoplankton minimum threshhold
+    units: uM
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 phyM()
+    _FillValue: nan
+    long_name: phytoplankton mortality rate
+    units: 1/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooI0()
+    _FillValue: nan
+    long_name: zooplankton max grazing rate
+    units: 1/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooKs()
+    _FillValue: nan
+    long_name: zooplankton grazing half-saturation
+    units: uM
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooEps()
+    _FillValue: nan
+    long_name: zooplankton gross growth efficiency
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooFegest()
+    _FillValue: nan
+    long_name: fraction of grazing losses egested
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooMin()
+    _FillValue: nan
+    long_name: zooplankton minimum threshhold
+    units: uM
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 zooZeta()
+    _FillValue: nan
+    long_name: zoplankton quadratic mortality rate
+    units: 1/uM/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 detRemin()
+    _FillValue: nan
+    long_name: detritus remineralization rate
+    units: 1/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 CoagR()
+    _FillValue: nan
+    long_name: coagulation rate
+    units: day-1
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 detWsink()
+    _FillValue: nan
+    long_name: sinking velocity for detritus
+    units: m/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 LdetWsink()
+    _FillValue: nan
+    long_name: sinking velocity for detritus
+    units: m/d
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 pCO2air()
+    _FillValue: nan
+    long_name: partial pressure of CO2 in the air
+    units: parts per million by volume
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 spherical()
+    long_name: grid type logical switch
+    flag_values: [0 1]
+    flag_meanings: Cartesian spherical
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 xl()
+    _FillValue: nan
+    long_name: domain length in the XI-direction
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 el()
+    _FillValue: nan
+    long_name: domain length in the ETA-direction
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 Vtransform()
+    long_name: vertical terrain-following transformation equation
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+int32 Vstretching()
+    long_name: vertical terrain-following stretching function
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 theta_s()
+    _FillValue: nan
+    long_name: S-coordinate surface control parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 theta_b()
+    _FillValue: nan
+    long_name: S-coordinate bottom control parameter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Tcline()
+    _FillValue: nan
+    long_name: S-coordinate surface/bottom layer width
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 hc()
+    _FillValue: nan
+    long_name: S-coordinate parameter, critical depth
+    units: meter
+unlimited dimensions: 
+current shape = ()
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+int32 grid()
+    cf_role: grid_topology
+    topology_dimension: 2
+    node_dimensions: xi_psi eta_psi
+    face_dimensions: xi_rho: xi_psi (padding: both) eta_rho: eta_psi (padding: both)
+    edge1_dimensions: xi_u: xi_psi eta_u: eta_psi (padding: both)
+    edge2_dimensions: xi_v: xi_psi (padding: both) eta_v: eta_psi
+    node_coordinates: lon_psi lat_psi
+    face_coordinates: lon_rho lat_rho
+    edge1_coordinates: lon_u lat_u
+    edge2_coordinates: lon_v lat_v
+    vertical_dimensions: s_rho: s_w (padding: none)
+unlimited dimensions: 
+current shape = ()
+filling on, default _FillValue of -2147483647 used
+<class 'netCDF4._netCDF4.Variable'>
+float64 s_rho(s_rho)
+    _FillValue: nan
+    long_name: S-coordinate at RHO-points
+    valid_min: -1.0
+    valid_max: 0.0
+    positive: up
+    standard_name: ocean_s_coordinate_g2
+    formula_terms: s: s_rho C: Cs_r eta: zeta depth: h depth_c: hc
+    field: s_rho, scalar
+unlimited dimensions: 
+current shape = (30,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 s_w(s_w)
+    _FillValue: nan
+    long_name: S-coordinate at W-points
+    valid_min: -1.0
+    valid_max: 0.0
+    positive: up
+    standard_name: ocean_s_coordinate_g2
+    formula_terms: s: s_w C: Cs_w eta: zeta depth: h depth_c: hc
+    field: s_w, scalar
+unlimited dimensions: 
+current shape = (31,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Cs_r(s_rho)
+    _FillValue: nan
+    long_name: S-coordinate stretching curves at RHO-points
+    valid_min: -1.0
+    valid_max: 0.0
+    field: Cs_r, scalar
+unlimited dimensions: 
+current shape = (30,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 Cs_w(s_w)
+    _FillValue: nan
+    long_name: S-coordinate stretching curves at W-points
+    valid_min: -1.0
+    valid_max: 0.0
+    field: Cs_w, scalar
+unlimited dimensions: 
+current shape = (31,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 h(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: bathymetry at RHO-points
+    units: meter
+    grid: grid
+    location: face
+    field: bath, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 f(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: Coriolis parameter at RHO-points
+    units: second-1
+    grid: grid
+    location: face
+    field: coriolis, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 pm(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: curvilinear coordinate metric in XI
+    units: meter-1
+    grid: grid
+    location: face
+    field: pm, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 pn(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: curvilinear coordinate metric in ETA
+    units: meter-1
+    grid: grid
+    location: face
+    field: pn, scalar
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: longitude of RHO-points
+    units: degree_east
+    standard_name: longitude
+    field: lon_rho, scalar
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: latitude of RHO-points
+    units: degree_north
+    standard_name: latitude
+    field: lat_rho, scalar
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_u(eta_u, xi_u)
+    _FillValue: nan
+    long_name: longitude of U-points
+    units: degree_east
+    standard_name: longitude
+    field: lon_u, scalar
+unlimited dimensions: 
+current shape = (1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_u(eta_u, xi_u)
+    _FillValue: nan
+    long_name: latitude of U-points
+    units: degree_north
+    standard_name: latitude
+    field: lat_u, scalar
+unlimited dimensions: 
+current shape = (1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_v(eta_v, xi_v)
+    _FillValue: nan
+    long_name: longitude of V-points
+    units: degree_east
+    standard_name: longitude
+    field: lon_v, scalar
+unlimited dimensions: 
+current shape = (1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_v(eta_v, xi_v)
+    _FillValue: nan
+    long_name: latitude of V-points
+    units: degree_north
+    standard_name: latitude
+    field: lat_v, scalar
+unlimited dimensions: 
+current shape = (1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lon_psi(eta_psi, xi_psi)
+    _FillValue: nan
+    long_name: longitude of PSI-points
+    units: degree_east
+    standard_name: longitude
+    field: lon_psi, scalar
+unlimited dimensions: 
+current shape = (1301, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 lat_psi(eta_psi, xi_psi)
+    _FillValue: nan
+    long_name: latitude of PSI-points
+    units: degree_north
+    standard_name: latitude
+    field: lat_psi, scalar
+unlimited dimensions: 
+current shape = (1301, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_rho(eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: mask on RHO-points
+    flag_values: [0. 1.]
+    flag_meanings: land water
+    grid: grid
+    location: face
+    coordinates: lon_rho lat_rho
+unlimited dimensions: 
+current shape = (1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_u(eta_u, xi_u)
+    _FillValue: nan
+    long_name: mask on U-points
+    flag_values: [0. 1.]
+    flag_meanings: land water
+    grid: grid
+    location: edge1
+    coordinates: lon_u lat_u
+unlimited dimensions: 
+current shape = (1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_v(eta_v, xi_v)
+    _FillValue: nan
+    long_name: mask on V-points
+    flag_values: [0. 1.]
+    flag_meanings: land water
+    grid: grid
+    location: edge2
+    coordinates: lon_v lat_v
+unlimited dimensions: 
+current shape = (1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 mask_psi(eta_psi, xi_psi)
+    _FillValue: nan
+    long_name: mask on psi-points
+    flag_values: [0. 1.]
+    flag_meanings: land water
+    grid: grid
+    location: node
+    coordinates: lon_psi lat_psi
+unlimited dimensions: 
+current shape = (1301, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float64 ocean_time(ocean_time)
+    _FillValue: nan
+    long_name: time since initialization
+    field: time, scalar, series
+    units: seconds since 1970-01-01
+    calendar: gregorian
+unlimited dimensions: ocean_time
+current shape = (1,)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 zeta(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: free-surface
+    units: meter
+    time: ocean_time
+    grid: grid
+    location: face
+    field: free-surface, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 ubar(ocean_time, eta_u, xi_u)
+    _FillValue: nan
+    long_name: vertically integrated u-momentum component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: edge1
+    field: ubar-velocity, scalar, series
+    coordinates: lon_u lat_u ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 vbar(ocean_time, eta_v, xi_v)
+    _FillValue: nan
+    long_name: vertically integrated v-momentum component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: edge2
+    field: vbar-velocity, scalar, series
+    coordinates: lon_v lat_v ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 u(ocean_time, s_rho, eta_u, xi_u)
+    _FillValue: nan
+    long_name: u-momentum component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: edge1
+    field: u-velocity, scalar, series
+    coordinates: lon_u lat_u s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 v(ocean_time, s_rho, eta_v, xi_v)
+    _FillValue: nan
+    long_name: v-momentum component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: edge2
+    field: v-velocity, scalar, series
+    coordinates: lon_v lat_v s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 w(ocean_time, s_w, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: vertical momentum component
+    units: meter second-1
+    time: ocean_time
+    standard_name: upward_sea_water_velocity
+    grid: grid
+    location: face
+    field: w-velocity, scalar, series
+    coordinates: lon_rho lat_rho s_w ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 31, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 temp(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: potential temperature
+    units: Celsius
+    time: ocean_time
+    grid: grid
+    location: face
+    field: temperature, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 salt(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: salinity
+    time: ocean_time
+    grid: grid
+    location: face
+    field: salinity, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 NO3(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: nitrate concentration
+    units: millimole_nitrogen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: NO3, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 phytoplankton(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: phytoplankton concentration
+    units: millimole_nitrogen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: phytoplankton, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 zooplankton(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: zooplankton concentration
+    units: millimole_nitrogen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: zooplankton, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 detritus(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: detritus concentration
+    units: millimole_nitrogen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: detritus, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 Ldetritus(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: Ldetritus concentration
+    units: millimole_nitrogen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: Ldetritus, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 oxygen(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: dissolved oxygen concentration
+    units: millimole_oxygen meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: Oxygen, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 TIC(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: total inorganic carbon
+    units: millimole_carbon meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: TIC, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 alkalinity(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: total alkalinity
+    units: milliequivalents meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: alkalinity, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 CaCO3(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: Calcium Carbonate
+    units: millimole_carbon meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: CaCO3, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 rho(ocean_time, s_rho, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: density anomaly
+    units: kilogram meter-3
+    time: ocean_time
+    grid: grid
+    location: face
+    field: density, scalar, series
+    coordinates: lon_rho lat_rho s_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 30, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 AKv(ocean_time, s_w, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: vertical viscosity coefficient
+    units: meter2 second-1
+    time: ocean_time
+    grid: grid
+    location: face
+    field: AKv, scalar, series
+    coordinates: lon_rho lat_rho s_w ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 31, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 AKs(ocean_time, s_w, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: salinity vertical diffusion coefficient
+    units: meter2 second-1
+    time: ocean_time
+    grid: grid
+    location: face
+    field: AKs, scalar, series
+    coordinates: lon_rho lat_rho s_w ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 31, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 Pair(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: surface air pressure
+    units: millibar
+    time: ocean_time
+    grid: grid
+    location: face
+    field: Pair, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 Uwind(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: surface u-wind component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: face
+    field: u-wind, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 Vwind(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: surface v-wind component
+    units: meter second-1
+    time: ocean_time
+    grid: grid
+    location: face
+    field: v-wind, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 shflux(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: surface net heat flux
+    units: watt meter-2
+    negative_value: upward flux, cooling
+    positive_value: downward flux, heating
+    time: ocean_time
+    grid: grid
+    location: face
+    field: surface heat flux, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 ssflux(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: surface net salt flux, (E-P)*SALT
+    units: meter second-1
+    negative_value: upward flux, freshening (net precipitation)
+    positive_value: downward flux, salting (net evaporation)
+    time: ocean_time
+    grid: grid
+    location: face
+    field: surface net salt flux, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 latent(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: net latent heat flux
+    units: watt meter-2
+    negative_value: upward flux, cooling
+    positive_value: downward flux, heating
+    time: ocean_time
+    grid: grid
+    location: face
+    field: latent heat flux, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 sensible(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: net sensible heat flux
+    units: watt meter-2
+    negative_value: upward flux, cooling
+    positive_value: downward flux, heating
+    time: ocean_time
+    grid: grid
+    location: face
+    field: sensible heat flux, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 lwrad(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: net longwave radiation flux
+    units: watt meter-2
+    negative_value: upward flux, cooling
+    positive_value: downward flux, heating
+    time: ocean_time
+    grid: grid
+    location: face
+    field: longwave radiation, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 swrad(ocean_time, eta_rho, xi_rho)
+    _FillValue: nan
+    long_name: solar shortwave radiation flux
+    units: watt meter-2
+    negative_value: upward flux, cooling
+    positive_value: downward flux, heating
+    time: ocean_time
+    grid: grid
+    location: face
+    field: shortwave radiation, scalar, series
+    coordinates: lon_rho lat_rho ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 sustr(ocean_time, eta_u, xi_u)
+    _FillValue: nan
+    long_name: surface u-momentum stress
+    units: newton meter-2
+    time: ocean_time
+    grid: grid
+    location: edge1
+    field: surface u-momentum stress, scalar, series
+    coordinates: lon_u lat_u ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 svstr(ocean_time, eta_v, xi_v)
+    _FillValue: nan
+    long_name: surface v-momentum stress
+    units: newton meter-2
+    time: ocean_time
+    grid: grid
+    location: edge2
+    field: surface v-momentum stress, scalar, series
+    coordinates: lon_v lat_v ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1301, 663)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 bustr(ocean_time, eta_u, xi_u)
+    _FillValue: nan
+    long_name: bottom u-momentum stress
+    units: newton meter-2
+    time: ocean_time
+    grid: grid
+    location: edge1
+    field: bottom u-momentum stress, scalar, series
+    coordinates: lon_u lat_u ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1302, 662)
+filling on
+<class 'netCDF4._netCDF4.Variable'>
+float32 bvstr(ocean_time, eta_v, xi_v)
+    _FillValue: nan
+    long_name: bottom v-momentum stress
+    units: newton meter-2
+    time: ocean_time
+    grid: grid
+    location: edge2
+    field: bottom v-momentum stress, scalar, series
+    coordinates: lon_v lat_v ocean_time
+unlimited dimensions: ocean_time
+current shape = (1, 1301, 663)
+filling on

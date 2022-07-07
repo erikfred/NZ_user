@@ -6,6 +6,19 @@ import pickle
 import os
 from pathlib import Path
 
+# read layers.nc file (will eventually become loop over all dates)
+dir1 = "../LO_data/cas6_v0_live/"
+dir2 = dir1 + "f2016.12.15/"
+dir3 = dir2 + "ocean_his_0001.nc"
+ds1 = Dataset(dir3)
+
+# print metadata
+print(ds1.__dict__)
+for dim in ds1.dimensions.values():
+    print(dim)
+for var in ds1.variables.values():
+    print(var)
+
 """
 # establish file structure
 workdir = os.path.dirname(os.path.realpath(__file__)); print(workdir)
