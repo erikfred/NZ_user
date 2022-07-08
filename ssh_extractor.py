@@ -6,18 +6,28 @@ by only pulling the bare minimum data from the netCDF into working memory
 
 # imports
 import sys, os
+from datetime import datetime, timedelta, date
 import numpy as np
-import matplotlib.pyplot as plt
-from netCDF4 import Dataset
+import netCDF4 as nc
 import cmocean
-from datetime import datetime, date
+import matplotlib.pyplot as plt
+import pickle
+
+sys.path.append(os.path.abspath('util'))
+import Lfun
+import zrfun
+import zfun
+
+do_press = True # ?
+testbatch = False # True will only process first 10 input files, False will run all
+cutout = True # True will subsample from user-defined lat/lon limits
 
 # read history .nc files
 # dir1 = "/data1/parker/LO_roms/cas6_v0_live/"
 dir1 = "../LO_data/cas6_v0_live/"
 dir2 = dir1 + "f2016.12.15/" # will eventually loop over these
-dir3 = dir2 + "ocean_his_0001.nc" # with inner loop over these
-ds1 = Dataset(dir3)
+dir3 = dir2 + "ocean_his_0001.nc" # with inner loop over these (0001-0025)
+ds1 = nc.Dataset(dir3)
 
 """# print metadata
 print(ds1.__dict__)
@@ -57,6 +67,48 @@ t = ds1['ocean_time'][:]
 ssh=ds1['zeta'][:, ila1:ila2, ilo1:ilo2]
 bath=ds1['h'][ila1:ila2, ilo1:ilo2]
 
+# information about data files
+in_dir = dir1 # location of .nc files
+dstr = 'f' # naming convention for directories
+fstr = 'ocean_his_' # naming convention for history files
+ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
+tag = 'LiveOcean'
+n_layer = 0 # bottom layer
+
+# get grid info first
+file0 = in_dir + dstr + datetime.strftime(ti, '%Y.%m.%d') + '/' + fstr + '0001.nc'
+ds0 = nc.Dataset(file0) # opens netCDF file
+if False: # set to True if you want to print netCDF info
+    print('\nGRID INFO')
+    zfun.ncd(ds0)
+lon = ds0['lon_rho'][:,:]
+lat = ds0['lat_rho'][:,:]
+if cutout: # take cutout from full model domain, if desired
+    # full range is: -129.9798<lon<-122.018, 42.0067<lat<52.0099
+    minlon = -126; maxlon = -123.5; minlat = 43; maxlat = 49
+    ilo1 = np.argmin(np.abs(lon[0,:] - minlon)); ilo2 = np.argmin(np.abs(lon[0,:] - maxlon))
+    ila1 = np.argmin(np.abs(lat[:,0] - minlat)); ila2 = np.argmin(np.abs(lat[:,0] - maxlat))
+    lon = lon[ila1:ila2,ilo1:ilo2]
+    lat = lat[ila1:ila2,ilo1:ilo2]
+ds0.close()
+
+# make file lists
+file_list = []
+if testbatch: # only runs on 4 day subset
+    delta = (ti + timedelta(days=4)) - ti
+else: # runs on entire date range defined in CONFIG
+    delta = (tf + timedelta(days=1)) - ti
+drange = range(0, delta.days)
+for ii in drange:  # building file names
+    d_ii = in_dir + dstr + datetime.strftime(ti + timedelta(days=ii), '%Y.%m.%d') + '/'
+    for jj in range(1,26):
+        f_jj = fstr + str(jj).zfill(4) + '.nc'
+        file_list.append(d_ii + f_jj)
+
+# working as expected up to this point!
+
+"""
 # PLOTTING
 # plotting parameters
 fs = 14 # primary fontsize
@@ -98,3 +150,4 @@ if not os.path.exists('../LO_output/SSH_maps'):
     os.mkdir('../LO_output/SSH_maps')
 
 plt.savefig('../LO_output/SSH_maps/temp' + str(x))
+"""

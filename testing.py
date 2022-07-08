@@ -6,6 +6,11 @@ import pickle
 import os
 from pathlib import Path
 
+x = range(1,25)
+for n in x:
+    print(n)
+
+"""
 # read layers.nc file (will eventually become loop over all dates)
 dir1 = "../LO_data/cas6_v0_live/"
 dir2 = dir1 + "f2016.12.15/"
@@ -18,7 +23,7 @@ for dim in ds1.dimensions.values():
     print(dim)
 for var in ds1.variables.values():
     print(var)
-
+"""
 """
 # establish file structure
 workdir = os.path.dirname(os.path.realpath(__file__)); print(workdir)
