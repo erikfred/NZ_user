@@ -3,12 +3,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import pickle
-import os
+import sys, os
 from pathlib import Path
 
-x = range(1,25)
-for n in x:
-    print(n)
+sys.path.append(os.path.abspath('util'))
+import Lfun
+import zrfun
+import zfun
+
+for x in range(1,25):
+    print(x)
+
+# x = range(1,25)
+# for n in x:
+#     print(n)
+
+# Ldir = Lfun.Lstart()
+#
+# out_dir = Ldir['parent'] / 'LO_output' / 'bpress_PM' # I think this assumes I'm working out of the bpress subfolder
+# print(out_dir)
 
 """
 # read layers.nc file (will eventually become loop over all dates)

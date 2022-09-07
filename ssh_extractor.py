@@ -29,12 +29,13 @@ cutout = True # True will subsample from user-defined lat/lon limits
 
 out_dir = '../LO_output/'
 ostr = 'spinup/' # arbitrary label for separating runs
-# in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
-in_dir = '../LO_data/cas6_v0_live/' # location locally
+in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
+# in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
 ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
+tf = datetime.strptime('2017.12.14', '%Y.%m.%d')
+# tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
 
@@ -119,10 +120,14 @@ for tt in range(nf): #for each .nc file
 ssh_mean = np.mean(ssh_arr, axis=0) # mean pressure of given location for entire time range
 ssh_anom = ssh_arr - ssh_mean
 
-# NEED TO DECIDE HOW TO SAVE THINGS APPROPRIATELY
-# pickle.dump(ssh_arr, open((outdir + 'ssh_arr.p'), 'wb'))
-# pickle.dump(ssh_anom, open((outdir + 'ssh_anom.p'), 'wb'))
+# SAVING
+pickle.dump(t_arr, open((ncoutdir + 't_arr.p'), 'wb'))
+pickle.dump(ssh_arr, open((ncoutdir + 'ssh_arr.p'), 'wb'))
+pickle.dump(ssh_anom, open((ncoutdir + 'ssh_anom.p'), 'wb'))
+pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
+pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
 
+"""
 # PLOTTING
 # plotting parameters
 fs = 14 # primary fontsize
@@ -135,26 +140,33 @@ print(datetime.fromtimestamp(t_arr[0]))
 
 fig1 = plt.figure(figsize=(8,8))
 ax1 = fig1.add_subplot(111)
-pts = ax1.plot(t_arr,ssh_arr[:,30,100])
+pts = ax1.plot(t_arr,ssh_anom[:,30,100])
 
-plt.show()
+if not os.path.exists(ncoutdir + 'SSH_maps'):
+    os.mkdir(ncoutdir + 'SSH_maps')
 
-fig = plt.figure(figsize=(6,10))
-ax = fig.add_subplot(111)
-cs = ax.pcolormesh(lon,lat, ssh_anom[0,:,:], cmap=cmap, vmin=-0.2, vmax=0.2)
-bth = ax.contour(lon, lat, bath, [300, 2000], colors='black')
+# plt.show()
+plt.savefig(ncoutdir + 'SSH_maps/mooring')
+plt.close()
 
-ax.axis('square')
-# ax.set_xlim((minlon,maxlon))
-# ax.set_ylim((minlat, maxlat))
-ax.grid(True)
-
-cb = fig.colorbar(cs)
-cb.set_label('SSH (m)', fontsize=fs)
-cb.ax.tick_params(labelsize=fs)
-
-plt.show()
-# if not os.path.exists('../LO_output/SSH_maps'):
-#     os.mkdir('../LO_output/SSH_maps')
+# for sv in range(nf): # for each day
+#     fig = plt.figure(figsize=(6,10))
+#     ax = fig.add_subplot(111)
+#     cs = ax.pcolormesh(lon, lat, ssh_anom[sv,:,:], cmap=cmap, vmin=-0.2, vmax=0.2)
+#     bth = ax.contour(lon, lat, bath, [300, 2000], colors='black')
 #
-# plt.savefig('../LO_output/SSH_maps/temp' + str(x))
+#     ax.axis('square')
+#     # ax.set_xlim((minlon,maxlon))
+#     # ax.set_ylim((minlat, maxlat))
+#     ax.grid(True)
+#
+#     cb = fig.colorbar(cs)
+#     cb.set_label('SSH (m)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(ncoutdir + 'SSH_maps'):
+#         os.mkdir(ncoutdir + 'SSH_maps')
+#     plt.savefig(ncoutdir + 'SSH_maps/temp' + str(sv).zfill(4))
+#     plt.close()
+"""
