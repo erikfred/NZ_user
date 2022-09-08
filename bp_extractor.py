@@ -84,7 +84,7 @@ lat = ds0['lat_rho'][:,:]
 bath = ds0['h'][:,:]
 if cutout: # take cutout from full model domain, if desired
     # full range is: -129.9798<lon<-122.018, 42.0067<lat<52.0099
-    minlon = -126; maxlon = -123.5; minlat = 43; maxlat = 49
+    minlon = -126; maxlon = -124; minlat = 44; maxlat = 46
     ilo1 = np.argmin(np.abs(lon[0,:] - minlon)); ilo2 = np.argmin(np.abs(lon[0,:] - maxlon))
     ila1 = np.argmin(np.abs(lat[:,0] - minlat)); ila2 = np.argmin(np.abs(lat[:,0] - maxlat))
     lon = lon[ila1:ila2,ilo1:ilo2]
