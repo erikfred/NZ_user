@@ -5,7 +5,7 @@
 Modified from Parker MacCready, School of Oceanography, University of Washington
 https://github.com/parkermac
 
-This creates and a single NetCDF file containing bottom pressure
+This creates and saves a single NetCDF file containing bottom pressure
 and other fields, for some time range.
 
 """

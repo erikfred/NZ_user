@@ -11,8 +11,9 @@ import Lfun
 import zrfun
 import zfun
 
-for x in range(1,25):
-    print(x)
+x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(x[len(x):len(x)-5:-1])
+print(x[-1])
 
 # x = range(1,25)
 # for n in x:
