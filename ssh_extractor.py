@@ -33,8 +33,8 @@ ostr = 'spinup/' # arbitrary label for separating runs
 in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
+ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2021.12.19', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
@@ -52,7 +52,7 @@ lat = ds0['lat_rho'][:,:]
 bath = ds0['h'][:,:]
 if cutout: # take cutout from full model domain, if desired
     # full range is: -129.9798<lon<-122.018, 42.0067<lat<52.0099
-    minlon = -126; maxlon = -123.5; minlat = 43; maxlat = 49
+    minlon = -127; maxlon = -124; minlat = 44; maxlat = 48
     ilo1 = np.argmin(np.abs(lon[0,:] - minlon)); ilo2 = np.argmin(np.abs(lon[0,:] - maxlon))
     ila1 = np.argmin(np.abs(lat[:,0] - minlat)); ila2 = np.argmin(np.abs(lat[:,0] - maxlat))
     lon = lon[ila1:ila2,ilo1:ilo2]

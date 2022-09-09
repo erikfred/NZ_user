@@ -84,7 +84,7 @@ lat = ds0['lat_rho'][:,:]
 bath = ds0['h'][:,:]
 if cutout: # take cutout from full model domain, if desired
     # full range is: -129.9798<lon<-122.018, 42.0067<lat<52.0099
-    minlon = -126; maxlon = -124; minlat = 44; maxlat = 46
+    minlon = -127; maxlon = -124; minlat = 44; maxlat = 48
     ilo1 = np.argmin(np.abs(lon[0,:] - minlon)); ilo2 = np.argmin(np.abs(lon[0,:] - maxlon))
     ila1 = np.argmin(np.abs(lat[:,0] - minlat)); ila2 = np.argmin(np.abs(lat[:,0] - maxlat))
     lon = lon[ila1:ila2,ilo1:ilo2]
@@ -140,15 +140,20 @@ for tt in range(nf):
     if np.mod(tt,24)==0: # print update to console for every day
         print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
         sys.stdout.flush()
-    t_arr[tt] = dsx['ocean_time'][:].squeeze()
-    zeta = dsx['zeta'][0,:,:].squeeze()
+    t_arr[tt] = dsx['ocean_time'][0].squeeze()
+    if cutout:
+        zeta = dsx['zeta'][0, ila1:ila2, ilo1:ilo2].squeeze()
+        rho = dsx['rho'][0, :, ila1:ila2, ilo1:ilo2].squeeze() + 1000.
+        z_w = zrfun.get_z(G['h'][ila1:ila2, ilo1:ilo2], zeta, S, only_w=True)
+    else:
+        zeta = dsx['zeta'][0,:,:].squeeze()
+        rho = dsx['rho'][0,:,:,:].squeeze() + 1000.
+        z_w = zrfun.get_z(G['h'], zeta, S, only_w=True)
     if tt == 0:
         bp_arr = (0*zeta) * np.ones((nf,1,1))
         DA = G['DX'] * G['DY']
         # DAm = np.ma.masked_where(zeta.mask, DA)
-    rho = dsx['rho'][0,:,:,:].squeeze() + 1000.
-    # note that rho appears to be in situ density, not potential density
-    z_w = zrfun.get_z(G['h'], zeta, S, only_w=True)
+
     DZ = np.diff(z_w, axis=0)
     bp_arr[tt,:,:] = (g * rho * DZ).sum(axis=0)
     dsx.close()
