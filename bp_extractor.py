@@ -29,12 +29,12 @@ cutout = True # True will subsample from user-defined lat/lon limits
 
 out_dir = '../LO_output/'
 ostr = 'spinup/' # arbitrary label for separating runs
-in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
-# in_dir = '../LO_data/cas6_v0_live/' # location locally
+# in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
+in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2021.12.14', '%Y.%m.%d')
+ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
@@ -135,9 +135,13 @@ ssh_arr = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
 t_arr = np.zeros(nf)
 g = 9.8
 for tt in range(nf):
+    if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
+        bp_arr[tt,:,:] = bp_arr[tt-1,:,:] # populate with previous day
+        t_arr[tt] = t_arr[tt-1]
+        continue
     filex = file_list[tt]
     dsx = nc.Dataset(filex)
-    if np.mod(tt,24)==0: # print update to console for every day
+    if np.mod(tt,1)==0: # print update to console for every day
         print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
         sys.stdout.flush()
     t_arr[tt] = dsx['ocean_time'][0].squeeze()

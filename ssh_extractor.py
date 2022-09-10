@@ -29,12 +29,12 @@ cutout = True # True will subsample from user-defined lat/lon limits
 
 out_dir = '../LO_output/'
 ostr = 'spinup/' # arbitrary label for separating runs
-in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
-# in_dir = '../LO_data/cas6_v0_live/' # location locally
+# in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
+in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2021.12.19', '%Y.%m.%d')
+ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
@@ -93,10 +93,10 @@ ssh_arr = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
 t_arr = np.zeros(nf)
 errors=[]
 for tt in range(nf): #for each .nc file
-    # if tt==60 or tt==64 or tt==71: # something is wrong with these files (at least on local)
-    #     ssh_arr[tt,:,:] = ssh_arr[tt-1,:,:] # populate with previous day
-    #     t_arr[tt] = t_arr[tt-1]
-    #     continue
+    if tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
+        ssh_arr[tt,:,:] = ssh_arr[tt-1,:,:] # populate with previous day
+        t_arr[tt] = t_arr[tt-1]
+        continue
     filex = file_list[tt]
     try:
         dsx = nc.Dataset(filex)
@@ -113,7 +113,7 @@ for tt in range(nf): #for each .nc file
     #     t_arr[tt] = t_arr[tt-1]
     #     print('unable to read ' + filex[len(filex)-28:len(filex)])
     #     continue
-    if np.mod(tt,24)==0: # print update to console every 10th file
+    if np.mod(tt,1)==0: # print update to console every 10th file
         print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
         # local_variables = [(var, sys.getsizeof(obj)) for var, obj in locals().items() if not var.startswith('__') and var not in ['sys',]]
         # current_size = sum([size for var, size in local_variables])
