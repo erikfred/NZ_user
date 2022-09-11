@@ -23,8 +23,10 @@ ncoutdir = '../LO_output/spinup/bp_extractions/'
 
 # LOADING
 t_arr = pickle.load(open((ncoutdir + 't_arr.p'), 'rb'))
-bp_arr = pickle.load(open((ncoutdir + 'bp_arr.p'), 'rb'))
 bp_anom = pickle.load(open((ncoutdir + 'bp_anom.p'), 'rb'))
+bp_anom2 = pickle.load(open((ncoutdir + 'bp_anom2.p'), 'rb'))
+bp_bc_anom = pickle.load(open((ncoutdir + 'bp_bc.p'), 'rb'))
+bp_ssh_anom = pickle.load(open((ncoutdir + 'bp_ssh.p'), 'rb'))
 lat = pickle.load(open((ncoutdir + 'lat.p'), 'rb'))
 lon = pickle.load(open((ncoutdir + 'lon.p'), 'rb'))
 
@@ -41,15 +43,19 @@ plt.close('all')
 
 fig1 = plt.figure(figsize=(8,8))
 ax1 = fig1.add_subplot(111)
-pts = ax1.plot(t_arr,bp_anom[:,30,100])
+# pts = ax1.plot(t_arr[0:58],bp_anom[0:58,30,100],label='anom')
+# ax1.plot(t_arr[0:58],bp_anom2[0:58,30,100],label='anom2')
+ax1.plot(t_arr[0:58],bp_bc_anom[0:58,30,100],label='baroclinic')
+# ax1.plot(t_arr[0:58],bp_ssh_anom[0:58,30,100],label='ssh')
 
 ax1.set_title(str(lat[30,100]) + ', ' + str(lon[30,100]))
+ax1.legend()
 
 if not os.path.exists(ncoutdir + 'bp_maps'):
     os.mkdir(ncoutdir + 'bp_maps')
 
-# plt.show()
-plt.savefig(ncoutdir + 'bp_maps/mooring')
+plt.show()
+# plt.savefig(ncoutdir + 'bp_maps/mooring')
 plt.close()
 
 # for sv in range(nf): # for each day
