@@ -167,13 +167,13 @@ for tt in range(nf):
         rho = dsx['rho'][0, :, ila1:ila2, ilo1:ilo2].squeeze() + 1000.
         salt = dsx['salt'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
         temp = dsx['temp'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
-        z_rho,z_w = zrfun.get_z(G['h'][ila1:ila2, ilo1:ilo2], zeta, S)
+        z_rho,z_w = zrfun.get_z(G['h'][ila1:ila2, ilo1:ilo2], zeta, S) # should be calculated with 0*zeta (or similar -- see bp_1.py)
     else:
         zeta = dsx['zeta'][0,:,:].squeeze()
-        rho = dsx['rho'][0,:,:,:].squeeze() + 1000.
+        rho = dsx['rho'][0,:,:,:].squeeze() + 1000. # noon of the middle day will be very close to filtered value
         salt = dsx['salt'][0,:,:,:].squeeze()
         temp = dsx['temp'][0,:,:,:].squeeze()
-        z_rho,z_w = zrfun.get_z(G['h'], zeta, S)
+        z_rho,z_w = zrfun.get_z(G['h'], zeta, S) # if I put lowpass filtered zeta here, I'll save time
     if tt == 0:
         bp_arr = (0*zeta) * np.ones((nf,1,1))
         DA = G['DX'] * G['DY']
@@ -184,9 +184,11 @@ for tt in range(nf):
     Z = z_rho - z_w[-1] # adjust so free surface is at 0
     DZ = np.diff(z_w, axis=0)
     bp_tot[tt,:,:] = (g * rho * DZ).sum(axis=0)
-    ssh_tot[tt,:,:] = zeta
+    ssh_tot[tt,:,:] = zeta # could tidally average every 73 hours and just save that result
 
+"""
     # Equation of state calculations
+    # these are complicated routines acting on large arrays -- I can skip this!
     p = gsw.p_from_z(Z, lat)
     SA = gsw.SA_from_SP(salt, p, lon, lat) # absolute salinity
     CT = gsw.CT_from_pt(SA, temp) # conservative temperature
@@ -195,6 +197,7 @@ for tt in range(nf):
         # This is denser than ROMS rho by 0.037 [kg m-3] at the bottom and 0.0046 [kg m-3]
         # (annual averages), and it is the full density, not density minus 1000.
         # There was no visual difference between the pressure time series.
+"""
 
     # calculate the baroclinic pressure
     p = np.flip(np.cumsum(np.flip(g * rho * DZ, axis=0), axis=0), axis=0)
@@ -253,6 +256,7 @@ NTlp = len(etalp)
 
 # SAVING
 pickle.dump(t_arr, open((ncoutdir + 't_arr.p'), 'wb'))
+pickle.dump(ssh_tot, open((ncoutdir + 'ssh_tot.p'), 'wb'))
 pickle.dump(bp_tot, open((ncoutdir + 'bp_tot.p'), 'wb'))
 # pickle.dump(bp_anom, open((ncoutdir + 'bp_anom.p'), 'wb'))
 pickle.dump(bp_tot2, open((ncoutdir + 'bp_tot2.p'), 'wb'))
@@ -263,3 +267,4 @@ pickle.dump(bp_ssh, open((ncoutdir + 'bp_ssh.p'), 'wb'))
 # pickle.dump(bp_ssh_anom, open((ncoutdir + 'bp_ssh_anom.p'), 'wb'))
 pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
 pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
+pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))

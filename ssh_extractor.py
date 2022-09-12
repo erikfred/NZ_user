@@ -136,6 +136,7 @@ pickle.dump(ssh_arr, open((ncoutdir + 'ssh_arr.p'), 'wb'))
 pickle.dump(ssh_anom, open((ncoutdir + 'ssh_anom.p'), 'wb'))
 pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
 pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
+pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))
 
 """
 # PLOTTING

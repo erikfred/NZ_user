@@ -11,9 +11,34 @@ import Lfun
 import zrfun
 import zfun
 
-x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-print(x[len(x):len(x)-5:-1])
-print(x[-1])
+test = np.around(91/5)
+test2 = range(int(test))
+print(test2)
+
+# bath = pickle.load(open(('../LO_output/allinone/pickles/bath.p'), 'rb'))
+# print(bath.shape)
+# isb = np.argwhere((bath<302) & (bath>298))
+# print(isb.shape)
+# for nn in range(len(isb)):
+#     print(isb[nn])
+
+# t1 = pickle.load(open(('../LO_output/allinone/pickles/t_arr.p'), 'rb'))
+# print(type(t1))
+# print(len(t1))
+# print(datetime.fromtimestamp(t1[0]))
+#
+# tlpd = np.zeros(len(t1))
+# for tt in range(len(t1)):
+#     tlpd[tt] = datetime.fromtimestamp(t1[tt])
+#     print(tlpd[tt])
+# print(len(tlpd))
+
+# x = [[1, 2, 3, 4], [5, 6, 7, 8]]
+# print(len(x).T)
+
+# x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+# print(x[len(x):len(x)-5:-1])
+# print(x[-1])
 
 # x = range(1,25)
 # for n in x:
