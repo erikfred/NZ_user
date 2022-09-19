@@ -32,12 +32,12 @@ cutout = True # True will subsample from user-defined lat/lon limits
 
 out_dir = '../LO_output/'
 ostr = 'allinone/' # arbitrary label for separating runs
-in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
-# in_dir = '../LO_data/cas6_v0_live/' # location locally
+# in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
+in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2021.12.14', '%Y.%m.%d')
+ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
@@ -97,8 +97,8 @@ ds0.close()
 
 # make file lists
 file_list = []
-if testbatch: # only runs on 2 day subset
-    delta = (ti + timedelta(days=2)) - ti
+if testbatch: # only runs on 4 day subset
+    delta = (ti + timedelta(days=4)) - ti
 else: # runs on entire date range defined in CONFIG
     delta = (tf + timedelta(days=1)) - ti
 drange = range(0, delta.days)
@@ -108,6 +108,7 @@ for ii in drange:  # building file names
         f_jj = fstr + str(jj).zfill(4) + '.nc'
         file_list.append(d_ii + f_jj)
 nf = len(file_list)
+nd = nf/24
 
 # make some things
 fn = file_list[0]
@@ -133,13 +134,8 @@ try:
 except OSError:
     pass # assume error was because the file did not exist
 
-# make bottom pressure
-bp_tot = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
-bp_tot2 = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
-bp_bc = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
-bp_ssh = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
-ssh_tot = np.zeros((nf, np.shape(lon)[0], np.shape(lon)[1]))
-t_arr = np.zeros(nf)
+# pre-allocate lists
+tlp = []; zetalp = []; rholp = []; saltlp = []; templp = []
 
 """
 # get time axis
@@ -148,73 +144,64 @@ dti = pd.to_datetime(ot) # a pandas DatetimeIndex with dtype='datetime64[ns]'
 dt = dti.to_pydatetime() # an array of datetimes
 """
 
+# MAKE BOTTOM PRESSURE
 # set constants
 pad = 36 # this trims the ends after the low pass so there are no nan's
 g = 9.81 # gravity [m s-2]
+nn = 0 # counter
 for tt in range(nf):
-    # if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
-    #     bp_arr[tt,:,:] = bp_arr[tt-1,:,:] # populate with previous day
-    #     t_arr[tt] = t_arr[tt-1]
-    #     continue
+    if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
+        t_temp[nn] = t_temp[nn-1] # populate with previous day
+        zeta[nn,:,:] = zeta[nn-1,:,:]
+        rho[nn,:,:] = rho[nn-1,:,:]
+        salt[nn,:,:] = salt[nn-1,:,:]
+        temp[nn,:,:] = temp[nn-1,:,:]
+        continue
     filex = file_list[tt]
     dsx = nc.Dataset(filex)
-    if np.mod(tt,24)==0: # print update to console for every day
-        print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
-        sys.stdout.flush()
-    t_arr[tt] = dsx['ocean_time'][0].squeeze()
+
+    t_temp[nn] = dsx['ocean_time'][0].squeeze()
+
     if cutout:
-        zeta = dsx['zeta'][0, ila1:ila2, ilo1:ilo2].squeeze()
-        rho = dsx['rho'][0, :, ila1:ila2, ilo1:ilo2].squeeze() + 1000.
-        salt = dsx['salt'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
-        temp = dsx['temp'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
-        z_rho,z_w = zrfun.get_z(G['h'][ila1:ila2, ilo1:ilo2], zeta, S) # should be calculated with 0*zeta (or similar -- see bp_1.py)
+        zeta[nn,:,:] = dsx['zeta'][0, ila1:ila2, ilo1:ilo2].squeeze()
+        rho[nn,:,:] = dsx['rho'][0, :, ila1:ila2, ilo1:ilo2].squeeze() + 1000.
+        salt[nn,:,:] = dsx['salt'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
+        temp[nn,:,:] = dsx['temp'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
     else:
-        zeta = dsx['zeta'][0,:,:].squeeze()
-        rho = dsx['rho'][0,:,:,:].squeeze() + 1000. # noon of the middle day will be very close to filtered value
-        salt = dsx['salt'][0,:,:,:].squeeze()
-        temp = dsx['temp'][0,:,:,:].squeeze()
-        z_rho,z_w = zrfun.get_z(G['h'], zeta, S) # if I put lowpass filtered zeta here, I'll save time
-    if tt == 0:
-        bp_arr = (0*zeta) * np.ones((nf,1,1))
-        DA = G['DX'] * G['DY']
-        # DAm = np.ma.masked_where(zeta.mask, DA)
-    NT = 1
-    N = 30
-
-    Z = z_rho - z_w[-1] # adjust so free surface is at 0
-    DZ = np.diff(z_w, axis=0)
-    bp_tot[tt,:,:] = (g * rho * DZ).sum(axis=0)
-    ssh_tot[tt,:,:] = zeta # could tidally average every 73 hours and just save that result
-
-"""
-    # Equation of state calculations
-    # these are complicated routines acting on large arrays -- I can skip this!
-    p = gsw.p_from_z(Z, lat)
-    SA = gsw.SA_from_SP(salt, p, lon, lat) # absolute salinity
-    CT = gsw.CT_from_pt(SA, temp) # conservative temperature
-    if True:
-        rho = gsw.rho(SA, CT, p)
-        # This is denser than ROMS rho by 0.037 [kg m-3] at the bottom and 0.0046 [kg m-3]
-        # (annual averages), and it is the full density, not density minus 1000.
-        # There was no visual difference between the pressure time series.
-"""
-
-    # calculate the baroclinic pressure
-    p = np.flip(np.cumsum(np.flip(g * rho * DZ, axis=0), axis=0), axis=0)
-
-    # calculate the pressure due to SSH
-    p0 = g * 1025 * zeta
-
-    # # separate contributions of salt and temp to density
-    # rho_only_salt = gsw.rho(SA, CT - CT, p) - Rho.reshape((1,N))
-    # rho_only_temp = gsw.rho(SA - SA, CT, p) - Rho.reshape((1,N))
-
-    # make the full pressure anomaly
-    bp_tot2[tt,:,:] = p[0,:,:] + p0
-    bp_bc[tt,:,:] = p[0,:,:]
-    bp_ssh[tt,:,:] = p0
+        zeta[nn,:,:] = dsx['zeta'][0,:,:].squeeze()
+        rho[nn,:,:] = dsx['rho'][0,:,:,:].squeeze() + 1000.
+        salt[nn,:,:] = dsx['salt'][0,:,:,:].squeeze()
+        temp[nn,:,:] = dsx['temp'][0,:,:,:].squeeze()
 
     dsx.close()
+
+    if (tt>72) & (np.mod(tt-1,24)==0): # print update to console for every day
+        print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
+        sys.stdout.flush()
+
+        # LP filter for daily values at noon each day
+        tlp.append(t_temp[36]); t_temp = t_temp[24:end,:,:]
+        zetalp.append(zfun.lowpass(zeta, f='godin')[pad:-pad:24]); zeta = zeta[24:end,:,:]
+        rholp.append(zfun.lowpass(rho, f='godin')[pad:-pad:24]); rho = rho[24:end,:,:,:] # alternatively, selecting value at noon of middle day will also work
+        saltlp.append(zfun.lowpass(salt, f='godin')[pad:-pad:24]); salt = salt[24:end,:,:,:]
+        templp.append(zfun.lowpass(temp, f='godin')[pad:-pad:24]); temp = temp[24:end,:,:,:]
+
+# CALCULATE PRESSURES
+# original method (to be excluded once new method determined to be equivalent)
+z_w = zrfun.get_z(G['h'], zetalp, S, only_w=True)
+DZ = np.diff(z_w, axis=0)
+bp_tot = (g * rholp * DZ).sum(axis=1).squeeze()
+
+# new method
+z_rho, z_w = zrfun.get_z(G['h'], 0*zetalp, S)
+Z = z_rho - z_w[-1] # adjust so free surface is at 0
+DZ = np.diff(z_w, axis=0)
+# calculate the baroclinic pressure
+bp_bc = np.flip(np.cumsum(np.flip(g * rholp * DZ, axis=1), axis=1), axis=1)[:,0,:,:]
+# calculate the pressure due to SSH
+bp_ssh = g * 1025 * zetalp
+# make the full pressure anomaly
+bp_tot2[tt,:,:] = bp_bc + bp_ssh
 
 """
 # convert to anomalies
@@ -255,8 +242,8 @@ NTlp = len(etalp)
 """
 
 # SAVING
-pickle.dump(t_arr, open((ncoutdir + 't_arr.p'), 'wb'))
-pickle.dump(ssh_tot, open((ncoutdir + 'ssh_tot.p'), 'wb'))
+pickle.dump(t_lp, open((ncoutdir + 't_lp.p'), 'wb'))
+# pickle.dump(ssh_tot, open((ncoutdir + 'ssh_tot.p'), 'wb'))
 pickle.dump(bp_tot, open((ncoutdir + 'bp_tot.p'), 'wb'))
 # pickle.dump(bp_anom, open((ncoutdir + 'bp_anom.p'), 'wb'))
 pickle.dump(bp_tot2, open((ncoutdir + 'bp_tot2.p'), 'wb'))
