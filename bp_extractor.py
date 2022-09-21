@@ -150,14 +150,14 @@ pad = 36 # this trims the ends after the low pass so there are no nan's
 g = 9.81 # gravity [m s-2]
 nn = 0 # counter
 for tt in range(nf):
-    if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
-        t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
-        zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
-        # rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
-        # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
-        # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
-        nn+=1
-        continue
+    # if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
+        # t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
+        # zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
+        # # rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
+        # # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
+        # # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
+        # nn+=1
+        # continue
     filex = file_list[tt]
     dsx = nc.Dataset(filex)
 
