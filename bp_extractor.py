@@ -153,7 +153,7 @@ for tt in range(nf):
     if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
         t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
         zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
-        rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
+        # rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
         # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
         # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
         nn+=1
@@ -164,15 +164,24 @@ for tt in range(nf):
     t_temp = np.append(t_temp,dsx['ocean_time'][0].squeeze())
 
     if cutout:
-        zeta = np.append(zeta,[dsx['zeta'][0, ila1:ila2, ilo1:ilo2]],axis=0)
-        rho = np.append(rho,[dsx['rho'][0, :, ila1:ila2, ilo1:ilo2] + 1000.],axis=0)
+        zeta = np.append(zeta,[dsx['zeta'][0,ila1:ila2,ilo1:ilo2]],axis=0)
+        if nn==36:
+            rho2 = [dsx['rho'][0,:,ila1:ila2,ilo1:ilo2]]
+        if nn==72:
+            rho3 = [dsx['rho'][0,:,ila1:ila2,ilo1:ilo2]]
+        # rho = np.append(rho,[dsx['rho'][0, :, ila1:ila2, ilo1:ilo2] + 1000.],axis=0)
         # salt = np.append(salt,[dsx['salt'][0, :, ila1:ila2, ilo1:ilo2]],axis=0)
         # temp = np.append(temp,[dsx['temp'][0, :, ila1:ila2, ilo1:ilo2]],axis=0)
     else:
         zeta = np.append(zeta,[dsx['zeta'][0,:,:]],axis=0)
-        rho = np.append(rho,[dsx['rho'][0,:,:,:] + 1000.],axis=0)
+        if nn==36:
+            rho2 = [dsx['rho'][0,:,:,:]]
+        if nn==72:
+            rho3 = [dsx['rho'][0,:,:,:]]
+        # rho = np.append(rho,[dsx['rho'][0,:,:,:] + 1000.],axis=0)
         # salt = np.append(salt,[dsx['salt'][0,:,:,:]],axis=0)
         # temp = np.append(temp,[dsx['temp'][0,:,:,:]],axis=0)
+
 
     dsx.close()
 
@@ -183,22 +192,13 @@ for tt in range(nf):
         # LP filter for daily values at noon each day
         tlp = np.append(tlp,[t_temp[36]],axis=0); t_temp = t_temp[24:73]
         zetalp = np.append(zetalp,zfun.lowpass(zeta, f='godin')[pad:-pad:24,:,:],axis=0); zeta = zeta[24:73,:,:]
-        rholp = np.append(rholp,zfun.lowpass(rho, f='godin')[pad:-pad:24,:,:,:],axis=0); rho = rho[24:73,:,:,:] # alternatively, selecting value at noon of middle day will also work
-        # saltlp = np.append(saltlp,zfun.lowpass(salt, f='godin')[pad:-pad:24,:,:,:], axis=0); salt = salt[24:72,:,:,:]
-        # templp = np.append(templp,zfun.lowpass(temp, f='godin')[pad:-pad:24,:,:,:],axis=0); temp = temp[24:72,:,:,:]
+        rholp = np.append(rholp,rho2,axis=0); rho2 = rho3.copy()
+        # rholp = np.append(rholp,zfun.lowpass(rho, f='godin')[pad:-pad:24,:,:,:],axis=0); rho = rho[24:73,:,:,:] # alternatively, selecting value at noon of middle day will also work
+        # saltlp = np.append(saltlp,zfun.lowpass(salt, f='godin')[pad:-pad:24,:,:,:], axis=0); salt = salt[24:73,:,:,:]
+        # templp = np.append(templp,zfun.lowpass(temp, f='godin')[pad:-pad:24,:,:,:],axis=0); temp = temp[24:73,:,:,:]
         nn = 48
 
     nn+=1
-
-# SAVE IN CASE OF CRASH
-pickle.dump(tlp, open((ncoutdir + 'tlp.p'), 'wb'))
-pickle.dump(zetalp, open((ncoutdir + 'zetalp.p'), 'wb'))
-pickle.dump(rholp, open((ncoutdir + 'rholp.p'), 'wb'))
-# pickle.dump(saltlp, open((ncoutdir + 'saltlp.p'), 'wb'))
-# pickle.dump(templp, open((ncoutdir + 'templp.p'), 'wb'))
-pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
-pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
-pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))
 
 # CALCULATE PRESSURES
 nd = np.shape(zetalp)[0]
@@ -217,28 +217,12 @@ for mm in range(nd):
     DZ = np.diff(ZW, axis=0)
     # calculate the baroclinic pressure
     bp_bc[mm,:,:] = np.flip(np.cumsum(np.flip(g * rholp[mm,:,:,:] * DZ, axis=0), axis=0), axis=0)[0,:,:]
-print(np.shape(bp_tot))
 # calculate the pressure due to SSH
 bp_ssh = g * 1025 * zetalp
 # make the full pressure anomaly
 bp_tot2 = bp_bc + bp_ssh
-print(np.shape(bp_bc))
-print(np.shape(bp_ssh))
-print(np.shape(bp_tot2))
 
 """
-# convert to anomalies
-sshm = np.mean(ssh_tot, axis=0)
-ssh_anom = ssh_tot - sshm
-bpm = np.mean(bp_tot, axis=0)
-bp_anom = bp_tot - bpm
-bpm = np.mean(bp_tot2, axis=0)
-bp_anom2 = bp_tot2 - bpm
-bpm = np.mean(bp_bc, axis=0)
-bp_bc_anom = bp_bc - bpm
-bpm = np.mean(bp_ssh, axis=0)
-bp_ssh_anom = bp_ssh - bpm
-
 # annual means
 Rho = np.mean(rho, axis=0)
 Salt = np.mean(SA, axis=0)
@@ -250,18 +234,6 @@ salt_a = SA - Salt.reshape((1,N))
 temp_a = CT - Temp.reshape((1,N))
 rho_a = rho - Rho.reshape((1,N))
 p_a = p - P.reshape((1,N))
-
-# low pass filtered version
-zetalp = zfun.lowpass(zeta, f='godin')[pad:-pad:24]
-zetalp = etalp - np.mean(zetalp) # remove mean SSH
-rholp = zfun.lowpass(rho, f='godin')[pad:-pad:24, :]
-saltlp = zfun.lowpass(SA, f='godin')[pad:-pad:24, :]
-templp = zfun.lowpass(CT, f='godin')[pad:-pad:24, :]
-
-# also make associated time vectors
-tlp = dt[pad:-pad:24]
-tlpf = dt[24:-24:24] # "full" version used for pcolormesh plots
-NTlp = len(etalp)
 """
 
 # SAVING
@@ -269,3 +241,11 @@ pickle.dump(bp_tot, open((ncoutdir + 'bp_tot.p'), 'wb'))
 pickle.dump(bp_tot2, open((ncoutdir + 'bp_tot2.p'), 'wb'))
 pickle.dump(bp_bc, open((ncoutdir + 'bp_bc.p'), 'wb'))
 pickle.dump(bp_ssh, open((ncoutdir + 'bp_ssh.p'), 'wb'))
+pickle.dump(tlp, open((ncoutdir + 'tlp.p'), 'wb'))
+pickle.dump(zetalp, open((ncoutdir + 'zetalp.p'), 'wb'))
+pickle.dump(rholp, open((ncoutdir + 'rholp.p'), 'wb'))
+# pickle.dump(saltlp, open((ncoutdir + 'saltlp.p'), 'wb'))
+# pickle.dump(templp, open((ncoutdir + 'templp.p'), 'wb'))
+pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
+pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
+pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))
