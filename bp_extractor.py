@@ -29,12 +29,12 @@ cutout = True # True will subsample from user-defined lat/lon limits
 
 out_dir = '../LO_output/'
 ostr = 'allinone/' # arbitrary label for separating runs
-# in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
-in_dir = '../LO_data/cas6_v0_live/' # location locally
+in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
+# in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2016.12.19', '%Y.%m.%d')
+ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2020.12.16', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
