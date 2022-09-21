@@ -17,10 +17,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pickle
 
-sys.path.append(os.path.abspath('util'))
-import Lfun
-import zrfun
-import zfun
+from lo_tools import Lfun, zfun, zrfun
 
 # config
 testbatch = False # True will only process a few history files, stored locally
@@ -108,7 +105,6 @@ for ii in drange:  # building file names
         f_jj = fstr + str(jj).zfill(4) + '.nc'
         file_list.append(d_ii + f_jj)
 nf = len(file_list)
-nd = nf/24
 
 # make some things
 fn = file_list[0]
@@ -134,8 +130,12 @@ try:
 except OSError:
     pass # assume error was because the file did not exist
 
-# pre-allocate lists
-tlp = []; zetalp = []; rholp = []; saltlp = []; templp = []
+# establish arrays
+t_temp = np.empty((0),dtype=np.float32); tlp = t_temp.copy()
+zeta = np.empty((0, np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32); zetalp = zeta.copy()
+rho = np.empty((0, 30, np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32); rholp = rho.copy()
+salt = np.empty((0, 30, np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32); saltlp = salt.copy()
+temp = np.empty((0, 30, np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32); templp = temp.copy()
 
 """
 # get time axis
@@ -151,57 +151,80 @@ g = 9.81 # gravity [m s-2]
 nn = 0 # counter
 for tt in range(nf):
     if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
-        t_temp[nn] = t_temp[nn-1] # populate with previous day
-        zeta[nn,:,:] = zeta[nn-1,:,:]
-        rho[nn,:,:] = rho[nn-1,:,:]
-        salt[nn,:,:] = salt[nn-1,:,:]
-        temp[nn,:,:] = temp[nn-1,:,:]
+        t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
+        zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
+        rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
+        # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
+        # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
+        nn+=1
         continue
     filex = file_list[tt]
     dsx = nc.Dataset(filex)
 
-    t_temp[nn] = dsx['ocean_time'][0].squeeze()
+    t_temp = np.append(t_temp,dsx['ocean_time'][0].squeeze())
 
     if cutout:
-        zeta[nn,:,:] = dsx['zeta'][0, ila1:ila2, ilo1:ilo2].squeeze()
-        rho[nn,:,:] = dsx['rho'][0, :, ila1:ila2, ilo1:ilo2].squeeze() + 1000.
-        salt[nn,:,:] = dsx['salt'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
-        temp[nn,:,:] = dsx['temp'][0, :, ila1:ila2, ilo1:ilo2].squeeze()
+        zeta = np.append(zeta,[dsx['zeta'][0, ila1:ila2, ilo1:ilo2]],axis=0)
+        rho = np.append(rho,[dsx['rho'][0, :, ila1:ila2, ilo1:ilo2] + 1000.],axis=0)
+        # salt = np.append(salt,[dsx['salt'][0, :, ila1:ila2, ilo1:ilo2]],axis=0)
+        # temp = np.append(temp,[dsx['temp'][0, :, ila1:ila2, ilo1:ilo2]],axis=0)
     else:
-        zeta[nn,:,:] = dsx['zeta'][0,:,:].squeeze()
-        rho[nn,:,:] = dsx['rho'][0,:,:,:].squeeze() + 1000.
-        salt[nn,:,:] = dsx['salt'][0,:,:,:].squeeze()
-        temp[nn,:,:] = dsx['temp'][0,:,:,:].squeeze()
+        zeta = np.append(zeta,[dsx['zeta'][0,:,:]],axis=0)
+        rho = np.append(rho,[dsx['rho'][0,:,:,:] + 1000.],axis=0)
+        # salt = np.append(salt,[dsx['salt'][0,:,:,:]],axis=0)
+        # temp = np.append(temp,[dsx['temp'][0,:,:,:]],axis=0)
 
     dsx.close()
 
-    if (tt>72) & (np.mod(tt-1,24)==0): # print update to console for every day
+    if nn>0 and np.mod(nn,72)==0: # print update to console for every filtered day
         print('tt = ' + str(tt) + '/' + str(nf) + ' ' + filex[len(filex)-28:len(filex)])
         sys.stdout.flush()
 
         # LP filter for daily values at noon each day
-        tlp.append(t_temp[36]); t_temp = t_temp[24:end,:,:]
-        zetalp.append(zfun.lowpass(zeta, f='godin')[pad:-pad:24]); zeta = zeta[24:end,:,:]
-        rholp.append(zfun.lowpass(rho, f='godin')[pad:-pad:24]); rho = rho[24:end,:,:,:] # alternatively, selecting value at noon of middle day will also work
-        saltlp.append(zfun.lowpass(salt, f='godin')[pad:-pad:24]); salt = salt[24:end,:,:,:]
-        templp.append(zfun.lowpass(temp, f='godin')[pad:-pad:24]); temp = temp[24:end,:,:,:]
+        tlp = np.append(tlp,[t_temp[36]],axis=0); t_temp = t_temp[24:73]
+        zetalp = np.append(zetalp,zfun.lowpass(zeta, f='godin')[pad:-pad:24,:,:],axis=0); zeta = zeta[24:73,:,:]
+        rholp = np.append(rholp,zfun.lowpass(rho, f='godin')[pad:-pad:24,:,:,:],axis=0); rho = rho[24:73,:,:,:] # alternatively, selecting value at noon of middle day will also work
+        # saltlp = np.append(saltlp,zfun.lowpass(salt, f='godin')[pad:-pad:24,:,:,:], axis=0); salt = salt[24:72,:,:,:]
+        # templp = np.append(templp,zfun.lowpass(temp, f='godin')[pad:-pad:24,:,:,:],axis=0); temp = temp[24:72,:,:,:]
+        nn = 48
+
+    nn+=1
+
+# SAVE IN CASE OF CRASH
+pickle.dump(tlp, open((ncoutdir + 'tlp.p'), 'wb'))
+pickle.dump(zetalp, open((ncoutdir + 'zetalp.p'), 'wb'))
+pickle.dump(rholp, open((ncoutdir + 'rholp.p'), 'wb'))
+# pickle.dump(saltlp, open((ncoutdir + 'saltlp.p'), 'wb'))
+# pickle.dump(templp, open((ncoutdir + 'templp.p'), 'wb'))
+pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
+pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
+pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))
 
 # CALCULATE PRESSURES
-# original method (to be excluded once new method determined to be equivalent)
-z_w = zrfun.get_z(G['h'], zetalp, S, only_w=True)
-DZ = np.diff(z_w, axis=0)
-bp_tot = (g * rholp * DZ).sum(axis=1).squeeze()
-
-# new method
-z_rho, z_w = zrfun.get_z(G['h'], 0*zetalp, S)
-Z = z_rho - z_w[-1] # adjust so free surface is at 0
-DZ = np.diff(z_w, axis=0)
-# calculate the baroclinic pressure
-bp_bc = np.flip(np.cumsum(np.flip(g * rholp * DZ, axis=1), axis=1), axis=1)[:,0,:,:]
+nd = np.shape(zetalp)[0]
+Gh = G['h']
+if cutout: # take cutout from full model domain, if desired
+    Gh = Gh[ila1:ila2,ilo1:ilo2]
+bp_tot = np.empty((nd, np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32)
+bp_bc = bp_tot.copy()
+for mm in range(nd):
+    # original method (to be excluded once new method determined to be equivalent)
+    z_w = zrfun.get_z(Gh, zetalp[mm,:,:].squeeze(), S, only_w=True)
+    DZ = np.diff(z_w, axis=0)
+    bp_tot[mm,:,:] = (g * rholp[mm,:,:,:] * DZ).sum(axis=0)
+    # new method
+    ZW = zrfun.get_z(Gh, 0*zetalp[mm,:,:], S, only_w=True)
+    DZ = np.diff(ZW, axis=0)
+    # calculate the baroclinic pressure
+    bp_bc[mm,:,:] = np.flip(np.cumsum(np.flip(g * rholp[mm,:,:,:] * DZ, axis=0), axis=0), axis=0)[0,:,:]
+print(np.shape(bp_tot))
 # calculate the pressure due to SSH
 bp_ssh = g * 1025 * zetalp
 # make the full pressure anomaly
-bp_tot2[tt,:,:] = bp_bc + bp_ssh
+bp_tot2 = bp_bc + bp_ssh
+print(np.shape(bp_bc))
+print(np.shape(bp_ssh))
+print(np.shape(bp_tot2))
 
 """
 # convert to anomalies
@@ -242,16 +265,7 @@ NTlp = len(etalp)
 """
 
 # SAVING
-pickle.dump(t_lp, open((ncoutdir + 't_lp.p'), 'wb'))
-# pickle.dump(ssh_tot, open((ncoutdir + 'ssh_tot.p'), 'wb'))
 pickle.dump(bp_tot, open((ncoutdir + 'bp_tot.p'), 'wb'))
-# pickle.dump(bp_anom, open((ncoutdir + 'bp_anom.p'), 'wb'))
 pickle.dump(bp_tot2, open((ncoutdir + 'bp_tot2.p'), 'wb'))
-# pickle.dump(bp_anom2, open((ncoutdir + 'bp_anom2.p'), 'wb'))
 pickle.dump(bp_bc, open((ncoutdir + 'bp_bc.p'), 'wb'))
-# pickle.dump(bp_bc_anom, open((ncoutdir + 'bp_bc_anom.p'), 'wb'))
 pickle.dump(bp_ssh, open((ncoutdir + 'bp_ssh.p'), 'wb'))
-# pickle.dump(bp_ssh_anom, open((ncoutdir + 'bp_ssh_anom.p'), 'wb'))
-pickle.dump(lat, open((ncoutdir + 'lat.p'), 'wb'))
-pickle.dump(lon, open((ncoutdir + 'lon.p'), 'wb'))
-pickle.dump(bath, open((ncoutdir + 'bath.p'), 'wb'))

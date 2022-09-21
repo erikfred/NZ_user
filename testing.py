@@ -1,4 +1,4 @@
-from netCDF4 import Dataset
+import netCDF4 as nc
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
@@ -6,14 +6,54 @@ import pickle
 import sys, os
 from pathlib import Path
 
-sys.path.append(os.path.abspath('util'))
-import Lfun
-import zrfun
-import zfun
+from lo_tools import Lfun, zfun, zrfun
 
-test = np.around(91/5)
-test2 = range(int(test))
-print(test2)
+"""
+if nn==36:
+    rho2 = [ds['rho'][0,:,:,:]]
+if nn==72:
+    rho3 = [ds['rho'][0,:,:,:]]
+
+rholp = np.append(rholp,[rho2],axis=0)
+rho2 = rho3.copy()
+"""
+
+ncoutdir = '../LO_output/allinone/pickles/'
+
+tlp = pickle.load(open((ncoutdir + 'tlp.p'), 'rb'))
+zetalp = pickle.load(open((ncoutdir + 'zetalp.p'), 'rb'))
+rholp = pickle.load(open((ncoutdir + 'rholp.p'), 'rb'))
+lat = pickle.load(open((ncoutdir + 'lat.p'), 'rb'))
+lon = pickle.load(open((ncoutdir + 'lon.p'), 'rb'))
+
+print(np.shape(zetalp))
+print(np.shape(rholp))
+
+zetalp = np.append(zetalp,zetalp,axis=0)
+rholp = np.append(rholp,rholp,axis=0)
+
+print(np.shape(zetalp))
+print(np.shape(rholp))
+
+# test = [[[1, 2, 3, 4]]]
+# print(test)
+# test2 = np.array(test)
+# print(np.shape(test2))
+
+# zetalp=[]
+# zeta = np.ones((73, 500, 200),dtype=np.float32)
+# zeta2 = zfun.lowpass(zeta, f='godin')
+# print(zeta2)
+# zetalp.append(zfun.lowpass(zeta,f='godin')[36:-36:24]); zeta = zeta[24:72,:,:]
+# print(zeta3)
+# zetalp.append(zeta3)
+# print(zetalp)
+# zeta = zeta[24:72,:,:]
+# print(np.shape(zeta))
+
+# test = np.around(91/5)
+# test2 = range(int(test))
+# print(test2)
 
 # bath = pickle.load(open(('../LO_output/allinone/pickles/bath.p'), 'rb'))
 # print(bath.shape)
