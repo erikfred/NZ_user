@@ -33,8 +33,8 @@ in_dir = '/data1/parker/LO_roms/cas6_v0_live/' # location on perigee
 # in_dir = '../LO_data/cas6_v0_live/' # location locally
 dstr = 'f' # naming convention for directories
 fstr = 'ocean_his_' # naming convention for history files
-ti = datetime.strptime('2020.12.15', '%Y.%m.%d')
-tf = datetime.strptime('2021.12.16', '%Y.%m.%d')
+ti = datetime.strptime('2016.12.15', '%Y.%m.%d')
+tf = datetime.strptime('2017.12.16', '%Y.%m.%d')
 # tf = datetime.strptime('2022.06.30', '%Y.%m.%d')
 tag = 'LiveOcean'
 n_layer = 0 # bottom layer
@@ -119,7 +119,7 @@ ds.close()
 # prepare a directory for results
 outdir0 = out_dir + ostr
 Lfun.make_dir(outdir0, clean=False)
-ncoutdir = outdir0 + 'pickles/'
+ncoutdir = outdir0 + 'pickles5/'
 Lfun.make_dir(ncoutdir, clean=False)
 # output file
 out_name = 'bp_' + tag + etag + '.nc'
@@ -150,14 +150,14 @@ pad = 36 # this trims the ends after the low pass so there are no nan's
 g = 9.81 # gravity [m s-2]
 nn = 0 # counter
 for tt in range(nf):
-    # if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
-        # t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
-        # zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
-        # # rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
-        # # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
-        # # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
-        # nn+=1
-        # continue
+    if tt==59 or tt==60 or tt==63 or tt==70: # something is wrong with these files (at least on local)
+        t_temp = np.append(t_temp,t_temp[nn-1]) # populate with previous day
+        zeta = np.append(zeta,[zeta[nn-1,:,:]],axis=0)
+        # rho = np.append(rho,[rho[nn-1,:,:,:]],axis=0)
+        # salt = np.append(salt,[salt[nn-1,:,:,:]],axis=0)
+        # temp = np.append(temp,[temp[nn-1,:,:,:]],axis=0)
+        nn+=1
+        continue
     filex = file_list[tt]
     dsx = nc.Dataset(filex)
 
