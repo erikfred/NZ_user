@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pickle
 import sys, os
 from pathlib import Path
+import time
 
 from lo_tools import Lfun, zfun, zrfun
 
@@ -18,22 +19,38 @@ rholp = np.append(rholp,[rho2],axis=0)
 rho2 = rho3.copy()
 """
 
-ncoutdir = '../LO_output/allinone/pickles/'
+x1 = np.ones((365,1302,664))
+t = time.time()
+for nn in range(len(x1[0,0,0:100])):
+    x2 = np.correlate(x1,x1)
+print(time.time() - t)
 
-tlp = pickle.load(open((ncoutdir + 'tlp.p'), 'rb'))
-zetalp = pickle.load(open((ncoutdir + 'zetalp.p'), 'rb'))
-rholp = pickle.load(open((ncoutdir + 'rholp.p'), 'rb'))
-lat = pickle.load(open((ncoutdir + 'lat.p'), 'rb'))
-lon = pickle.load(open((ncoutdir + 'lon.p'), 'rb'))
+# x1 = np.array([1, 2, 3, 4, 5])
+# x2 = np.array([6, 3, 5, 2, 2])
+# x3 = np.array([1, 2, 3, 4, 5])
+# # x2 = np.array([[1, 2, 3, 4, 5],[6, 3, 5, 2, 2],[4, 4, 7, 9, 0]])
+# a = (x1 - np.mean(x1)) / (np.std(x1) * len(x1))
+# b = (x2 - np.mean(x2)) / (np.std(x2))
+# c = (x3 - np.mean(x3)) / (np.std(x3))
+# print(np.correlate(a, b))
+# print(np.correlate(a,c))
 
-print(np.shape(zetalp))
-print(np.shape(rholp))
-
-zetalp = np.append(zetalp,zetalp,axis=0)
-rholp = np.append(rholp,rholp,axis=0)
-
-print(np.shape(zetalp))
-print(np.shape(rholp))
+# ncoutdir = '../LO_output/allinone/pickles/'
+#
+# tlp = pickle.load(open((ncoutdir + 'tlp.p'), 'rb'))
+# zetalp = pickle.load(open((ncoutdir + 'zetalp.p'), 'rb'))
+# rholp = pickle.load(open((ncoutdir + 'rholp.p'), 'rb'))
+# lat = pickle.load(open((ncoutdir + 'lat.p'), 'rb'))
+# lon = pickle.load(open((ncoutdir + 'lon.p'), 'rb'))
+#
+# print(np.shape(zetalp))
+# print(np.shape(rholp))
+#
+# zetalp = np.append(zetalp,zetalp,axis=0)
+# rholp = np.append(rholp,rholp,axis=0)
+#
+# print(np.shape(zetalp))
+# print(np.shape(rholp))
 
 # test = [[[1, 2, 3, 4]]]
 # print(test)
