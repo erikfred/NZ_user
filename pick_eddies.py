@@ -150,9 +150,9 @@ else:
     pickle.dump(ctrs_xy, open((savedir + estr + '/ctrs_xy.p'), 'wb'))
 
 # PLOTTING
-# time series plots of BP components
+# time series plots of BP components following eddy
 fig0 = plt.figure(figsize=(8,8))
-ax0 = fig0.add_subplot(111)
+ax0 = fig0.add_subplot(212)
 ax0.plot(t_eddy,bp_bc_eddy,label='baroclinic')
 ax0.plot(t_eddy,bp_ssh_eddy,label='ssh')
 ax0.plot(t_eddy,bp_anom_eddy,color='r',label='sum')
@@ -165,22 +165,10 @@ myFmt = mdates.DateFormatter('%m/%d')
 ax0.xaxis.set_major_formatter(myFmt)
 ax0.grid(True)
 
-if not os.path.exists(savedir + estr):
-    os.mkdir(savedir + estr)
-
-# plt.show()
-plt.savefig(savedir + estr + '/' + estr + '_time')
-plt.close()
-
-# plot eddy track
-fig1 = plt.figure(figsize=(8,8))
-ax1 = fig1.add_subplot(111)
-bth1 = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
-ax1.plot(ctrs_ll[:,0],ctrs_ll[:,1],'r')
-
-ax1.set_title(estr + ' track ' + datetime.fromtimestamp(tlp[n1]).strftime('%m/%d/%y') +
-    '-' + datetime.fromtimestamp(tlp[n2]).strftime('%m/%d/%y'))
-ax1.axis('square')
+ax1 = fig0.add_subplot(211)
+bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
+ax1.plot(ctrs_ll[:,1],ctrs_ll[:,0],'r')
+ax1.invert_yaxis()
 ax1.grid(True)
 
 if not os.path.exists(savedir + estr):
@@ -190,7 +178,7 @@ if not os.path.exists(savedir + estr):
 plt.savefig(savedir + estr + '/' + estr + '_track')
 plt.close()
 
-# panel plot of time series along track
+# panel plot of time series at points along track through entire t
 fig2 = plt.figure(figsize=(20,20))
 for ii in range(25):
     ax2 = fig2.add_subplot(5,5,ii+1)
@@ -205,7 +193,7 @@ for ii in range(25):
     ax2.axhline(c='k',lw=1)
     ax2.axvline(t_eddy[iin],c='k',lw=1)
     ax2.axes.xaxis.set_ticklabels([])
-    ax2.set_ylim(-1000,1000)
+    ax2.set_ylim(-1500,1500)
     ax2.set_title(str(int(bath[iila,iilo])) + ' m')
     # myFmt = mdates.DateFormatter('%m/%d')
     # ax2.xaxis.set_major_formatter(myFmt)
@@ -216,4 +204,32 @@ if not os.path.exists(savedir + estr):
 
 # plt.show()
 plt.savefig(savedir + estr + '/' + estr + '_panel')
+plt.close()
+
+# panel plot of differences along track through entire t
+fig2 = plt.figure(figsize=(20,20))
+for ii in range(25):
+    ax2 = fig2.add_subplot(5,5,ii+1)
+    iin = int(ii*(n2-n1)/25)
+    iilo = ctrs_xy[iin,0]
+    iila = ctrs_xy[iin,1]
+    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],label='baroclinic')
+    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],label='ssh')
+    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],color='r',label='sum')
+
+    # ax2.legend()
+    ax2.axhline(c='k',lw=1)
+    ax2.axvline(t_eddy[iin],c='k',lw=1)
+    ax2.axes.xaxis.set_ticklabels([])
+    ax2.set_ylim(-1500,1500)
+    ax2.set_title(str(int(bath[iila,iilo])) + ' m')
+    # myFmt = mdates.DateFormatter('%m/%d')
+    # ax2.xaxis.set_major_formatter(myFmt)
+    ax2.grid(True)
+
+if not os.path.exists(savedir + estr):
+    os.mkdir(savedir + estr)
+
+# plt.show()
+plt.savefig(savedir + estr + '/' + estr + '_difpanel')
 plt.close()
