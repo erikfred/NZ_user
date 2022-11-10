@@ -46,99 +46,108 @@ bp_ssh_anom = bp_ssh - Ssh
 
 ssh_anom = bp_ssh_anom / g / 1025
 
+tlp2 = [datetime.fromtimestamp(t) for t in tlp]
+
 # PLOTTING
 # plotting parameters
 fs = 14 # primary fontsize
 lw = 3 # primary linewidth
 mk = 10 # primary markersize
-cmap = cmocean.cm.thermal
+cmap = cmocean.cm.balance
 
 plt.close('all')
 
-# strike-parallel line
+# strike-parallel line at 300 m
 isb = np.argwhere((bath<302) & (bath>298))
+stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/5))):
     fig0 = plt.figure(figsize=(8,8))
-    ax0 = fig0.add_subplot(311)
-    # ax1.plot(tlp,anomlp,label='anom')
-    # ax1.plot(tlp,anom2lp,label='anom2')
-    ax0.plot(tlp,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]],label='baroclinic')
-    ax0.plot(tlp,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]],label='ssh')
-    ax0.plot(tlp,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]+bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]],color='r',label='sum')
+    ax0 = fig0.add_subplot(212)
+    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]],label='baroclinic')
+    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]],label='ssh')
+    ax0.plot(tlp2,bp_anom2[:,isb[nn*5][0],isb[nn*5][1]],color='r',label='sum')
 
-    if nn==0:
-        yl1, yl2 = ax0.get_ylim()
-    ax0.set_ylim(yl1-500,yl2+500)
+    ax0.set_ylim(-1500,1500)
     ax0.set_title(str(np.around(lat[isb[nn*5][0],isb[nn*5][1]],decimals=2)) +
         ', ' + str(np.around(lon[isb[nn*5][0],isb[nn*5][1]],decimals=2))
         + ', ' + str(np.around(bath[isb[nn*5][0],isb[nn*5][1]])))
     ax0.legend()
-    ax0.axhline(c='k',lw=1.5)
+    ax0.axhline(c='k',lw=1)
     ax0.grid(True)
 
-    ax1 = fig0.add_subplot(312)
-    x1 = np.convolve(bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]], np.ones(10)/10, mode='same')
-    x2 = np.convolve(bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]], np.ones(10)/10, mode='same')
-    metric = x1/x2
-    ax1.plot(tlp,metric,label='bc/ssh')
-    ax1.legend()
-    ax1.set_ylim(-2,2)
-    ax1.axhline(c='k',lw=1.5)
+    ax1 = fig0.add_subplot(211)
+    bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
+    ax1.plot(lat[isb[stalist,0],isb[stalist,1]],lon[isb[stalist,0],isb[stalist,1]],'ok',markersize=mk-5)
+    ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
+    ax1.invert_yaxis()
     ax1.grid(True)
 
-    ax2 = fig0.add_subplot(313)
-    ax2.plot(tlp,bp_anom[:,isb[nn*5][0],isb[nn*5][1]],label='anom')
-    ax2.plot(tlp,bp_anom2[:,isb[nn*5][0],isb[nn*5][1]],label='anom2')
-    ax2.legend()
-    ax2.set_ylim(yl1-500,yl2+500)
-    ax2.axhline(c='k',lw=1.5)
-    ax2.grid(True)
-
-    if not os.path.exists(savedir + 'strike_par'):
-        os.mkdir(savedir + 'strike_par')
+    if not os.path.exists(savedir + 'strike_par_1'):
+        os.mkdir(savedir + 'strike_par_1')
 
     # plt.show()
-    plt.savefig(savedir + 'strike_par/mooring_' + str(nn))
+    plt.savefig(savedir + 'strike_par_1/mooring_' + str(nn))
+    plt.close()
+
+# strike-parallel line at 2000 m
+isb = np.argwhere((bath<2002) & (bath>1998))
+stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
+for nn in range(int(np.around(len(isb)/5))):
+    fig0 = plt.figure(figsize=(8,8))
+    ax0 = fig0.add_subplot(212)
+    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]],label='baroclinic')
+    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]],label='ssh')
+    ax0.plot(tlp2,bp_anom2[:,isb[nn*5][0],isb[nn*5][1]],color='r',label='sum')
+
+    ax0.set_ylim(-1500,1500)
+    ax0.set_title(str(np.around(lat[isb[nn*5][0],isb[nn*5][1]],decimals=2)) +
+        ', ' + str(np.around(lon[isb[nn*5][0],isb[nn*5][1]],decimals=2))
+        + ', ' + str(np.around(bath[isb[nn*5][0],isb[nn*5][1]])))
+    ax0.legend()
+    ax0.axhline(c='k',lw=1)
+    ax0.grid(True)
+
+    ax1 = fig0.add_subplot(211)
+    bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
+    ax1.plot(lat[isb[stalist,0],isb[stalist,1]],lon[isb[stalist,0],isb[stalist,1]],'ok',markersize=mk-5)
+    ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
+    ax1.invert_yaxis()
+    ax1.grid(True)
+
+    if not os.path.exists(savedir + 'strike_par_2'):
+        os.mkdir(savedir + 'strike_par_2')
+
+    # plt.show()
+    plt.savefig(savedir + 'strike_par_2/mooring_' + str(nn))
     plt.close()
 
 # strike-perpendicular line
-for nn in range(20):
-    fig1 = plt.figure(figsize=(8,8))
-    ax1 = fig1.add_subplot(311)
-    ax1.plot(tlp,bp_bc_anom[:,30,nn*10],label='baroclinic')
-    ax1.plot(tlp,bp_ssh_anom[:,30,nn*10],label='ssh')
-    ax1.plot(tlp,bp_bc_anom[:,30,nn*10]+bp_ssh_anom[:,30,nn*10],color='r',label='sum')
+stalist = [x * 10 for x in list(range(5,24))]
+for nn in range(5,24):
+    for mm in range(1,5):
+        fig1 = plt.figure(figsize=(8,8))
+        ax1 = fig1.add_subplot(212)
+        ax1.plot(tlp2,bp_bc_anom[:,150*mm-50,nn*10],label='baroclinic')
+        ax1.plot(tlp2,bp_ssh_anom[:,150*mm-50,nn*10],label='ssh')
+        ax1.plot(tlp2,bp_bc_anom[:,150*mm-50,nn*10]+bp_ssh_anom[:,150*mm-50,nn*10],color='r',label='sum')
 
-    if nn==0:
-        yl1, yl2 = ax1.get_ylim()
-    ax1.set_ylim(yl1-500,yl2+500)
-    ax1.set_title(str(np.around(lat[30,nn*10],decimals=2)) + ', ' + str(np.around(lon[30,nn*10],decimals=2))
-        + ', ' + str(np.around(bath[30,nn*10])))
-    ax1.legend()
-    ax1.axhline(c='k',lw=1.5)
-    ax1.grid(True)
+        ax1.set_ylim(-1500,1500)
+        ax1.set_title(str(np.around(lat[150*mm-50,nn*10],decimals=2)) + ', ' + str(np.around(lon[150*mm-50,nn*10],decimals=2))
+            + ', ' + str(np.around(bath[150*mm-50,nn*10])))
+        ax1.legend()
+        ax1.axhline(c='k',lw=1)
+        ax1.grid(True)
 
-    ax2 = fig1.add_subplot(312)
-    x1 = np.convolve(bp_bc_anom[:,30,nn*10], np.ones(10)/10, mode='same')
-    x2 = np.convolve(bp_ssh_anom[:,30,nn*10], np.ones(10)/10, mode='same')
-    metric = x1/x2
-    ax2.plot(tlp,metric,label='bc/ssh')
-    ax2.legend()
-    ax2.set_ylim(-2,2)
-    ax2.axhline(c='k',lw=1.5)
-    ax2.grid(True)
+        ax2 = fig1.add_subplot(211)
+        bth = ax2.contour(lat, lon, bath, [4, 300, 2000], colors='black')
+        ax2.plot(lat[150*mm-50,stalist],lon[150*mm-50,stalist],'ok',markersize=mk-5)
+        ax2.plot(lat[150*mm-50,nn*10],lon[150*mm-50,nn*10],'or',markersize=mk-5)
+        ax2.invert_yaxis()
+        ax2.grid(True)
 
-    ax3 = fig1.add_subplot(313)
-    ax3.plot(tlp,bp_anom[:,30,nn*10],label='anom')
-    ax3.plot(tlp,bp_anom2[:,30,nn*10],label='anom2')
-    ax3.legend()
-    ax3.set_ylim(yl1-500,yl2+500)
-    ax3.axhline(c='k',lw=1.5)
-    ax3.grid(True)
+        if not os.path.exists(savedir + 'strike_perp_' + str(mm)):
+            os.mkdir(savedir + 'strike_perp_' +str(mm))
 
-    if not os.path.exists(savedir + 'strike_perp'):
-        os.mkdir(savedir + 'strike_perp')
-
-    # plt.show()
-    plt.savefig(savedir + 'strike_perp/mooring_' + str(nn))
-    plt.close()
+        # plt.show()
+        plt.savefig(savedir + 'strike_perp_' + str(mm) + '/mooring_' + str(nn-5))
+        plt.close()

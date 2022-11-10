@@ -20,36 +20,38 @@ rholp = np.append(rholp,[rho2],axis=0)
 rho2 = rho3.copy()
 """
 
-# PLOTTING
-# plotting parameters
-fs = 14 # primary fontsize
-lw = 3 # primary linewidth
-mk = 10 # primary markersize
-cmap = cmocean.cm.balance # formerly thermal
+print(list(range(20)))
 
-lon = np.array([[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5], \
-    [1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5]])
-lat = np.array([[1, 1, 1, 1, 1],[2, 2, 2, 2, 2],[3, 3, 3, 3, 3],[4, 4, 4, 4, 4], \
-    [5, 5, 5, 5, 5],[6, 6, 6, 6, 6],[7, 7, 7, 7, 7],[8, 8, 8, 8, 8],[9, 9, 9, 9, 9],[10, 10, 10, 10, 10]])
-c = np.random.random([10,5])
-print(c)
-
-fig1 = plt.figure(figsize=(8,8))
-ax1 = fig1.add_subplot(111)
-cs = ax1.pcolormesh(lon, lat, c, cmap=cmap, vmin=-1, vmax=1)
-plt.show()
-plt.close()
-
-c2 = np.random.random([10,5])
-print(c2)
-
-mask = np.absolute(c) < 0.2
-C2 = np.ma.masked_array(c2,mask=mask)
-fig1 = plt.figure(figsize=(8,8))
-ax1 = fig1.add_subplot(111)
-cs = ax1.pcolormesh(lon, lat, C2, cmap=cmap, vmin=-1, vmax=1)
-plt.show()
-plt.close()
+# # PLOTTING
+# # plotting parameters
+# fs = 14 # primary fontsize
+# lw = 3 # primary linewidth
+# mk = 10 # primary markersize
+# cmap = cmocean.cm.balance # formerly thermal
+#
+# lon = np.array([[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5], \
+#     [1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5],[1, 2, 3, 4, 5]])
+# lat = np.array([[1, 1, 1, 1, 1],[2, 2, 2, 2, 2],[3, 3, 3, 3, 3],[4, 4, 4, 4, 4], \
+#     [5, 5, 5, 5, 5],[6, 6, 6, 6, 6],[7, 7, 7, 7, 7],[8, 8, 8, 8, 8],[9, 9, 9, 9, 9],[10, 10, 10, 10, 10]])
+# c = np.random.random([10,5])
+# print(c)
+#
+# fig1 = plt.figure(figsize=(8,8))
+# ax1 = fig1.add_subplot(111)
+# cs = ax1.pcolormesh(lon, lat, c, cmap=cmap, vmin=-1, vmax=1)
+# plt.show()
+# plt.close()
+#
+# c2 = np.random.random([10,5])
+# print(c2)
+#
+# mask = np.absolute(c) < 0.2
+# C2 = np.ma.masked_array(c2,mask=mask)
+# fig1 = plt.figure(figsize=(8,8))
+# ax1 = fig1.add_subplot(111)
+# cs = ax1.pcolormesh(lon, lat, C2, cmap=cmap, vmin=-1, vmax=1)
+# plt.show()
+# plt.close()
 
 # topdir = '../LO_output/allinone/'
 # loadir = topdir + 'pickles_2017-18/'
