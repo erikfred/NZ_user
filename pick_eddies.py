@@ -22,11 +22,11 @@ topdir = '../LO_output/allinone/'
 loadir = topdir + 'pickles_2017-18/'
 
 # name the eddy
-estr = 'eddy3';
-pos = False; # set to True for + SSH anomaly and False for -
+estr = 'eddy1b';
+pos = True; # set to True for + SSH anomaly and False for -
 # save time by reducing this interval as much as possible
-n1 = 258;
-n2 = 353;
+n1 = 50;
+n2 = 106;
 
 #### end setup ####
 
@@ -153,21 +153,25 @@ else:
 # time series plots of BP components following eddy
 fig0 = plt.figure(figsize=(8,8))
 ax0 = fig0.add_subplot(212)
-ax0.plot(t_eddy,bp_bc_eddy,label='baroclinic')
-ax0.plot(t_eddy,bp_ssh_eddy,label='ssh')
-ax0.plot(t_eddy,bp_anom_eddy,color='r',label='sum')
+ax0.plot(t_eddy,bp_bc_eddy/100, label='baroclinic')
+ax0.plot(t_eddy,bp_ssh_eddy/100, label='ssh')
+ax0.plot(t_eddy,bp_anom_eddy/100, color='r', label='sum')
 
 ax0.legend()
-ax0.axhline(c='k',lw=1.5)
+ax0.axhline(c='k',lw=1)
 ax0.set_title(estr + ' ' + datetime.fromtimestamp(tlp[n1]).strftime('%m/%d/%y') +
     '-' + datetime.fromtimestamp(tlp[n2]).strftime('%m/%d/%y'))
 myFmt = mdates.DateFormatter('%m/%d')
 ax0.xaxis.set_major_formatter(myFmt)
+ax0.set_ylabel('P (cm)')
 ax0.grid(True)
 
 ax1 = fig0.add_subplot(211)
 bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
-ax1.plot(ctrs_ll[:,1],ctrs_ll[:,0],'r')
+ax1.plot(ctrs_ll[0,1],ctrs_ll[0,0],'ob',label='start')
+ax1.plot(ctrs_ll[:,1],ctrs_ll[:,0],'r',label='path')
+ax1.plot(ctrs_ll[-1,1],ctrs_ll[-1,0],'xb',label='end')
+ax1.legend()
 ax1.invert_yaxis()
 ax1.grid(True)
 
@@ -185,18 +189,22 @@ for ii in range(25):
     iin = int(ii*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo],label='baroclinic')
-    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo],label='ssh')
-    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo],color='r',label='sum')
+    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]/100,label='baroclinic')
+    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]/100,label='ssh')
+    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]/100,color='r',label='sum')
 
     # ax2.legend()
     ax2.axhline(c='k',lw=1)
     ax2.axvline(t_eddy[iin],c='k',lw=1)
-    ax2.axes.xaxis.set_ticklabels([])
-    ax2.set_ylim(-1500,1500)
-    ax2.set_title(str(int(bath[iila,iilo])) + ' m')
-    # myFmt = mdates.DateFormatter('%m/%d')
-    # ax2.xaxis.set_major_formatter(myFmt)
+    myFmt = mdates.DateFormatter('%m/%d')
+    ax2.xaxis.set_major_formatter(myFmt)
+    plt.xticks(rotation=45, ha='right')
+    if ii < 20:
+        ax2.axes.xaxis.set_ticklabels([])
+    ax2.set_ylim(-15,15)
+    ax2.set_title(str(int(bath[iila,iilo])) + ' m', fontsize=fs)
+    if (ii % 5) == 0:
+        ax2.set_ylabel('P (cm)', fontsize=fs)
     ax2.grid(True)
 
 if not os.path.exists(savedir + estr):
@@ -213,18 +221,22 @@ for ii in range(25):
     iin = int(ii*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],label='baroclinic')
-    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],label='ssh')
-    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]],color='r',label='sum')
+    ax2.plot(t_eddy,(bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,label='baroclinic')
+    ax2.plot(t_eddy,(bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,label='ssh')
+    ax2.plot(t_eddy,(bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,color='r',label='sum')
 
     # ax2.legend()
     ax2.axhline(c='k',lw=1)
     ax2.axvline(t_eddy[iin],c='k',lw=1)
-    ax2.axes.xaxis.set_ticklabels([])
-    ax2.set_ylim(-1500,1500)
-    ax2.set_title(str(int(bath[iila,iilo])) + ' m')
-    # myFmt = mdates.DateFormatter('%m/%d')
-    # ax2.xaxis.set_major_formatter(myFmt)
+    myFmt = mdates.DateFormatter('%m/%d')
+    ax2.xaxis.set_major_formatter(myFmt)
+    plt.xticks(rotation=45, ha='right')
+    if ii < 20:
+        ax2.axes.xaxis.set_ticklabels([])
+    ax2.set_ylim(-15,15)
+    ax2.set_title(str(int(bath[iila,iilo])) + ' m', fontsize=fs)
+    if (ii % 5) == 0:
+        ax2.set_ylabel('P (cm)', fontsize=fs)
     ax2.grid(True)
 
 if not os.path.exists(savedir + estr):
