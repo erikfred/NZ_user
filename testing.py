@@ -20,7 +20,11 @@ rholp = np.append(rholp,[rho2],axis=0)
 rho2 = rho3.copy()
 """
 
-print(list(range(20)))
+topdir = '../LO_output/allinone/'
+loadir = topdir + 'pickles_2018-19/'
+outdir = '../LO_output/mapview/'
+savedir = outdir + loadir[-8:]
+print(savedir)
 
 # # PLOTTING
 # # plotting parameters

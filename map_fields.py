@@ -15,9 +15,10 @@ import pickle
 from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
-savedir = '../LO_output/mapview/'
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2017-18/'
+loadir = topdir + 'pickles_2020-21/'
+outdir = '../LO_output/mapview/'
+savedir = outdir + loadir[-8:]
 
 #### end setup ####
 
@@ -60,17 +61,17 @@ for nn in range(len(bp_anom2[:,0,0])): # for each day
     # total anomaly
     fig1 = plt.figure(figsize=(8,8))
     ax1 = fig1.add_subplot(111)
-    cs = ax1.pcolormesh(lon, lat, bp_anom2[nn,:,:], cmap=cmap, vmin=-1000, vmax=1000)
+    cs = ax1.pcolormesh(lon, lat, bp_anom2[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
 
     ax1.axis('square')
     # ax1.set_xlim((minlon,maxlon))
     # ax1.set_ylim((minlat, maxlat))
     ax1.grid(True)
-    ax1.set_title('BPA ' + di.strftime('%m/%d/%y'))
+    ax1.set_title('BPA ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
 
     cb = fig1.colorbar(cs)
-    cb.set_label('Pressure (Pa)', fontsize=fs)
+    cb.set_label('Pressure (cm)', fontsize=fs)
     cb.ax.tick_params(labelsize=fs)
 
     # plt.show()
@@ -82,15 +83,15 @@ for nn in range(len(bp_anom2[:,0,0])): # for each day
     # baroclinic component
     fig2 = plt.figure(figsize=(8,8))
     ax2 = fig2.add_subplot(111)
-    cs = ax2.pcolormesh(lon, lat, bp_bc_anom[nn,:,:], cmap=cmap, vmin=-1000, vmax=1000)
+    cs = ax2.pcolormesh(lon, lat, bp_bc_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
 
     ax2.axis('square')
     ax2.grid(True)
-    ax2.set_title('P_BC ' + di.strftime('%m/%d/%y'))
+    ax2.set_title('P_BC ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
 
     cb = fig2.colorbar(cs)
-    cb.set_label('Pressure (Pa)', fontsize=fs)
+    cb.set_label('Pressure (cm)', fontsize=fs)
     cb.ax.tick_params(labelsize=fs)
 
     # plt.show()
@@ -102,15 +103,15 @@ for nn in range(len(bp_anom2[:,0,0])): # for each day
     # ssh component
     fig3 = plt.figure(figsize=(8,8))
     ax3 = fig3.add_subplot(111)
-    cs = ax3.pcolormesh(lon, lat, bp_ssh_anom[nn,:,:], cmap=cmap, vmin=-1000, vmax=1000)
+    cs = ax3.pcolormesh(lon, lat, bp_ssh_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
 
     ax3.axis('square')
     ax3.grid(True)
-    ax3.set_title('P_SSH ' + di.strftime('%m/%d/%y'))
+    ax3.set_title('P_SSH ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
 
     cb = fig3.colorbar(cs)
-    cb.set_label('Pressure (m)', fontsize=fs)
+    cb.set_label('Pressure (cm)', fontsize=fs)
     cb.ax.tick_params(labelsize=fs)
 
     # plt.show()

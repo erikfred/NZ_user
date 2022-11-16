@@ -17,16 +17,17 @@ import pickle
 from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
-savedir = '../LO_output/eddy_tracking/'
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2017-18/'
+loadir = topdir + 'pickles_2020-21/'
+outdir = '../LO_output/eddy_tracking/'
+savedir = outdir + loadir[-8:]
 
 # name the eddy
-estr = 'eddy1b';
-pos = True; # set to True for + SSH anomaly and False for -
+estr = 'eddy2b';
+pos = False; # set to True for + SSH anomaly and False for -
 # save time by reducing this interval as much as possible
-n1 = 50;
-n2 = 106;
+n1 = 195;
+n2 = 227;
 
 #### end setup ####
 
@@ -142,6 +143,8 @@ else:
     t_eddy = [datetime.fromtimestamp(t) for t in tlp[n1:n2]]
 
     # save relevant arrays
+    if not os.path.exists(savedir + estr):
+        os.mkdir(savedir + estr)
     pickle.dump(t_eddy, open((savedir + estr + '/t_eddy.p'), 'wb'))
     pickle.dump(bp_anom_eddy, open((savedir + estr + '/bp_eddy.p'), 'wb'))
     pickle.dump(bp_bc_eddy, open((savedir + estr + '/bc_eddy.p'), 'wb'))
