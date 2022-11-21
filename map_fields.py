@@ -16,7 +16,7 @@ from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2020-21/'
+loadir = topdir + 'pickles_2017-18/'
 outdir = '../LO_output/mapview/'
 savedir = outdir + loadir[-8:]
 
@@ -52,74 +52,75 @@ fs = 14 # primary fontsize
 lw = 3 # primary linewidth
 mk = 10 # primary markersize
 cmap = cmocean.cm.balance # formerly thermal
+cmap2 = cmocean.cm.haline
 
 plt.close('all')
 
-# BOTTOM PRESSURE ANOMALIES
-for nn in range(len(bp_anom2[:,0,0])): # for each day
-    di = datetime.fromtimestamp(tlp[nn])
-    # total anomaly
-    fig1 = plt.figure(figsize=(8,8))
-    ax1 = fig1.add_subplot(111)
-    cs = ax1.pcolormesh(lon, lat, bp_anom2[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-    bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax1.axis('square')
-    # ax1.set_xlim((minlon,maxlon))
-    # ax1.set_ylim((minlat, maxlat))
-    ax1.grid(True)
-    ax1.set_title('BPA ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
-
-    cb = fig1.colorbar(cs)
-    cb.set_label('Pressure (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_anom'):
-        os.mkdir(savedir + 'bp_anom')
-    plt.savefig(savedir + 'bp_anom/bp_anom_' + str(nn).zfill(4))
-    plt.close()
-
-    # baroclinic component
-    fig2 = plt.figure(figsize=(8,8))
-    ax2 = fig2.add_subplot(111)
-    cs = ax2.pcolormesh(lon, lat, bp_bc_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-    bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax2.axis('square')
-    ax2.grid(True)
-    ax2.set_title('P_BC ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
-
-    cb = fig2.colorbar(cs)
-    cb.set_label('Pressure (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_bc'):
-        os.mkdir(savedir + 'bp_bc')
-    plt.savefig(savedir + 'bp_bc/bp_bc_' + str(nn).zfill(4))
-    plt.close()
-
-    # ssh component
-    fig3 = plt.figure(figsize=(8,8))
-    ax3 = fig3.add_subplot(111)
-    cs = ax3.pcolormesh(lon, lat, bp_ssh_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-    bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax3.axis('square')
-    ax3.grid(True)
-    ax3.set_title('P_SSH ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
-
-    cb = fig3.colorbar(cs)
-    cb.set_label('Pressure (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_ssh'):
-        os.mkdir(savedir + 'bp_ssh')
-    plt.savefig(savedir + 'bp_ssh/bp_ssh_' + str(nn).zfill(4))
-    plt.close()
+# # BOTTOM PRESSURE ANOMALIES
+# for nn in range(len(bp_anom2[:,0,0])): # for each day
+#     di = datetime.fromtimestamp(tlp[nn])
+#     # total anomaly
+#     fig1 = plt.figure(figsize=(8,8))
+#     ax1 = fig1.add_subplot(111)
+#     cs = ax1.pcolormesh(lon, lat, bp_anom2[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
+#     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
 #
+#     ax1.axis('square')
+#     # ax1.set_xlim((minlon,maxlon))
+#     # ax1.set_ylim((minlat, maxlat))
+#     ax1.grid(True)
+#     ax1.set_title('BPA ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
+#
+#     cb = fig1.colorbar(cs)
+#     cb.set_label('Pressure (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_anom'):
+#         os.mkdir(savedir + 'bp_anom')
+#     plt.savefig(savedir + 'bp_anom/bp_anom_' + str(nn).zfill(4))
+#     plt.close()
+#
+#     # baroclinic component
+#     fig2 = plt.figure(figsize=(8,8))
+#     ax2 = fig2.add_subplot(111)
+#     cs = ax2.pcolormesh(lon, lat, bp_bc_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
+#     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+#
+#     ax2.axis('square')
+#     ax2.grid(True)
+#     ax2.set_title('P_BC ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
+#
+#     cb = fig2.colorbar(cs)
+#     cb.set_label('Pressure (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_bc'):
+#         os.mkdir(savedir + 'bp_bc')
+#     plt.savefig(savedir + 'bp_bc/bp_bc_' + str(nn).zfill(4))
+#     plt.close()
+#
+#     # ssh component
+#     fig3 = plt.figure(figsize=(8,8))
+#     ax3 = fig3.add_subplot(111)
+#     cs = ax3.pcolormesh(lon, lat, bp_ssh_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
+#     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+#
+#     ax3.axis('square')
+#     ax3.grid(True)
+#     ax3.set_title('P_SSH ' + di.strftime('%m/%d/%y') + ' (n = ' + str(nn) + ')')
+#
+#     cb = fig3.colorbar(cs)
+#     cb.set_label('Pressure (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_ssh'):
+#         os.mkdir(savedir + 'bp_ssh')
+#     plt.savefig(savedir + 'bp_ssh/bp_ssh_' + str(nn).zfill(4))
+#     plt.close()
+
 # # CORRELATION COEFFICIENTS
 # # strike-parallel line
 # c_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
@@ -290,7 +291,166 @@ for nn in range(len(bp_anom2[:,0,0])): # for each day
 #         os.mkdir(savedir + 'bp_ssh')
 #     plt.savefig(savedir + 'bp_ssh/xcorr_strikeperp_' + str(nn))
 #     plt.close()
-#
+
+# SAME LINES, NOW RMS AS METRIC
+# strike-parallel line
+c_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+c_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+c_ssh = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+isb = np.argwhere((bath<502) & (bath>498))
+for nn in range(int(np.around(len(isb)/5))):
+    for mm in range(len(bp_anom2[0,0,:])): # for every grid point
+        for kk in range(len(bp_anom2[0,:,0])): # for every grid point
+            # full anomaly
+            p1 = bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]
+            p2 = bp_anom2[:,kk,mm]
+            c_anom[kk,mm] = np.std(p1-p2)
+            # baroclinic component
+            p1 = bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]
+            p2 = bp_bc_anom[:,kk,mm]
+            c_bc[kk,mm] = np.std(p1-p2)
+            # ssh component
+            p1 = bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]
+            p2 = bp_ssh_anom[:,kk,mm]
+            c_ssh[kk,mm] = np.std(p1-p2)
+
+    # total anomaly
+    fig1 = plt.figure(figsize=(8,8))
+    ax1 = fig1.add_subplot(111)
+    cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax1.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+    bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax1.axis('square')
+    ax1.grid(True)
+
+    cb = fig1.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_anom'):
+        os.mkdir(savedir + 'bp_anom')
+    plt.savefig(savedir + 'bp_anom/rms_strikepar500_' + str(nn))
+    plt.close()
+
+    # baroclinic component
+    fig2 = plt.figure(figsize=(8,8))
+    ax2 = fig2.add_subplot(111)
+    cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax2.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+    bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax2.axis('square')
+    ax2.grid(True)
+
+    cb = fig2.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_bc'):
+        os.mkdir(savedir + 'bp_bc')
+    plt.savefig(savedir + 'bp_bc/rms_strikepar500_' + str(nn))
+    plt.close()
+
+    # ssh component
+    fig3 = plt.figure(figsize=(8,8))
+    ax3 = fig3.add_subplot(111)
+    cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax3.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+    bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax3.axis('square')
+    ax3.grid(True)
+
+    cb = fig3.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_ssh'):
+        os.mkdir(savedir + 'bp_ssh')
+    plt.savefig(savedir + 'bp_ssh/rms_strikepar500_' + str(nn))
+    plt.close()
+
+# strike-perpendicular line
+for nn in range(5,24):
+    for mm in range(len(bp_anom2[0,0,:])): # for every grid point
+        for kk in range(len(bp_anom2[0,:,0])): # for every grid point
+            # full anomaly
+            p1 = bp_anom2[:,100,nn*10]
+            p2 = bp_anom2[:,kk,mm]
+            c_anom[kk,mm] = np.std(p1-p2)
+            # baroclinic component
+            p1 = bp_bc_anom[:,100,nn*10]
+            p2 = bp_bc_anom[:,kk,mm]
+            c_bc[kk,mm] = np.std(p1-p2)
+            # ssh component
+            p1 = bp_ssh_anom[:,100,nn*10]
+            p2 = bp_ssh_anom[:,kk,mm]
+            c_ssh[kk,mm] = np.std(p1-p2)
+
+    # total anomaly
+    fig1 = plt.figure(figsize=(8,8))
+    ax1 = fig1.add_subplot(111)
+    cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax1.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+    bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax1.axis('square')
+    ax1.grid(True)
+
+    cb = fig1.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_anom'):
+        os.mkdir(savedir + 'bp_anom')
+    plt.savefig(savedir + 'bp_anom/rms_strikeperp_' + str(nn))
+    plt.close()
+
+    # baroclinic component
+    fig2 = plt.figure(figsize=(8,8))
+    ax2 = fig2.add_subplot(111)
+    cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax2.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+    bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax2.axis('square')
+    ax2.grid(True)
+
+    cb = fig2.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_bc'):
+        os.mkdir(savedir + 'bp_bc')
+    plt.savefig(savedir + 'bp_bc/rms_strikeperp_' + str(nn))
+    plt.close()
+
+    # ssh component
+    fig3 = plt.figure(figsize=(8,8))
+    ax3 = fig3.add_subplot(111)
+    cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+    ax3.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+    bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+
+    ax3.axis('square')
+    ax3.grid(True)
+
+    cb = fig3.colorbar(cs)
+    cb.set_label('RMS (cm)', fontsize=fs)
+    cb.ax.tick_params(labelsize=fs)
+
+    # plt.show()
+    if not os.path.exists(savedir + 'bp_ssh'):
+        os.mkdir(savedir + 'bp_ssh')
+    plt.savefig(savedir + 'bp_ssh/rms_strikeperp_' + str(nn))
+    plt.close()
+
 # # CROSS-WISE CORRELATION COEFFICIENTS
 # c_ssh_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
 # c_bc_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
