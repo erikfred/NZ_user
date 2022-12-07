@@ -153,7 +153,7 @@ else:
     pickle.dump(ctrs_xy, open((savedir + estr + '/ctrs_xy.p'), 'wb'))
 
 # PLOTTING
-# time series plots of BP components following eddy
+# eddy track map plot and time series plot of BP components following eddy
 fig0 = plt.figure(figsize=(8,8))
 ax0 = fig0.add_subplot(212)
 ax0.plot(t_eddy,bp_bc_eddy/100, label='baroclinic')

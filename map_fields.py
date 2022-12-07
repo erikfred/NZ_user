@@ -56,14 +56,74 @@ cmap2 = cmocean.cm.haline
 
 plt.close('all')
 
-# # BOTTOM PRESSURE ANOMALIES
+# RMS OF BOTTOM PRESSURE COMPONENT ANOMALIES
+# total anomaly
+fig1 = plt.figure(figsize=(8,8))
+ax1 = fig1.add_subplot(111)
+cs = ax1.pcolormesh(lon, lat, np.std(bp_anom2, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax1.axis('square')
+# ax1.set_xlim((minlon,maxlon))
+# ax1.set_ylim((minlat, maxlat))
+ax1.grid(True)
+
+cb = fig1.colorbar(cs)
+cb.set_label('Pressure (cm)', fontsize=fs)
+cb.ax.tick_params(labelsize=fs)
+
+# plt.show()
+if not os.path.exists(savedir + 'bp_anom'):
+    os.mkdir(savedir + 'bp_anom')
+plt.savefig(savedir + 'bp_anom/bp_anom_rms')
+plt.close()
+
+# baroclinic component
+fig2 = plt.figure(figsize=(8,8))
+ax2 = fig2.add_subplot(111)
+cs = ax2.pcolormesh(lon, lat, np.std(bp_bc_anom, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax2.axis('square')
+ax2.grid(True)
+
+cb = fig2.colorbar(cs)
+cb.set_label('Pressure (cm)', fontsize=fs)
+cb.ax.tick_params(labelsize=fs)
+
+# plt.show()
+if not os.path.exists(savedir + 'bp_bc'):
+    os.mkdir(savedir + 'bp_bc')
+plt.savefig(savedir + 'bp_bc/bp_bc_rms')
+plt.close()
+
+# ssh component
+fig3 = plt.figure(figsize=(8,8))
+ax3 = fig3.add_subplot(111)
+cs = ax3.pcolormesh(lon, lat, np.std(bp_ssh_anom, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax3.axis('square')
+ax3.grid(True)
+
+cb = fig3.colorbar(cs)
+cb.set_label('Pressure (cm)', fontsize=fs)
+cb.ax.tick_params(labelsize=fs)
+
+# plt.show()
+if not os.path.exists(savedir + 'bp_ssh'):
+    os.mkdir(savedir + 'bp_ssh')
+plt.savefig(savedir + 'bp_ssh/bp_ssh_rms')
+plt.close()
+
+# # DAILY BOTTOM PRESSURE COMPONENT ANOMALIES
 # for nn in range(len(bp_anom2[:,0,0])): # for each day
 #     di = datetime.fromtimestamp(tlp[nn])
 #     # total anomaly
 #     fig1 = plt.figure(figsize=(8,8))
 #     ax1 = fig1.add_subplot(111)
 #     cs = ax1.pcolormesh(lon, lat, bp_anom2[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-#     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax1.axis('square')
 #     # ax1.set_xlim((minlon,maxlon))
@@ -85,7 +145,7 @@ plt.close('all')
 #     fig2 = plt.figure(figsize=(8,8))
 #     ax2 = fig2.add_subplot(111)
 #     cs = ax2.pcolormesh(lon, lat, bp_bc_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-#     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax2.axis('square')
 #     ax2.grid(True)
@@ -105,7 +165,7 @@ plt.close('all')
 #     fig3 = plt.figure(figsize=(8,8))
 #     ax3 = fig3.add_subplot(111)
 #     cs = ax3.pcolormesh(lon, lat, bp_ssh_anom[nn,:,:]/100, cmap=cmap, vmin=-15, vmax=15)
-#     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax3.axis('square')
 #     ax3.grid(True)
@@ -121,7 +181,7 @@ plt.close('all')
 #     plt.savefig(savedir + 'bp_ssh/bp_ssh_' + str(nn).zfill(4))
 #     plt.close()
 
-# # CORRELATION COEFFICIENTS
+# # CORRELATION COEFFICIENTS RELATIVE TO REFERENCE POINTS
 # # strike-parallel line
 # c_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
 # c_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
@@ -154,7 +214,7 @@ plt.close('all')
 #     ax1 = fig1.add_subplot(111)
 #     cs = ax1.pcolormesh(lon, lat, c_anom, cmap=cmap, vmin=-1, vmax=1)
 #     ax1.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-#     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax1.axis('square')
 #     ax1.grid(True)
@@ -174,7 +234,7 @@ plt.close('all')
 #     ax2 = fig2.add_subplot(111)
 #     cs = ax2.pcolormesh(lon, lat, c_bc, cmap=cmap, vmin=-1, vmax=1)
 #     ax2.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-#     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax2.axis('square')
 #     ax2.grid(True)
@@ -194,7 +254,7 @@ plt.close('all')
 #     ax3 = fig3.add_subplot(111)
 #     cs = ax3.pcolormesh(lon, lat, c_ssh, cmap=cmap, vmin=-1, vmax=1)
 #     ax3.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-#     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax3.axis('square')
 #     ax3.grid(True)
@@ -237,7 +297,7 @@ plt.close('all')
 #     ax1 = fig1.add_subplot(111)
 #     cs = ax1.pcolormesh(lon, lat, c_anom, cmap=cmap, vmin=-1, vmax=1)
 #     ax1.plot(lon[30,nn*10], lat[30,nn*10], '*k', markersize=mk)
-#     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax1.axis('square')
 #     ax1.grid(True)
@@ -257,7 +317,7 @@ plt.close('all')
 #     ax2 = fig2.add_subplot(111)
 #     cs = ax2.pcolormesh(lon, lat, c_bc, cmap=cmap, vmin=-1, vmax=1)
 #     ax2.plot(lon[30,nn*10], lat[30,nn*10], '*k', markersize=mk)
-#     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax2.axis('square')
 #     ax2.grid(True)
@@ -277,7 +337,7 @@ plt.close('all')
 #     ax3 = fig3.add_subplot(111)
 #     cs = ax3.pcolormesh(lon, lat, c_ssh, cmap=cmap, vmin=-1, vmax=1)
 #     ax3.plot(lon[30,nn*10], lat[30,nn*10], '*k', markersize=mk)
-#     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax3.axis('square')
 #     ax3.grid(True)
@@ -292,166 +352,166 @@ plt.close('all')
 #     plt.savefig(savedir + 'bp_ssh/xcorr_strikeperp_' + str(nn))
 #     plt.close()
 
-# SAME LINES, NOW RMS AS METRIC
-# strike-parallel line
-c_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-c_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-c_ssh = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-isb = np.argwhere((bath<502) & (bath>498))
-for nn in range(int(np.around(len(isb)/5))):
-    for mm in range(len(bp_anom2[0,0,:])): # for every grid point
-        for kk in range(len(bp_anom2[0,:,0])): # for every grid point
-            # full anomaly
-            p1 = bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]
-            p2 = bp_anom2[:,kk,mm]
-            c_anom[kk,mm] = np.std(p1-p2)
-            # baroclinic component
-            p1 = bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]
-            p2 = bp_bc_anom[:,kk,mm]
-            c_bc[kk,mm] = np.std(p1-p2)
-            # ssh component
-            p1 = bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]
-            p2 = bp_ssh_anom[:,kk,mm]
-            c_ssh[kk,mm] = np.std(p1-p2)
+# # SAME LINES, NOW RMS AS METRIC
+# # strike-parallel line
+# c_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+# c_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+# c_ssh = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+# isb = np.argwhere((bath<502) & (bath>498))
+# for nn in range(int(np.around(len(isb)/5))):
+#     for mm in range(len(bp_anom2[0,0,:])): # for every grid point
+#         for kk in range(len(bp_anom2[0,:,0])): # for every grid point
+#             # full anomaly
+#             p1 = bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]
+#             p2 = bp_anom2[:,kk,mm]
+#             c_anom[kk,mm] = np.std(p1-p2)
+#             # baroclinic component
+#             p1 = bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]
+#             p2 = bp_bc_anom[:,kk,mm]
+#             c_bc[kk,mm] = np.std(p1-p2)
+#             # ssh component
+#             p1 = bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]
+#             p2 = bp_ssh_anom[:,kk,mm]
+#             c_ssh[kk,mm] = np.std(p1-p2)
+#
+#     # total anomaly
+#     fig1 = plt.figure(figsize=(8,8))
+#     ax1 = fig1.add_subplot(111)
+#     cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax1.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax1.axis('square')
+#     ax1.grid(True)
+#
+#     cb = fig1.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_anom'):
+#         os.mkdir(savedir + 'bp_anom')
+#     plt.savefig(savedir + 'bp_anom/rms_strikepar500_' + str(nn))
+#     plt.close()
+#
+#     # baroclinic component
+#     fig2 = plt.figure(figsize=(8,8))
+#     ax2 = fig2.add_subplot(111)
+#     cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax2.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax2.axis('square')
+#     ax2.grid(True)
+#
+#     cb = fig2.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_bc'):
+#         os.mkdir(savedir + 'bp_bc')
+#     plt.savefig(savedir + 'bp_bc/rms_strikepar500_' + str(nn))
+#     plt.close()
+#
+#     # ssh component
+#     fig3 = plt.figure(figsize=(8,8))
+#     ax3 = fig3.add_subplot(111)
+#     cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax3.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax3.axis('square')
+#     ax3.grid(True)
+#
+#     cb = fig3.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_ssh'):
+#         os.mkdir(savedir + 'bp_ssh')
+#     plt.savefig(savedir + 'bp_ssh/rms_strikepar500_' + str(nn))
+#     plt.close()
+#
+# # strike-perpendicular line
+# for nn in range(5,24):
+#     for mm in range(len(bp_anom2[0,0,:])): # for every grid point
+#         for kk in range(len(bp_anom2[0,:,0])): # for every grid point
+#             # full anomaly
+#             p1 = bp_anom2[:,100,nn*10]
+#             p2 = bp_anom2[:,kk,mm]
+#             c_anom[kk,mm] = np.std(p1-p2)
+#             # baroclinic component
+#             p1 = bp_bc_anom[:,100,nn*10]
+#             p2 = bp_bc_anom[:,kk,mm]
+#             c_bc[kk,mm] = np.std(p1-p2)
+#             # ssh component
+#             p1 = bp_ssh_anom[:,100,nn*10]
+#             p2 = bp_ssh_anom[:,kk,mm]
+#             c_ssh[kk,mm] = np.std(p1-p2)
+#
+#     # total anomaly
+#     fig1 = plt.figure(figsize=(8,8))
+#     ax1 = fig1.add_subplot(111)
+#     cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax1.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax1.axis('square')
+#     ax1.grid(True)
+#
+#     cb = fig1.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_anom'):
+#         os.mkdir(savedir + 'bp_anom')
+#     plt.savefig(savedir + 'bp_anom/rms_strikeperp_' + str(nn))
+#     plt.close()
+#
+#     # baroclinic component
+#     fig2 = plt.figure(figsize=(8,8))
+#     ax2 = fig2.add_subplot(111)
+#     cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax2.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax2.axis('square')
+#     ax2.grid(True)
+#
+#     cb = fig2.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_bc'):
+#         os.mkdir(savedir + 'bp_bc')
+#     plt.savefig(savedir + 'bp_bc/rms_strikeperp_' + str(nn))
+#     plt.close()
+#
+#     # ssh component
+#     fig3 = plt.figure(figsize=(8,8))
+#     ax3 = fig3.add_subplot(111)
+#     cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
+#     ax3.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+#     ax3.axis('square')
+#     ax3.grid(True)
+#
+#     cb = fig3.colorbar(cs)
+#     cb.set_label('RMS (cm)', fontsize=fs)
+#     cb.ax.tick_params(labelsize=fs)
+#
+#     # plt.show()
+#     if not os.path.exists(savedir + 'bp_ssh'):
+#         os.mkdir(savedir + 'bp_ssh')
+#     plt.savefig(savedir + 'bp_ssh/rms_strikeperp_' + str(nn))
+#     plt.close()
 
-    # total anomaly
-    fig1 = plt.figure(figsize=(8,8))
-    ax1 = fig1.add_subplot(111)
-    cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax1.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-    bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax1.axis('square')
-    ax1.grid(True)
-
-    cb = fig1.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_anom'):
-        os.mkdir(savedir + 'bp_anom')
-    plt.savefig(savedir + 'bp_anom/rms_strikepar500_' + str(nn))
-    plt.close()
-
-    # baroclinic component
-    fig2 = plt.figure(figsize=(8,8))
-    ax2 = fig2.add_subplot(111)
-    cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax2.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-    bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax2.axis('square')
-    ax2.grid(True)
-
-    cb = fig2.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_bc'):
-        os.mkdir(savedir + 'bp_bc')
-    plt.savefig(savedir + 'bp_bc/rms_strikepar500_' + str(nn))
-    plt.close()
-
-    # ssh component
-    fig3 = plt.figure(figsize=(8,8))
-    ax3 = fig3.add_subplot(111)
-    cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax3.plot(lon[isb[nn*5][0],isb[nn*5][1]], lat[isb[nn*5][0],isb[nn*5][1]], '*k', markersize=mk)
-    bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax3.axis('square')
-    ax3.grid(True)
-
-    cb = fig3.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_ssh'):
-        os.mkdir(savedir + 'bp_ssh')
-    plt.savefig(savedir + 'bp_ssh/rms_strikepar500_' + str(nn))
-    plt.close()
-
-# strike-perpendicular line
-for nn in range(5,24):
-    for mm in range(len(bp_anom2[0,0,:])): # for every grid point
-        for kk in range(len(bp_anom2[0,:,0])): # for every grid point
-            # full anomaly
-            p1 = bp_anom2[:,100,nn*10]
-            p2 = bp_anom2[:,kk,mm]
-            c_anom[kk,mm] = np.std(p1-p2)
-            # baroclinic component
-            p1 = bp_bc_anom[:,100,nn*10]
-            p2 = bp_bc_anom[:,kk,mm]
-            c_bc[kk,mm] = np.std(p1-p2)
-            # ssh component
-            p1 = bp_ssh_anom[:,100,nn*10]
-            p2 = bp_ssh_anom[:,kk,mm]
-            c_ssh[kk,mm] = np.std(p1-p2)
-
-    # total anomaly
-    fig1 = plt.figure(figsize=(8,8))
-    ax1 = fig1.add_subplot(111)
-    cs = ax1.contourf(lon, lat, c_anom/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax1.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
-    bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax1.axis('square')
-    ax1.grid(True)
-
-    cb = fig1.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_anom'):
-        os.mkdir(savedir + 'bp_anom')
-    plt.savefig(savedir + 'bp_anom/rms_strikeperp_' + str(nn))
-    plt.close()
-
-    # baroclinic component
-    fig2 = plt.figure(figsize=(8,8))
-    ax2 = fig2.add_subplot(111)
-    cs = ax2.contourf(lon, lat, c_bc/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax2.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
-    bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax2.axis('square')
-    ax2.grid(True)
-
-    cb = fig2.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_bc'):
-        os.mkdir(savedir + 'bp_bc')
-    plt.savefig(savedir + 'bp_bc/rms_strikeperp_' + str(nn))
-    plt.close()
-
-    # ssh component
-    fig3 = plt.figure(figsize=(8,8))
-    ax3 = fig3.add_subplot(111)
-    cs = ax3.contourf(lon, lat, c_ssh/100, levels=[0, 0.5, 1, 1.5, 2, 2.5], cmap=cmap2)
-    ax3.plot(lon[100,nn*10], lat[30,nn*10], '*k', markersize=mk)
-    bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
-
-    ax3.axis('square')
-    ax3.grid(True)
-
-    cb = fig3.colorbar(cs)
-    cb.set_label('RMS (cm)', fontsize=fs)
-    cb.ax.tick_params(labelsize=fs)
-
-    # plt.show()
-    if not os.path.exists(savedir + 'bp_ssh'):
-        os.mkdir(savedir + 'bp_ssh')
-    plt.savefig(savedir + 'bp_ssh/rms_strikeperp_' + str(nn))
-    plt.close()
-
-# # CROSS-WISE CORRELATION COEFFICIENTS
+# # CORRELATION COEFFICIENTS BETWEEN COMPONENTS
 # c_ssh_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
 # c_bc_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
 # c_ssh_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
@@ -482,7 +542,7 @@ for nn in range(5,24):
 # fig1 = plt.figure(figsize=(8,8))
 # ax1 = fig1.add_subplot(111)
 # cs = ax1.pcolormesh(lon, lat, c_ssh_anom, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+# bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 # ax1.axis('square')
 # ax1.grid(True)
@@ -508,7 +568,7 @@ for nn in range(5,24):
 # fig2 = plt.figure(figsize=(8,8))
 # ax2 = fig2.add_subplot(111)
 # cs = ax2.pcolormesh(lon, lat, c_bc_anom, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+# bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 # ax2.axis('square')
 # ax2.grid(True)
@@ -532,7 +592,7 @@ for nn in range(5,24):
 # fig3 = plt.figure(figsize=(8,8))
 # ax3 = fig3.add_subplot(111)
 # cs = ax3.pcolormesh(lon, lat, c_ssh_bc, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+# bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 # ax3.axis('square')
 # ax3.grid(True)
@@ -548,7 +608,7 @@ for nn in range(5,24):
 # plt.savefig(savedir + 'cross_field/xcorr_ssh_bc')
 # plt.close()
 
-# # WINDOWED CROSS-WISE CORRELATION COEFFICIENTS
+# # AS ABOVE, BUT WINDOWED RATHER THAN FULL-YEAR
 # win = 60 # play around with this number
 # savedir2 = savedir + 'cross_field/'
 # c_ssh_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
@@ -584,7 +644,7 @@ for nn in range(5,24):
 #     fig1 = plt.figure(figsize=(8,8))
 #     ax1 = fig1.add_subplot(111)
 #     cs = ax1.pcolormesh(lon, lat, c_ssh_anom, cmap=cmap, vmin=-1, vmax=1)
-#     bth = ax1.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax1.axis('square')
 #     ax1.grid(True)
@@ -610,7 +670,7 @@ for nn in range(5,24):
 #     fig2 = plt.figure(figsize=(8,8))
 #     ax2 = fig2.add_subplot(111)
 #     cs = ax2.pcolormesh(lon, lat, c_bc_anom, cmap=cmap, vmin=-1, vmax=1)
-#     bth = ax2.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax2.axis('square')
 #     ax2.grid(True)
@@ -634,7 +694,7 @@ for nn in range(5,24):
 #     fig3 = plt.figure(figsize=(8,8))
 #     ax3 = fig3.add_subplot(111)
 #     cs = ax3.pcolormesh(lon, lat, c_ssh_bc, cmap=cmap, vmin=-1, vmax=1)
-#     bth = ax3.contour(lon, lat, bath, [300, 2000], colors='black')
+#     bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 #
 #     ax3.axis('square')
 #     ax3.grid(True)

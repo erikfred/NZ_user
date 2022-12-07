@@ -20,8 +20,63 @@ rholp = np.append(rholp,[rho2],axis=0)
 rho2 = rho3.copy()
 """
 
-print(range(0,3,step=0.5))
-print(list(range(0,3,step=0.5)))
+# rholp = pickle.load(open(('../LO_output/allinone/pickles_2018-19/zetalp.p'), 'rb'))
+# print(np.nanmin(rholp))
+# print(str(np.nanmean(rholp)) + ' +/- ' + str(np.nanstd(rholp)))
+# print(np.nanmax(rholp))
+
+# make some things
+g = 9.81
+fn = '../LO_data/cas6_v0_live/f2016.12.17/ocean_his_0001.nc'
+ds = nc.Dataset(fn)
+G = zrfun.get_basic_info(fn, only_G=True)
+S = zrfun.get_basic_info(fn, only_S=True)
+h = ds['h'][:]
+z = zrfun.get_z(h, 0*h, S, only_rho=True)
+z0 = z[0,:,:].squeeze()
+zetalp = np.asarray([ds['zeta'][0,:,:]])
+# print(zetalp.shape)
+rholp = np.asarray([ds['rho'][0,:,:,:]]).squeeze()
+# print(rholp.shape)
+ds.close()
+
+Gh = G['h']
+z_w = zrfun.get_z(Gh, zetalp.squeeze(), S, only_w=True)
+DZ = np.diff(z_w, axis=0)
+# print(np.sum(DZ[:,100,100]))
+# print(rholp[0,:,100,100])
+# print(np.sum(DZ[:,100,100]))
+# print(g * 1025 * np.sum(DZ[:,100,100]))
+bp_tot = (g * (1000 + rholp) * DZ).sum(axis=0)
+# print(bp_tot[100,100])
+# new method
+ZW = zrfun.get_z(Gh, 0*zetalp.squeeze(), S, only_w=True)
+DZ = np.diff(ZW, axis=0)
+# print(np.sum(DZ[:,100,100]))
+# calculate the baroclinic pressure
+bp_bc = np.flip(np.cumsum(np.flip(g * (rholp - 0) * DZ, axis=0), axis=0), axis=0)[0,:,:]
+bp_bc2 = (g * (rholp - 0) * DZ).sum(axis=0)
+bp_ssh = (g * 1000 * (zetalp + DZ.sum(axis=0)))
+# print(bp_ssh[0,100,100])
+# print(bp_bc[100,100])
+# print(bp_bc2[100,100])
+print(bp_tot[100,100]-(bp_ssh[0,100,100]+bp_bc[100,100]))
+
+"""
+# total variability
+print(np.nanmean(rholp))
+print(np.nanstd(rholp))
+# layer-wise variability
+for nn in range(30):
+    print(np.nanmean(rholp[0,nn,:,:]))
+    print(np.nanstd(rholp[0,nn,:,:]))
+    print(np.nanmean(DZ[nn,:,:]))
+    print(' ')
+"""
+
+
+# print(range(0,3,step=0.5))
+# print(list(range(0,3,step=0.5)))
 
 # topdir = '../LO_output/allinone/'
 # loadir = topdir + 'pickles_2018-19/'
