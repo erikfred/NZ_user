@@ -60,7 +60,7 @@ plt.close('all')
 # total anomaly
 fig1 = plt.figure(figsize=(8,8))
 ax1 = fig1.add_subplot(111)
-cs = ax1.pcolormesh(lon, lat, np.std(bp_anom2, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+cs = ax1.contourf(lon, lat, np.std(bp_anom2, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
 bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 
 ax1.axis('square')
@@ -81,7 +81,7 @@ plt.close()
 # baroclinic component
 fig2 = plt.figure(figsize=(8,8))
 ax2 = fig2.add_subplot(111)
-cs = ax2.pcolormesh(lon, lat, np.std(bp_bc_anom, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+cs = ax2.contourf(lon, lat, np.std(bp_bc_anom, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
 bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 
 ax2.axis('square')
@@ -100,7 +100,7 @@ plt.close()
 # ssh component
 fig3 = plt.figure(figsize=(8,8))
 ax3 = fig3.add_subplot(111)
-cs = ax3.pcolormesh(lon, lat, np.std(bp_ssh_anom, axis=0)/100, cmap=cmap2, vmin=0, vmax=5)
+cs = ax3.contourf(lon, lat, np.std(bp_ssh_anom, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
 bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
 
 ax3.axis('square')
