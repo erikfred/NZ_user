@@ -11,12 +11,13 @@ import netCDF4 as nc
 import cmocean
 import matplotlib.pyplot as plt
 import pickle
+from scipy import signal
 
 from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2017-18/'
+loadir = topdir + 'pickles_2019-20/'
 outdir = '../LO_output/mapview/'
 savedir = outdir + loadir[-8:]
 
@@ -56,65 +57,75 @@ cmap2 = cmocean.cm.haline
 
 plt.close('all')
 
-# RMS OF BOTTOM PRESSURE COMPONENT ANOMALIES
-# total anomaly
-fig1 = plt.figure(figsize=(8,8))
-ax1 = fig1.add_subplot(111)
-cs = ax1.contourf(lon, lat, np.std(bp_anom2, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
-bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-
-ax1.axis('square')
-# ax1.set_xlim((minlon,maxlon))
-# ax1.set_ylim((minlat, maxlat))
-ax1.grid(True)
-
-cb = fig1.colorbar(cs)
-cb.set_label('Pressure (cm)', fontsize=fs)
-cb.ax.tick_params(labelsize=fs)
-
-# plt.show()
-if not os.path.exists(savedir + 'bp_anom'):
-    os.mkdir(savedir + 'bp_anom')
-plt.savefig(savedir + 'bp_anom/bp_anom_rms')
-plt.close()
-
-# baroclinic component
-fig2 = plt.figure(figsize=(8,8))
-ax2 = fig2.add_subplot(111)
-cs = ax2.contourf(lon, lat, np.std(bp_bc_anom, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
-bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-
-ax2.axis('square')
-ax2.grid(True)
-
-cb = fig2.colorbar(cs)
-cb.set_label('Pressure (cm)', fontsize=fs)
-cb.ax.tick_params(labelsize=fs)
-
-# plt.show()
-if not os.path.exists(savedir + 'bp_bc'):
-    os.mkdir(savedir + 'bp_bc')
-plt.savefig(savedir + 'bp_bc/bp_bc_rms')
-plt.close()
-
-# ssh component
-fig3 = plt.figure(figsize=(8,8))
-ax3 = fig3.add_subplot(111)
-cs = ax3.contourf(lon, lat, np.std(bp_ssh_anom, axis=0)/100, levels=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0], cmap=cmap2)
-bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-
-ax3.axis('square')
-ax3.grid(True)
-
-cb = fig3.colorbar(cs)
-cb.set_label('Pressure (cm)', fontsize=fs)
-cb.ax.tick_params(labelsize=fs)
-
-# plt.show()
-if not os.path.exists(savedir + 'bp_ssh'):
-    os.mkdir(savedir + 'bp_ssh')
-plt.savefig(savedir + 'bp_ssh/bp_ssh_rms')
-plt.close()
+# # RMS OF BOTTOM PRESSURE COMPONENT ANOMALIES
+# levels=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+# # total anomaly
+# fig1 = plt.figure(figsize=(8,8))
+# ax1 = fig1.add_subplot(111)
+# cs = ax1.contourf(lon, lat, np.std(bp_anom2, axis=0)/100, levels=levels, cmap=cmap2, extend='max')
+# bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+# ax1.axis('square')
+# # ax1.set_xlim((minlon,maxlon))
+# # ax1.set_ylim((minlat, maxlat))
+# ax1.grid(True)
+# ax1.tick_params(labelsize=fs-2)
+# plt.xticks(rotation=45)
+#
+# cb = fig1.colorbar(cs)
+# cb.set_label('RMS (cm)', fontsize=fs-2)
+# cb.ax.tick_params(labelsize=fs-2)
+#
+# # plt.show()
+# if not os.path.exists(savedir + 'bp_anom'):
+#     os.mkdir(savedir + 'bp_anom')
+# plt.savefig(savedir + 'bp_anom/bp_anom_rms')
+# plt.savefig(savedir + 'bp_anom/bp_anom_rms.eps')
+# plt.close()
+#
+# # baroclinic component
+# fig2 = plt.figure(figsize=(8,8))
+# ax2 = fig2.add_subplot(111)
+# cs = ax2.contourf(lon, lat, np.std(bp_bc_anom, axis=0)/100, levels=levels, cmap=cmap2, extend='max')
+# bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+# ax2.axis('square')
+# ax2.grid(True)
+# ax2.tick_params(labelsize=fs-2)
+# plt.xticks(rotation=45)
+#
+# cb = fig2.colorbar(cs)
+# cb.set_label('RMS (cm)', fontsize=fs-2)
+# cb.ax.tick_params(labelsize=fs-2)
+#
+# # plt.show()
+# if not os.path.exists(savedir + 'bp_bc'):
+#     os.mkdir(savedir + 'bp_bc')
+# plt.savefig(savedir + 'bp_bc/bp_bc_rms')
+# plt.savefig(savedir + 'bp_bc/bp_bc_rms.eps')
+# plt.close()
+#
+# # ssh component
+# fig3 = plt.figure(figsize=(8,8))
+# ax3 = fig3.add_subplot(111)
+# cs = ax3.contourf(lon, lat, np.std(bp_ssh_anom, axis=0)/100, levels=levels, cmap=cmap2, extend='max')
+# bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+#
+# ax3.axis('square')
+# ax3.grid(True)
+# ax3.tick_params(labelsize=fs-2)
+# plt.xticks(rotation=45)
+#
+# cb = fig3.colorbar(cs)
+# cb.set_label('RMS (cm)', fontsize=fs-2)
+# cb.ax.tick_params(labelsize=fs-2)
+#
+# # plt.show()
+# if not os.path.exists(savedir + 'bp_ssh'):
+#     os.mkdir(savedir + 'bp_ssh')
+# plt.savefig(savedir + 'bp_ssh/bp_ssh_rms')
+# plt.savefig(savedir + 'bp_ssh/bp_ssh_rms.eps')
+# plt.close()
 
 # # DAILY BOTTOM PRESSURE COMPONENT ANOMALIES
 # for nn in range(len(bp_anom2[:,0,0])): # for each day
@@ -511,102 +522,112 @@ plt.close()
 #     plt.savefig(savedir + 'bp_ssh/rms_strikeperp_' + str(nn))
 #     plt.close()
 
-# # CORRELATION COEFFICIENTS BETWEEN COMPONENTS
-# c_ssh_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-# c_bc_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-# c_ssh_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
-# for mm in range(len(bp_anom2[0,0,:])): # for every grid point
-#     for kk in range(len(bp_anom2[0,:,0])): # for every grid point
-#         # ssh / anom
-#         p1 = bp_ssh_anom[:,kk,mm]
-#         p2 = bp_anom2[:,kk,mm]
-#         p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
-#         p2 = (p2 - np.mean(p2)) / (np.std(p2))
-#         c_ssh_anom[kk,mm] = np.correlate(p1, p2)
-#         # baroclinic / anom
-#         p1 = bp_bc_anom[:,kk,mm]
-#         p2 = bp_anom2[:,kk,mm]
-#         p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
-#         p2 = (p2 - np.mean(p2)) / (np.std(p2))
-#         c_bc_anom[kk,mm] = np.correlate(p1, p2)
-#         # ssh / baroclinic
-#         p1 = bp_ssh_anom[:,kk,mm]
-#         p2 = bp_bc_anom[:,kk,mm]
-#         p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
-#         p2 = (p2 - np.mean(p2)) / (np.std(p2))
-#         c_ssh_bc[kk,mm] = np.correlate(p1, p2)
-#
-# # ssh / anom
-# mask = np.absolute(c_bc_anom) > 0.2
-# C = np.ma.masked_array(c_ssh_anom, mask=mask)
-# fig1 = plt.figure(figsize=(8,8))
-# ax1 = fig1.add_subplot(111)
+# CORRELATION COEFFICIENTS BETWEEN COMPONENTS
+c_ssh_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+c_bc_anom = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+c_ssh_bc = np.empty((np.shape(lon)[0], np.shape(lon)[1]),dtype=np.float32);
+for mm in range(len(bp_anom2[0,0,:])): # for every grid point
+    for kk in range(len(bp_anom2[0,:,0])): # for every grid point
+        # ssh / anom
+        p1 = bp_ssh_anom[:,kk,mm]
+        p2 = bp_anom2[:,kk,mm]
+        p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
+        p2 = (p2 - np.mean(p2)) / (np.std(p2))
+        c_ssh_anom[kk,mm] = np.correlate(p1, p2)
+        # baroclinic / anom
+        p1 = bp_bc_anom[:,kk,mm]
+        p2 = bp_anom2[:,kk,mm]
+        p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
+        p2 = (p2 - np.mean(p2)) / (np.std(p2))
+        c_bc_anom[kk,mm] = np.correlate(p1, p2)
+        # ssh / baroclinic
+        p1 = bp_ssh_anom[:,kk,mm]
+        p2 = bp_bc_anom[:,kk,mm]
+        p1 = (p1 - np.mean(p1)) / (np.std(p1) * len(p1))
+        p2 = (p2 - np.mean(p2)) / (np.std(p2))
+        c_ssh_bc[kk,mm] = np.correlate(p1, p2)
+
+levels=[-1.0, -0.9, -0.8, -0.7, -0.6, 0.6, 0.7, 0.8, 0.9, 1.0]
+# ssh / anom
+mask = np.absolute(c_bc_anom) > 0.2
+C = np.ma.masked_array(c_ssh_anom, mask=mask)
+fig1 = plt.figure(figsize=(8,8))
+ax1 = fig1.add_subplot(111)
 # cs = ax1.pcolormesh(lon, lat, c_ssh_anom, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-#
-# ax1.axis('square')
-# ax1.grid(True)
-# ax1.set_title('SSH v. ANOM')
-#
-# cb = fig1.colorbar(cs)
-# cb.set_label('Cross Correlation', fontsize=fs)
-# cb.ax.tick_params(labelsize=fs)
-#
-# # plt.show()
-# if not os.path.exists(savedir + 'cross_field'):
-#     os.mkdir(savedir + 'cross_field')
-# plt.savefig(savedir + 'cross_field/xcorr_ssh_anom')
+cs = ax1.contourf(lon, lat, c_ssh_anom, levels=levels, cmap=cmap)
+bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax1.axis('square')
+ax1.grid(True)
+ax1.tick_params(labelsize=fs-2)
+plt.xticks(rotation=45)
+
+cb = fig1.colorbar(cs)
+cb.set_label('Cross Correlation', fontsize=fs-2)
+cb.ax.tick_params(labelsize=fs-2)
+
+# plt.show()
+if not os.path.exists(savedir + 'cross_field'):
+    os.mkdir(savedir + 'cross_field')
+plt.savefig(savedir + 'cross_field/xcorr_ssh_anom')
+plt.savefig(savedir + 'cross_field/xcorr_ssh_anom.eps')
 # cs.remove()
 # cs = ax1.pcolormesh(lon, lat, C, cmap=cmap, vmin=-1, vmax=1)
 # ax1.grid(True)
 # plt.savefig(savedir + 'cross_field/xcorr_ssh_anom_masked')
-# plt.close()
-#
-# # bc / anom
-# mask = np.absolute(c_ssh_anom) > 0.2
-# C = np.ma.masked_array(c_bc_anom, mask=mask)
-# fig2 = plt.figure(figsize=(8,8))
-# ax2 = fig2.add_subplot(111)
+plt.close()
+
+# bc / anom
+mask = np.absolute(c_ssh_anom) > 0.2
+C = np.ma.masked_array(c_bc_anom, mask=mask)
+fig2 = plt.figure(figsize=(8,8))
+ax2 = fig2.add_subplot(111)
 # cs = ax2.pcolormesh(lon, lat, c_bc_anom, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-#
-# ax2.axis('square')
-# ax2.grid(True)
-# ax2.set_title('BC v. ANOM')
-#
-# cb = fig2.colorbar(cs)
-# cb.set_label('Cross Correlation', fontsize=fs)
-# cb.ax.tick_params(labelsize=fs)
-#
-# # plt.show()
-# if not os.path.exists(savedir + 'cross_field'):
-#     os.mkdir(savedir + 'cross_field')
-# plt.savefig(savedir + 'cross_field/xcorr_bc_anom')
+cs = ax2.contourf(lon, lat, c_bc_anom, levels=levels, cmap=cmap)
+bth = ax2.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax2.axis('square')
+ax2.grid(True)
+ax2.tick_params(labelsize=fs-2)
+plt.xticks(rotation=45)
+
+cb = fig2.colorbar(cs)
+cb.set_label('Cross Correlation', fontsize=fs-2)
+cb.ax.tick_params(labelsize=fs-2)
+
+# plt.show()
+if not os.path.exists(savedir + 'cross_field'):
+    os.mkdir(savedir + 'cross_field')
+plt.savefig(savedir + 'cross_field/xcorr_bc_anom')
+plt.savefig(savedir + 'cross_field/xcorr_bc_anom.eps')
 # cs.remove()
 # cs = ax2.pcolormesh(lon, lat, C, cmap=cmap, vmin=-1, vmax=1)
 # ax2.grid(True)
 # plt.savefig(savedir + 'cross_field/xcorr_bc_anom_masked')
-# plt.close()
-#
-# # ssh / bc
-# fig3 = plt.figure(figsize=(8,8))
-# ax3 = fig3.add_subplot(111)
+plt.close()
+
+# ssh / bc
+fig3 = plt.figure(figsize=(8,8))
+ax3 = fig3.add_subplot(111)
 # cs = ax3.pcolormesh(lon, lat, c_ssh_bc, cmap=cmap, vmin=-1, vmax=1)
-# bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
-#
-# ax3.axis('square')
-# ax3.grid(True)
-# ax3.set_title('SSH v. BC')
-#
-# cb = fig3.colorbar(cs)
-# cb.set_label('Cross Correlation', fontsize=fs)
-# cb.ax.tick_params(labelsize=fs)
-#
-# # plt.show()
-# if not os.path.exists(savedir + 'cross_field'):
-#     os.mkdir(savedir + 'cross_field')
-# plt.savefig(savedir + 'cross_field/xcorr_ssh_bc')
-# plt.close()
+cs = ax3.contourf(lon, lat, c_ssh_bc, levels=levels, cmap=cmap)
+bth = ax3.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+
+ax3.axis('square')
+ax3.grid(True)
+ax3.tick_params(labelsize=fs-2)
+plt.xticks(rotation=45)
+
+cb = fig3.colorbar(cs)
+cb.set_label('Cross Correlation', fontsize=fs)
+cb.ax.tick_params(labelsize=fs)
+
+# plt.show()
+if not os.path.exists(savedir + 'cross_field'):
+    os.mkdir(savedir + 'cross_field')
+plt.savefig(savedir + 'cross_field/xcorr_ssh_bc')
+plt.savefig(savedir + 'cross_field/xcorr_ssh_bc.eps')
+plt.close()
 
 # # AS ABOVE, BUT WINDOWED RATHER THAN FULL-YEAR
 # win = 60 # play around with this number

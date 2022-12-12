@@ -13,17 +13,18 @@ import cmocean
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pickle
+from time import mktime
 
 from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2020-21/'
+loadir = topdir + 'pickles_2017-18/'
 outdir = '../LO_output/eddy_tracking/'
 savedir = outdir + loadir[-8:]
 
 # name the eddy
-estr = 'eddy2b';
+estr = 'eddy3';
 pos = False; # set to True for + SSH anomaly and False for -
 # save time by reducing this interval as much as possible
 n1 = 195;
@@ -33,7 +34,7 @@ n2 = 227;
 
 # plotting parameters
 fs = 14 # primary fontsize
-lw = 3 # primary linewidth
+lw = 1 # primary linewidth
 mk = 10 # primary markersize
 cmap = cmocean.cm.balance # formerly thermal
 plt.close('all')
@@ -61,6 +62,7 @@ bp_bc_anom = bp_bc - Bc
 bp_ssh_anom = bp_ssh - Ssh
 
 ssh_anom = bp_ssh_anom / g / 1025
+tlp2 = [datetime.fromtimestamp(t) for t in tlp]
 
 if os.path.isfile(savedir + estr + '/bp_eddy.p'):
     t_eddy = pickle.load(open((savedir + estr + '/t_eddy.p'), 'rb'))
@@ -69,6 +71,11 @@ if os.path.isfile(savedir + estr + '/bp_eddy.p'):
     bp_ssh_eddy = pickle.load(open((savedir + estr + '/ssh_eddy.p'), 'rb'))
     ctrs_ll = pickle.load(open((savedir + estr + '/ctrs_ll.p'), 'rb'))
     ctrs_xy = pickle.load(open((savedir + estr + '/ctrs_xy.p'), 'rb'))
+
+    t1 = mktime(t_eddy[0].timetuple())
+    t2 = mktime(t_eddy[-1].timetuple())
+    n1 = np.argmin(np.abs(tlp - t1))
+    n2 = np.argmin(np.abs(tlp - t2)) + 1
 else:
     # Track eddy and extract BP components at those points
     for nn in range(n2-n1): # for each day
@@ -153,98 +160,91 @@ else:
     pickle.dump(ctrs_xy, open((savedir + estr + '/ctrs_xy.p'), 'wb'))
 
 # PLOTTING
-# eddy track map plot and time series plot of BP components following eddy
-fig0 = plt.figure(figsize=(8,8))
-ax0 = fig0.add_subplot(212)
-ax0.plot(t_eddy,bp_bc_eddy/100, label='baroclinic')
-ax0.plot(t_eddy,bp_ssh_eddy/100, label='ssh')
-ax0.plot(t_eddy,bp_anom_eddy/100, color='r', label='sum')
+# eddy track map plot
+fig0 = plt.figure(figsize=(11,8.5))
 
-ax0.legend()
-ax0.axhline(c='k',lw=1)
-ax0.set_title(estr + ' ' + datetime.fromtimestamp(tlp[n1]).strftime('%m/%d/%y') +
-    '-' + datetime.fromtimestamp(tlp[n2]).strftime('%m/%d/%y'))
-myFmt = mdates.DateFormatter('%m/%d')
-ax0.xaxis.set_major_formatter(myFmt)
-ax0.set_ylabel('P (cm)')
-ax0.grid(True)
-
-ax1 = fig0.add_subplot(211)
-bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
-ax1.plot(ctrs_ll[0,1],ctrs_ll[0,0],'ob',label='start')
-ax1.plot(ctrs_ll[:,1],ctrs_ll[:,0],'r',label='path')
-ax1.plot(ctrs_ll[-1,1],ctrs_ll[-1,0],'xb',label='end')
+ax1 = fig0.add_subplot(131)
+bth = ax1.contour(lon, lat, bath, [4, 300, 2000], colors='black')
+ax1.plot(ctrs_ll[0,0],ctrs_ll[0,1],'ob',label='start')
+ax1.plot(ctrs_ll[:,0],ctrs_ll[:,1],'r',label='path')
+ax1.plot(ctrs_ll[-1,0],ctrs_ll[-1,1],'xb',label='end')
 ax1.legend()
-ax1.invert_yaxis()
+ax1.set_title(estr + ' ' + datetime.fromtimestamp(tlp[n1]).strftime('%m/%d/%y') +
+    '-' + datetime.fromtimestamp(tlp[n2]).strftime('%m/%d/%y'))
 ax1.grid(True)
+ax1.tick_params(labelsize=fs-2)
+plt.xticks(rotation=45)
 
 if not os.path.exists(savedir + estr):
     os.mkdir(savedir + estr)
 
 # plt.show()
+plt.tight_layout()
 plt.savefig(savedir + estr + '/' + estr + '_track')
+plt.savefig(savedir + estr + '/' + estr + '_track.eps')
 plt.close()
 
 # panel plot of time series at points along track through entire t
-fig2 = plt.figure(figsize=(20,20))
 for ii in range(25):
-    ax2 = fig2.add_subplot(5,5,ii+1)
+    fig2 = plt.figure(figsize=(11,8.5))
+    ax2 = fig2.add_subplot(4,3,5)
     iin = int(ii*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]/100,label='baroclinic')
-    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]/100,label='ssh')
-    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]/100,color='r',label='sum')
+    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]/100,lw=lw,label='steric')
+    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]/100,lw=lw,label='eustatic')
+    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]/100,lw=lw,color='r',label='total')
 
-    # ax2.legend()
+    ax2.legend()
     ax2.axhline(c='k',lw=1)
     ax2.axvline(t_eddy[iin],c='k',lw=1)
     myFmt = mdates.DateFormatter('%m/%d')
     ax2.xaxis.set_major_formatter(myFmt)
     plt.xticks(rotation=45, ha='right')
-    if ii < 20:
-        ax2.axes.xaxis.set_ticklabels([])
     ax2.set_ylim(-15,15)
     ax2.set_title(str(int(bath[iila,iilo])) + ' m', fontsize=fs)
-    if (ii % 5) == 0:
-        ax2.set_ylabel('P (cm)', fontsize=fs)
+    ax2.set_ylabel('P (cm)', fontsize=fs)
     ax2.grid(True)
+    ax2.tick_params(labelsize=fs-2)
 
-if not os.path.exists(savedir + estr):
-    os.mkdir(savedir + estr)
+    if not os.path.exists(savedir + estr + '/panels'):
+        os.mkdir(savedir + estr + '/panels')
 
-# plt.show()
-plt.savefig(savedir + estr + '/' + estr + '_panel')
-plt.close()
+    # plt.show()
+    plt.tight_layout()
+    plt.savefig(savedir + estr + '/panels/' + estr + '_panel_' + str(ii).zfill(2))
+    plt.savefig(savedir + estr + '/panels/' + estr + '_panel_' + str(ii).zfill(2) +'.eps')
+    plt.close()
 
 # panel plot of differences along track through entire t
-fig2 = plt.figure(figsize=(20,20))
 for ii in range(25):
-    ax2 = fig2.add_subplot(5,5,ii+1)
+    fig2 = plt.figure(figsize=(11,8.5))
+    ax2 = fig2.add_subplot(4,3,6)
     iin = int(ii*(n2-n1)/25)
+    iiref = int(9*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,(bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,label='baroclinic')
-    ax2.plot(t_eddy,(bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,label='ssh')
-    ax2.plot(t_eddy,(bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[0,1],ctrs_xy[0,0]])/100,color='r',label='sum')
+    ax2.plot(t_eddy,(bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='steric')
+    ax2.plot(t_eddy,(bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='eustatic')
+    ax2.plot(t_eddy,(bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,color='r',lw=lw,label='total')
 
-    # ax2.legend()
+    ax2.legend()
     ax2.axhline(c='k',lw=1)
     ax2.axvline(t_eddy[iin],c='k',lw=1)
     myFmt = mdates.DateFormatter('%m/%d')
     ax2.xaxis.set_major_formatter(myFmt)
     plt.xticks(rotation=45, ha='right')
-    if ii < 20:
-        ax2.axes.xaxis.set_ticklabels([])
     ax2.set_ylim(-15,15)
     ax2.set_title(str(int(bath[iila,iilo])) + ' m', fontsize=fs)
-    if (ii % 5) == 0:
-        ax2.set_ylabel('P (cm)', fontsize=fs)
+    ax2.set_ylabel('\DeltaP (cm)', fontsize=fs)
     ax2.grid(True)
+    ax2.tick_params(labelsize=fs-2)
 
-if not os.path.exists(savedir + estr):
-    os.mkdir(savedir + estr)
+    if not os.path.exists(savedir + estr + '/diff_panels'):
+        os.mkdir(savedir + estr + '/diff_panels')
 
-# plt.show()
-plt.savefig(savedir + estr + '/' + estr + '_difpanel')
-plt.close()
+    # plt.show()
+    plt.tight_layout()
+    plt.savefig(savedir + estr + '/diff_panels/' + estr + '_diffpanel' + str(ii).zfill(2))
+    plt.savefig(savedir + estr + '/diff_panels/' + estr + '_diffpanel' + str(ii).zfill(2) + '.eps')
+    plt.close()
