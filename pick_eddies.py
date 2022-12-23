@@ -19,13 +19,13 @@ from lo_tools import Lfun, zfun, zrfun
 
 g = 9.81
 topdir = '../LO_output/allinone/'
-loadir = topdir + 'pickles_2017-18/'
+loadir = topdir + 'pickles_2018-19/'
 outdir = '../LO_output/eddy_tracking/'
 savedir = outdir + loadir[-8:]
 
 # name the eddy
-estr = 'eddy3';
-pos = False; # set to True for + SSH anomaly and False for -
+estr = 'eddy1';
+pos = True; # set to True for + SSH anomaly and False for -
 # save time by reducing this interval as much as possible
 n1 = 195;
 n2 = 227;
@@ -71,6 +71,9 @@ if os.path.isfile(savedir + estr + '/bp_eddy.p'):
     bp_ssh_eddy = pickle.load(open((savedir + estr + '/ssh_eddy.p'), 'rb'))
     ctrs_ll = pickle.load(open((savedir + estr + '/ctrs_ll.p'), 'rb'))
     ctrs_xy = pickle.load(open((savedir + estr + '/ctrs_xy.p'), 'rb'))
+
+    # print(t_eddy[0])
+    # print(t_eddy[-1])
 
     t1 = mktime(t_eddy[0].timetuple())
     t2 = mktime(t_eddy[-1].timetuple())
@@ -187,13 +190,14 @@ plt.close()
 # panel plot of time series at points along track through entire t
 for ii in range(25):
     fig2 = plt.figure(figsize=(11,8.5))
-    ax2 = fig2.add_subplot(4,3,5)
+    ax2 = fig2.add_subplot(4,2,1)
     iin = int(ii*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,bp_bc_anom[n1:n2,iila,iilo]/100,lw=lw,label='steric')
-    ax2.plot(t_eddy,bp_ssh_anom[n1:n2,iila,iilo]/100,lw=lw,label='eustatic')
-    ax2.plot(t_eddy,bp_anom2[n1:n2,iila,iilo]/100,lw=lw,color='r',label='total')
+    ax2.plot(tlp2[n1-30:n2+30],bp_bc_anom[n1-30:n2+30,iila,iilo]/100,lw=lw,label='steric')
+    ax2.plot(tlp2[n1-30:n2+30],bp_ssh_anom[n1-30:n2+30,iila,iilo]/100,lw=lw,label='eustatic')
+    ax2.plot(tlp2[n1-30:n2+30],bp_anom2[n1-30:n2+30,iila,iilo]/100,lw=lw,color='r',label='total')
+    ax2.fill([t_eddy[0], t_eddy[-1], t_eddy[-1], t_eddy[0]],[-15, -15, 15, 15],'gray', alpha=0.5)
 
     ax2.legend()
     ax2.axhline(c='k',lw=1)
@@ -207,6 +211,11 @@ for ii in range(25):
     ax2.grid(True)
     ax2.tick_params(labelsize=fs-2)
 
+    ax3 = fig2.add_subplot(4,2,3)
+    ax3.set_title(str(np.around(ctrs_ll[iin,0],2)) + ', ' + str(np.around(ctrs_ll[iin,1],2)))
+
+    print(str(ii) + ': ' + str(t_eddy[iin]))
+
     if not os.path.exists(savedir + estr + '/panels'):
         os.mkdir(savedir + estr + '/panels')
 
@@ -219,14 +228,15 @@ for ii in range(25):
 # panel plot of differences along track through entire t
 for ii in range(25):
     fig2 = plt.figure(figsize=(11,8.5))
-    ax2 = fig2.add_subplot(4,3,6)
+    ax2 = fig2.add_subplot(4,2,2)
     iin = int(ii*(n2-n1)/25)
     iiref = int(9*(n2-n1)/25)
     iilo = ctrs_xy[iin,0]
     iila = ctrs_xy[iin,1]
-    ax2.plot(t_eddy,(bp_bc_anom[n1:n2,iila,iilo]-bp_bc_anom[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='steric')
-    ax2.plot(t_eddy,(bp_ssh_anom[n1:n2,iila,iilo]-bp_ssh_anom[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='eustatic')
-    ax2.plot(t_eddy,(bp_anom2[n1:n2,iila,iilo]-bp_anom2[n1:n2,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,color='r',lw=lw,label='total')
+    ax2.plot(tlp2[n1-30:n2+30],(bp_bc_anom[n1-30:n2+30,iila,iilo]-bp_bc_anom[n1-30:n2+30,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='steric')
+    ax2.plot(tlp2[n1-30:n2+30],(bp_ssh_anom[n1-30:n2+30,iila,iilo]-bp_ssh_anom[n1-30:n2+30,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,lw=lw,label='eustatic')
+    ax2.plot(tlp2[n1-30:n2+30],(bp_anom2[n1-30:n2+30,iila,iilo]-bp_anom2[n1-30:n2+30,ctrs_xy[iiref,1],ctrs_xy[iiref,0]])/100,color='r',lw=lw,label='total')
+    ax2.fill([t_eddy[0], t_eddy[-1], t_eddy[-1], t_eddy[0]],[-5, -5, 5, 5],'gray', alpha=0.5)
 
     ax2.legend()
     ax2.axhline(c='k',lw=1)
@@ -234,11 +244,14 @@ for ii in range(25):
     myFmt = mdates.DateFormatter('%m/%d')
     ax2.xaxis.set_major_formatter(myFmt)
     plt.xticks(rotation=45, ha='right')
-    ax2.set_ylim(-15,15)
+    ax2.set_ylim(-5,5)
     ax2.set_title(str(int(bath[iila,iilo])) + ' m', fontsize=fs)
-    ax2.set_ylabel('\DeltaP (cm)', fontsize=fs)
+    ax2.set_ylabel('P (cm)', fontsize=fs)
     ax2.grid(True)
     ax2.tick_params(labelsize=fs-2)
+
+    ax3 = fig2.add_subplot(4,2,4)
+    ax3.set_title(str(np.around(ctrs_ll[iin,0],2)) + ', ' + str(np.around(ctrs_ll[iin,1],2)))
 
     if not os.path.exists(savedir + estr + '/diff_panels'):
         os.mkdir(savedir + estr + '/diff_panels')

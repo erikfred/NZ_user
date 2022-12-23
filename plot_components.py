@@ -12,6 +12,7 @@ import netCDF4 as nc
 import cmocean
 import matplotlib.pyplot as plt
 import pickle
+from scipy import signal
 
 from lo_tools import Lfun, zfun, zrfun
 
@@ -49,6 +50,16 @@ ssh_anom = bp_ssh_anom / g / 1025
 
 tlp2 = [datetime.fromtimestamp(t) for t in tlp]
 
+filt = 30
+sos_hp = signal.butter(4, 1/filt, 'hp', fs=1, output='sos')
+sos_lp = signal.butter(4, 1/filt, 'lp', fs=1, output='sos')
+anom_hp = signal.sosfiltfilt(sos_hp, bp_anom2, axis=0)
+anom_lp = signal.sosfiltfilt(sos_lp, bp_anom2, axis=0)
+ssh_hp = signal.sosfiltfilt(sos_hp, bp_ssh_anom, axis=0)
+ssh_lp = signal.sosfiltfilt(sos_lp, bp_ssh_anom, axis=0)
+bc_hp = signal.sosfiltfilt(sos_hp, bp_bc_anom, axis=0)
+bc_lp = signal.sosfiltfilt(sos_lp, bp_bc_anom, axis=0)
+
 # PLOTTING
 # plotting parameters
 fs = 14 # primary fontsize
@@ -64,12 +75,20 @@ isb = np.argwhere((bath<202) & (bath>198))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/10))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(323)
-    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*10][0],isb[nn*10][1]]/100,lw=lw,label='steric')
-    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*10][0],isb[nn*10][1]]/100,lw=lw,label='eustatic')
+    ax0 = fig0.add_subplot(221)
+    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*10][0],isb[nn*10][1]]/100,lw=lw,color='b',label='steric')
+    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*10][0],isb[nn*10][1]]/100,lw=lw,color='y',label='eustatic')
     ax0.plot(tlp2,bp_anom2[:,isb[nn*10][0],isb[nn*10][1]]/100,lw=lw,color='r',label='total')
 
-    ax0.set_ylim(-15,15)
+    ax0.plot(tlp2,bc_lp[:,isb[nn*10][0],isb[nn*10][1]]/100-15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_lp[:,isb[nn*10][0],isb[nn*10][1]]/100-15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_lp[:,isb[nn*10][0],isb[nn*10][1]]/100-15,lw=lw,color='r')
+
+    ax0.plot(tlp2,bc_hp[:,isb[nn*10][0],isb[nn*10][1]]/100+15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_hp[:,isb[nn*10][0],isb[nn*10][1]]/100+15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_hp[:,isb[nn*10][0],isb[nn*10][1]]/100+15,lw=lw,color='r')
+
+    ax0.set_ylim(-30,30)
     ax0.set_title(str(np.around(lat[isb[nn*10][0],isb[nn*10][1]],decimals=2)) +
         ', ' + str(np.around(lon[isb[nn*10][0],isb[nn*10][1]],decimals=2))
         + ', ' + str(np.around(bath[isb[nn*10][0],isb[nn*10][1]])))
@@ -79,7 +98,7 @@ for nn in range(int(np.around(len(isb)/10))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(222)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[10][0],isb[10][1]],lon[isb[10][0],isb[10][1]],'^r',markersize=mk-5)
     ax1.plot(lat[isb[nn*10][0],isb[nn*10][1]],lon[isb[nn*10][0],isb[nn*10][1]],'or',markersize=mk-5)
@@ -87,13 +106,13 @@ for nn in range(int(np.around(len(isb)/10))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_200'):
-        os.mkdir(savedir + 'strike_par_200')
+    if not os.path.exists(savedir + 'strike_par_200b'):
+        os.mkdir(savedir + 'strike_par_200b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_200/mooring_' + str(nn))
-    plt.savefig(savedir + 'strike_par_200/mooring_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_200b/mooring_' + str(nn))
+    plt.savefig(savedir + 'strike_par_200b/mooring_' + str(nn) + '.eps')
     plt.close()
 
 # strike-parallel line at 300 m
@@ -101,12 +120,20 @@ isb = np.argwhere((bath<302) & (bath>298))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/5))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(323)
-    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,label='steric')
-    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,label='eustatic')
+    ax0 = fig0.add_subplot(221)
+    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='b',label='steric')
+    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='y',label='eustatic')
     ax0.plot(tlp2,bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='r',label='total')
 
-    ax0.set_ylim(-15,15)
+    ax0.plot(tlp2,bc_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='r')
+
+    ax0.plot(tlp2,bc_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='r')
+
+    ax0.set_ylim(-30,30)
     ax0.set_title(str(np.around(lat[isb[nn*5][0],isb[nn*5][1]],decimals=2)) +
         ', ' + str(np.around(lon[isb[nn*5][0],isb[nn*5][1]],decimals=2))
         + ', ' + str(np.around(bath[isb[nn*5][0],isb[nn*5][1]])))
@@ -116,7 +143,7 @@ for nn in range(int(np.around(len(isb)/5))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(222)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[stalist,0],isb[stalist,1]],lon[isb[stalist,0],isb[stalist,1]],'ok',markersize=mk-5)
     ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
@@ -124,13 +151,13 @@ for nn in range(int(np.around(len(isb)/5))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_300'):
-        os.mkdir(savedir + 'strike_par_300')
+    if not os.path.exists(savedir + 'strike_par_300b'):
+        os.mkdir(savedir + 'strike_par_300b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_300/mooring_' + str(nn))
-    plt.savefig(savedir + 'strike_par_300/mooring_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_300b/mooring_' + str(nn))
+    plt.savefig(savedir + 'strike_par_300b/mooring_' + str(nn) + '.eps')
     plt.close()
 
 # strike-parallel line at 2000 m
@@ -138,12 +165,20 @@ isb = np.argwhere((bath<2002) & (bath>1998))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/5))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(323)
-    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,label='steric')
-    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,label='eustatic')
+    ax0 = fig0.add_subplot(221)
+    ax0.plot(tlp2,bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='b',label='steric')
+    ax0.plot(tlp2,bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='y',label='eustatic')
     ax0.plot(tlp2,bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]/100,lw=lw,color='r',label='total')
 
-    ax0.set_ylim(-15,15)
+    ax0.plot(tlp2,bc_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_lp[:,isb[nn*5][0],isb[nn*5][1]]/100-15,lw=lw,color='r')
+
+    ax0.plot(tlp2,bc_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='b')
+    ax0.plot(tlp2,ssh_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='y')
+    ax0.plot(tlp2,anom_hp[:,isb[nn*5][0],isb[nn*5][1]]/100+15,lw=lw,color='r')
+
+    ax0.set_ylim(-30,30)
     ax0.set_title(str(np.around(lat[isb[nn*5][0],isb[nn*5][1]],decimals=2)) +
         ', ' + str(np.around(lon[isb[nn*5][0],isb[nn*5][1]],decimals=2))
         + ', ' + str(np.around(bath[isb[nn*5][0],isb[nn*5][1]])))
@@ -153,7 +188,7 @@ for nn in range(int(np.around(len(isb)/5))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(222)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[stalist,0],isb[stalist,1]],lon[isb[stalist,0],isb[stalist,1]],'ok',markersize=mk-5)
     ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
@@ -161,13 +196,13 @@ for nn in range(int(np.around(len(isb)/5))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_2000'):
-        os.mkdir(savedir + 'strike_par_2000')
+    if not os.path.exists(savedir + 'strike_par_2000b'):
+        os.mkdir(savedir + 'strike_par_2000b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_2000/mooring_' + str(nn))
-    plt.savefig(savedir + 'strike_par_2000/mooring_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_2000b/mooring_' + str(nn))
+    plt.savefig(savedir + 'strike_par_2000b/mooring_' + str(nn) + '.eps')
     plt.close()
 
 # # strike-perpendicular line
@@ -207,7 +242,7 @@ isb = np.argwhere((bath<202) & (bath>198))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/10))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(324)
+    ax0 = fig0.add_subplot(222)
     ax0.plot(tlp2,(bp_bc_anom[:,isb[nn*10][0],isb[nn*10][1]]-bp_bc_anom[:,isb[10][0],isb[10][1]])/100,lw=lw,label='steric')
     ax0.plot(tlp2,(bp_ssh_anom[:,isb[nn*10][0],isb[nn*10][1]]-bp_ssh_anom[:,isb[10][0],isb[10][1]])/100,lw=lw,label='eustatic')
     ax0.plot(tlp2,(bp_anom2[:,isb[nn*10][0],isb[nn*10][1]]-bp_anom2[:,isb[10][0],isb[10][1]])/100,lw=lw,color='r',label='total')
@@ -222,7 +257,7 @@ for nn in range(int(np.around(len(isb)/10))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(221)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[10][0],isb[10][1]],lon[isb[10][0],isb[10][1]],'^r',markersize=mk-5)
     ax1.plot(lat[isb[nn*10][0],isb[nn*10][1]],lon[isb[nn*10][0],isb[nn*10][1]],'or',markersize=mk-5)
@@ -230,13 +265,13 @@ for nn in range(int(np.around(len(isb)/10))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_200'):
-        os.mkdir(savedir + 'strike_par_200')
+    if not os.path.exists(savedir + 'strike_par_200b'):
+        os.mkdir(savedir + 'strike_par_200b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_200/difference_' + str(nn))
-    plt.savefig(savedir + 'strike_par_200/difference_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_200b/difference_' + str(nn))
+    plt.savefig(savedir + 'strike_par_200b/difference_' + str(nn) + '.eps')
     plt.close()
 
 # strike-parallel line at 300 m
@@ -244,7 +279,7 @@ isb = np.argwhere((bath<302) & (bath>298))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/5))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(324)
+    ax0 = fig0.add_subplot(222)
     ax0.plot(tlp2,(bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]-bp_bc_anom[:,isb[0][0],isb[0][1]])/100,lw=lw,label='steric')
     ax0.plot(tlp2,(bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]-bp_ssh_anom[:,isb[0][0],isb[0][1]])/100,lw=lw,label='eustatic')
     ax0.plot(tlp2,(bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]-bp_anom2[:,isb[0][0],isb[0][1]])/100,lw=lw,color='r',label='total')
@@ -259,7 +294,7 @@ for nn in range(int(np.around(len(isb)/5))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(221)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[0][0],isb[0][1]],lon[isb[0][0],isb[0][1]],'^r',markersize=mk-5)
     ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
@@ -267,13 +302,13 @@ for nn in range(int(np.around(len(isb)/5))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_300'):
-        os.mkdir(savedir + 'strike_par_300')
+    if not os.path.exists(savedir + 'strike_par_300b'):
+        os.mkdir(savedir + 'strike_par_300b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_300/difference_' + str(nn))
-    plt.savefig(savedir + 'strike_par_300/difference_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_300b/difference_' + str(nn))
+    plt.savefig(savedir + 'strike_par_300b/difference_' + str(nn) + '.eps')
     plt.close()
 
 # strike-parallel line at 2000 m
@@ -281,7 +316,7 @@ isb = np.argwhere((bath<2002) & (bath>1998))
 stalist = [x*5 for x in list(range(int(np.around(len(isb)/5))))]
 for nn in range(int(np.around(len(isb)/5))):
     fig0 = plt.figure(figsize=(11,8.5))
-    ax0 = fig0.add_subplot(324)
+    ax0 = fig0.add_subplot(222)
     ax0.plot(tlp2,(bp_bc_anom[:,isb[nn*5][0],isb[nn*5][1]]-bp_bc_anom[:,isb[0][0],isb[0][1]])/100,lw=lw,label='steric')
     ax0.plot(tlp2,(bp_ssh_anom[:,isb[nn*5][0],isb[nn*5][1]]-bp_ssh_anom[:,isb[0][0],isb[0][1]])/100,lw=lw,label='eustatic')
     ax0.plot(tlp2,(bp_anom2[:,isb[nn*5][0],isb[nn*5][1]]-bp_anom2[:,isb[0][0],isb[0][1]])/100,lw=lw,color='r',label='total')
@@ -296,7 +331,7 @@ for nn in range(int(np.around(len(isb)/5))):
     ax0.tick_params(labelsize=fs-2)
     plt.xticks(rotation=45)
 
-    ax1 = fig0.add_subplot(321)
+    ax1 = fig0.add_subplot(221)
     bth = ax1.contour(lat, lon, bath, [4, 300, 2000], colors='black')
     ax1.plot(lat[isb[0][0],isb[0][1]],lon[isb[0][0],isb[0][1]],'^r',markersize=mk-5)
     ax1.plot(lat[isb[nn*5][0],isb[nn*5][1]],lon[isb[nn*5][0],isb[nn*5][1]],'or',markersize=mk-5)
@@ -304,11 +339,11 @@ for nn in range(int(np.around(len(isb)/5))):
     ax1.grid(True)
     ax1.tick_params(labelsize=fs-2)
 
-    if not os.path.exists(savedir + 'strike_par_2000'):
-        os.mkdir(savedir + 'strike_par_2000')
+    if not os.path.exists(savedir + 'strike_par_2000b'):
+        os.mkdir(savedir + 'strike_par_2000b')
 
     # plt.show()
     plt.tight_layout()
-    plt.savefig(savedir + 'strike_par_2000/difference_' + str(nn))
-    plt.savefig(savedir + 'strike_par_2000/difference_' + str(nn) + '.eps')
+    plt.savefig(savedir + 'strike_par_2000b/difference_' + str(nn))
+    plt.savefig(savedir + 'strike_par_2000b/difference_' + str(nn) + '.eps')
     plt.close()
