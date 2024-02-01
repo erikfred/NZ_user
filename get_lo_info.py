@@ -17,9 +17,9 @@ from pathlib import Path
 # defaults that should work on all machines
 parent = Path(__file__).absolute().parent.parent
 LO = parent / 'LO'
-LOo = parent / 'LO_output'
-LOu = parent / 'LO_user'
-data = parent / 'LO_data'
+LOo = parent / 'NZ_output'
+LOu = parent / 'NZ_user'
+data = parent / 'NZ_data'
 
 # This is where the ROMS source code, makefiles, and executables are
 roms_code = parent / 'LiveOcean_roms'
@@ -52,13 +52,9 @@ except KeyError:
 # print('HOME = ' + str(HOME))
 # print('HOSTNAME = ' + HOSTNAME)
 
-if (str(HOME) == '/Users/erikfred') & ('VanBuren' in str(UNAME)):
-    lo_env = 'ef1_mac'
-    which_matlab = '/Applications/MATLAB_R2020a.app/bin/matlab'
-
-elif (str(HOME) == '/Users/erikfred') & ('MONROE' in str(UNAME)):
-    lo_env = 'ef2_mac'
-    which_matlab = '/Applications/MATLAB_R2019a.app/bin/matlab'
+if (str(HOME) == '/Users/erikfred') & ('public.utexas.edu' in str(UNAME)):
+    lo_env = 'ef_mac'
+    which_matlab = '/Applications/MATLAB_R2023a.app/bin/matlab'
 
 elif (str(HOME) == '/home/erikfred') & ('perigee' in HOSTNAME):
     lo_env = 'ef_perigee'
